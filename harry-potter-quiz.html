@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Half-Blood Prince N.E.W.T. — A Fiendishly Difficult Book 6 Quiz</title>
+<meta name="description" content="An 85-question, fiendishly difficult trivia examination on Harry Potter and the Half-Blood Prince (Book 6). Self-grading, with official O–T wizarding marks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#f3e9d2;
+    --ink-dim:#c9b98f;
+    --gold:#d4af37;
+    --gold-bright:#f5d76e;
+    --parchment:#f3e9d2;
+    --bg-deep:#0b0e1d;
+    --bg-panel:#151a30;
+    --bg-panel-2:#1c2240;
+    --green:#2e7d4f;
+    --green-bright:#5ec98a;
+    --red:#8b2635;
+    --red-bright:#e8697d;
+    --slytherin:#1a472a;
+    --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --display:'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:var(--serif);
+    background:radial-gradient(ellipse at 50% -20%, #232b52 0%, var(--bg-deep) 55%, #06070f 100%);
+    color:var(--ink);
+    min-height:100vh;
+    font-size:19px;
+    line-height:1.5;
+  }
+  .stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .star{position:absolute;background:#fff;border-radius:50%;opacity:.7;animation:twinkle 3s ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:.15;transform:scale(.8);}50%{opacity:.85;transform:scale(1.15);}}
+  .wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:20px 16px 70px;}
+
+  /* ---------- header ---------- */
+  .crest{text-align:center;font-size:44px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 0 14px rgba(212,175,55,.55));}
+  h1{
+    font-family:var(--display);
+    text-align:center;
+    font-size:clamp(24px,6.4vw,40px);
+    font-weight:900;
+    color:var(--gold-bright);
+    text-shadow:0 0 24px rgba(212,175,55,.4), 0 2px 4px rgba(0,0,0,.8);
+    letter-spacing:.5px;
+    margin-bottom:4px;
+  }
+  .subtitle{text-align:center;color:var(--ink-dim);font-style:italic;font-size:20px;margin-bottom:8px;}
+  .rule{height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 18px;max-width:420px;border:none;}
+
+  /* ---------- panels ---------- */
+  .panel{
+    background:linear-gradient(180deg,var(--bg-panel-2),var(--bg-panel));
+    border:1px solid rgba(212,175,55,.45);
+    border-radius:14px;
+    box-shadow:0 10px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+    padding:26px 22px;
+    margin-bottom:18px;
+  }
+  .panel h2{font-family:var(--display);color:var(--gold);font-size:22px;margin-bottom:12px;text-align:center;}
+  .panel p{margin-bottom:12px;}
+  .notice{
+    border:1px dashed rgba(212,175,55,.5);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:17px;
+    color:var(--ink-dim);
+    font-style:italic;
+    margin-top:14px;
+  }
+  .center{text-align:center;}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-block;
+    font-family:var(--display);
+    font-size:18px;
+    font-weight:700;
+    color:#1b1503;
+    background:linear-gradient(180deg,var(--gold-bright),var(--gold) 60%,#a8862a);
+    border:none;
+    border-radius:999px;
+    padding:14px 34px;
+    cursor:pointer;
+    box-shadow:0 4px 18px rgba(212,175,55,.45), inset 0 1px 0 rgba(255,255,255,.5);
+    transition:transform .12s ease, box-shadow .12s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn.secondary{
+    background:transparent;
+    color:var(--gold);
+    border:1.5px solid var(--gold);
+    box-shadow:none;
+  }
+
+  /* ---------- progress ---------- */
+  .hud{display:flex;justify-content:space-between;align-items:center;font-size:16px;color:var(--ink-dim);margin-bottom:8px;letter-spacing:.4px;}
+  .hud .score{color:var(--gold-bright);font-weight:600;}
+  .bar{height:8px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden;margin-bottom:18px;border:1px solid rgba(212,175,55,.25);}
+  .bar > div{height:100%;width:0%;background:linear-gradient(90deg,#7b5cd6,var(--gold-bright));border-radius:999px;transition:width .35s ease;}
+
+  .section-tag{
+    display:inline-block;
+    font-size:14px;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid rgba(212,175,55,.45);
+    border-radius:999px;
+    padding:4px 14px;
+    margin-bottom:14px;
+  }
+  .qtext{font-size:22px;font-weight:600;line-height:1.4;margin-bottom:18px;}
+
+  /* ---------- answers ---------- */
+  .answers{display:flex;flex-direction:column;gap:10px;}
+  .answer{
+    text-align:left;
+    font-family:var(--serif);
+    font-size:18.5px;
+    line-height:1.35;
+    color:var(--ink);
+    background:rgba(255,255,255,.045);
+    border:1.5px solid rgba(212,175,55,.3);
+    border-radius:10px;
+    padding:13px 15px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s, transform .08s;
+    -webkit-tap-highlight-color:transparent;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .answer .letter{
+    font-family:var(--display);
+    font-size:15px;
+    color:var(--gold);
+    border:1px solid rgba(212,175,55,.5);
+    border-radius:6px;
+    min-width:26px;height:26px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+  }
+  .answer:not(.locked):hover{border-color:var(--gold);background:rgba(212,175,55,.09);}
+  .answer:not(.locked):active{transform:scale(.985);}
+  .answer.correct{background:rgba(46,125,79,.28);border-color:var(--green-bright);}
+  .answer.correct .letter{border-color:var(--green-bright);color:var(--green-bright);}
+  .answer.wrong{background:rgba(139,38,53,.3);border-color:var(--red-bright);}
+  .answer.wrong .letter{border-color:var(--red-bright);color:var(--red-bright);}
+  .answer.faded{opacity:.45;}
+  .answer.locked{cursor:default;}
+
+  .verdict{
+    display:none;
+    margin-top:16px;
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:17.5px;
+    line-height:1.45;
+    border:1px solid;
+    animation:rise .25s ease;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .verdict.good{display:block;background:rgba(46,125,79,.16);border-color:rgba(94,201,138,.55);}
+  .verdict.bad{display:block;background:rgba(139,38,53,.16);border-color:rgba(232,105,125,.55);}
+  .verdict .vtitle{font-family:var(--display);font-size:16px;letter-spacing:.6px;display:block;margin-bottom:6px;}
+  .verdict.good .vtitle{color:var(--green-bright);}
+  .verdict.bad .vtitle{color:var(--red-bright);}
+  .verdict .cite{display:block;margin-top:8px;font-style:italic;color:var(--ink-dim);font-size:15.5px;}
+  .nextrow{text-align:center;margin-top:18px;display:none;}
+
+  /* ---------- results ---------- */
+  .grade-letter{
+    font-family:var(--display);
+    font-size:96px;
+    font-weight:900;
+    text-align:center;
+    color:var(--gold-bright);
+    text-shadow:0 0 40px rgba(212,175,55,.6);
+    line-height:1.1;
+  }
+  .grade-name{text-align:center;font-family:var(--display);font-size:26px;color:var(--gold);margin-bottom:8px;}
+  .grade-flavor{text-align:center;font-style:italic;font-size:19px;color:var(--ink);margin-bottom:18px;}
+  .bigscore{text-align:center;font-size:22px;margin-bottom:16px;}
+  .bigscore b{color:var(--gold-bright);font-size:30px;}
+  .scale{font-size:16px;color:var(--ink-dim);border-top:1px solid rgba(212,175,55,.25);margin-top:16px;padding-top:14px;}
+  .scale div{display:flex;justify-content:space-between;padding:2px 0;}
+  .scale .me{color:var(--gold-bright);font-weight:700;}
+  .review-item{border-top:1px solid rgba(212,175,55,.2);padding:12px 2px;font-size:16.5px;}
+  .review-item .rq{font-weight:600;}
+  .review-item .ra{color:var(--green-bright);}
+  .review-item .rw{color:var(--red-bright);}
+  .btnrow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+  footer{text-align:center;color:rgba(201,185,143,.55);font-size:14px;font-style:italic;margin-top:26px;line-height:1.6;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="wrap">
+  <div class="crest">⚡🦉⚗️</div>
+  <h1>The Half‑Blood Prince N.E.W.T.</h1>
+  <p class="subtitle">A Nastily Exhausting Wizarding Test on Book Six</p>
+  <hr class="rule">
+
+  <!-- START SCREEN -->
+  <div class="panel" id="startScreen">
+    <h2>Wizarding Examinations Authority</h2>
+    <p>You are about to sit a <b>N.E.W.T.-level examination</b> on <i>Harry Potter and the Half‑Blood Prince</i> — the book, not the film. The film will betray you.</p>
+    <p>There are <b id="qCount">85</b> questions, drawn chapter by chapter, from the Muggle Prime Minister's office to the white tomb. Each answer locks the moment you touch it, and the parchment grades itself as you go.</p>
+    <p>You will be marked on the official scale: <b>Outstanding, Exceeds Expectations, Acceptable, Poor, Dreadful,</b> and <b>Troll</b>.</p>
+    <div class="notice">The Examiners advise: no Felix Felicis, no Auto‑Answer Quills, and no whispering portraits. Anti‑Cheating measures are in effect.</div>
+    <p class="center" style="margin-top:20px;"><button class="btn" onclick="startQuiz()">Break the Seal &amp; Begin</button></p>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="hidden" id="quizScreen">
+    <div class="hud">
+      <span id="qNum">Question 1</span>
+      <span class="score" id="scoreLive">Score: 0</span>
+    </div>
+    <div class="bar"><div id="barFill"></div></div>
+    <div class="panel">
+      <span class="section-tag" id="sectionTag"></span>
+      <div class="qtext" id="qText"></div>
+      <div class="answers" id="answers"></div>
+      <div class="verdict" id="verdict"><span class="vtitle" id="vTitle"></span><span id="vBody"></span><span class="cite" id="vCite"></span></div>
+      <div class="nextrow" id="nextRow"><button class="btn" id="nextBtn" onclick="nextQuestion()">Next Question ⚡</button></div>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="hidden" id="resultScreen">
+    <div class="panel">
+      <h2>The Examiners Have Ruled</h2>
+      <div class="grade-letter" id="gradeLetter">O</div>
+      <div class="grade-name" id="gradeName"></div>
+      <div class="grade-flavor" id="gradeFlavor"></div>
+      <div class="bigscore">You scored <b id="finalScore"></b> out of <span id="finalTotal"></span> (<span id="finalPct"></span>)</div>
+      <div class="scale" id="gradeScale"></div>
+      <div class="btnrow">
+        <button class="btn" onclick="shareScore()" id="shareBtn">Share Your Mark 🦉</button>
+        <button class="btn secondary" onclick="location.reload()">Sit the Exam Again</button>
+      </div>
+    </div>
+    <div class="panel" id="reviewPanel">
+      <h2>Remedial Review</h2>
+      <p class="center" style="color:var(--ink-dim);font-style:italic;" id="reviewIntro"></p>
+      <div id="reviewList"></div>
+    </div>
+  </div>
+
+  <footer>
+    “I am the Half‑Blood Prince.”<br>
+    Made with 🪄 for fellow Potterheads · Book canon only — Mischief Managed.
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   QUESTION BANK — Harry Potter and the Half-Blood Prince (Book 6)
+   Every answer verified against the book text (not the film).
+   c = index of correct option BEFORE shuffling.
+   ============================================================ */
+const QUESTIONS = [
+  /* -------- I. THE MINISTRY & THE MUGGLE WORLD (Ch 1–2) -------- */
+  {s:"The Other Minister", q:"In Chapter 1, which three disasters have rattled the Muggle world — all secretly the work of Voldemort's followers?",
+   o:["A bridge collapse, two very public 'murders', and a freak 'hurricane' in the West Country",
+      "A train derailment, a bank robbery, and floods in Scotland",
+      "A plane crash, a prison riot, and a heatwave in London",
+      "A motorway pile-up, a gas explosion, and a blizzard in Kent"],
+   c:0, x:"The Brockdale Bridge snapped in two, the 'murders' of Amelia Bones and Emmeline Vance made the Muggle news, and giants caused a 'hurricane' in the West Country.", cite:"Ch. 1, The Other Minister"},
+  {s:"The Other Minister", q:"What is the name of the Muggle bridge that collapsed, killing a dozen people?",
+   o:["The Brockdale Bridge","The Blackfriars Bridge","The Millbrook Bridge","The Brockworth Bridge"],
+   c:0, x:"Fudge admits the Brockdale Bridge didn't wear out — it was Voldemort's threat made good when the Ministry refused to stand aside.", cite:"Ch. 1, The Other Minister"},
+  {s:"The Other Minister", q:"Herbert Chorley, the Prime Minister's Junior Minister, ends up in St Mungo's after a botched Imperius Curse leaves him doing what?",
+   o:["Impersonating a duck","Barking like a dog","Reciting goblin poetry","Trying to bite visitors"],
+   c:0, x:"Chorley's brain was addled by a poorly performed Imperius Curse, leaving him quacking about like a duck — the Healers came to collect him.", cite:"Ch. 1, The Other Minister"},
+  {s:"The Other Minister", q:"Rufus Scrimgeour replaces Cornelius Fudge as Minister for Magic. What job did Scrimgeour hold before?",
+   o:["Head of the Auror Office","Head of the Improper Use of Magic Office","Senior Undersecretary to the Minister","Head of the Department of Mysteries"],
+   c:0, x:"Scrimgeour ran the Auror Office — the PM notes he looks like an old lion, with tawny hair, and carries an air of having seen real fighting.", cite:"Ch. 1, The Other Minister"},
+  {s:"The Other Minister", q:"Which member of the Order of the Phoenix has been planted in the Muggle Prime Minister's own office as his secretary?",
+   o:["Kingsley Shacklebolt","Nymphadora Tonks","Dedalus Diggle","Hestia Jones"],
+   c:0, x:"Kingsley Shacklebolt — the PM finds him wonderfully efficient, blissfully unaware he's an Auror assigned as protection.", cite:"Ch. 1, The Other Minister"},
+  {s:"The Other Minister", q:"Fudge first announced himself to the Muggle Prime Minister through the office portrait of a little man wearing what?",
+   o:["A long silver wig","A crimson nightcap","A powdered periwig and monocle","A tall black judge's hat"],
+   c:0, x:"The froglike little man in the long silver wig announces every ministerial visit — and can't be pried off the wall, as the PM discovered.", cite:"Ch. 1, The Other Minister"},
+
+  /* -------- II. SPINNER'S END & THE VOW (Ch 2) -------- */
+  {s:"Spinner's End", q:"Narcissa and Bellatrix visit Snape at his home on a street called what?",
+   o:["Spinner's End","Weaver's Row","Mill Lane","Tanner's End"],
+   c:0, x:"Snape lives at Spinner's End, in a labyrinth of brick houses by a dirty river, under the shadow of a disused mill chimney.", cite:"Ch. 2, Spinner's End"},
+  {s:"Spinner's End", q:"The Unbreakable Vow Snape swears to Narcissa has three parts. What is the third and most fatal clause?",
+   o:["If Draco seems likely to fail, Snape will carry out the deed himself","Snape will never reveal Draco's task to Dumbledore","Snape will die in Draco's place if the Dark Lord punishes him","Snape will deliver Harry Potter to the Dark Lord"],
+   c:0, x:"Watch over Draco; protect him from harm; and — Bellatrix's astonishment audible — 'should it prove necessary… carry out the deed that the Dark Lord has ordered Draco to perform.'", cite:"Ch. 2, Spinner's End"},
+  {s:"Spinner's End", q:"Who acts as Bonder for the Unbreakable Vow, and what seals each clause?",
+   o:["Bellatrix — a thin tongue of flame from her wand for each clause","Wormtail — a drop of blood from each of their palms","Bellatrix — a silver cord conjured from her wand","Narcissa herself — three knots in a black ribbon"],
+   c:0, x:"A stunned Bellatrix places her wand on their linked hands; a tongue of brilliant flame winds around them like a red-hot wire with each promise.", cite:"Ch. 2, Spinner's End"},
+  {s:"Spinner's End", q:"Proving his loyalty to Bellatrix, Snape claims he supplied the information that led directly to the recent murder of which Order member?",
+   o:["Emmeline Vance","Amelia Bones","Sturgis Podmore","Caradoc Dearborn"],
+   c:0, x:"'…I gave him information which led to the recent capture and murder of Emmeline Vance,' Snape says — adding it helped dispose of Sirius Black too.", cite:"Ch. 2, Spinner's End"},
+
+  /* -------- III. WILLS, WHEEZES & THE SLUG CLUB (Ch 3–7) -------- */
+  {s:"Wills & Wheezes", q:"How does Dumbledore prove that Harry — not Bellatrix Lestrange — has inherited ownership of Kreacher?",
+   o:["Harry gives Kreacher an order and the elf obeys, however furiously","Kreacher's tea towel changes to bear the Potter crest","Dumbledore reads the binding clause of Sirius's will aloud","Kreacher is compelled to answer three questions truthfully"],
+   c:0, x:"When Kreacher materializes shrieking, Harry shouts 'Kreacher, SHUT UP!' — and the elf chokes silent. Obedience proves the inheritance held.", cite:"Ch. 3, Will and Won't"},
+  {s:"Wills & Wheezes", q:"While the Dursleys pointedly ignore their glasses of oak-matured mead, the drinks do what?",
+   o:["Nudge them insistently against the sides of their heads","Evaporate in puffs of amber smoke","Refill themselves and begin to sing","Freeze solid out of spite"],
+   c:0, x:"Dumbledore's conjured mead gets gently insistent — the glasses tap the Dursleys' skulls until Aunt Petunia flees the ordeal.", cite:"Ch. 3, Will and Won't"},
+  {s:"Wills & Wheezes", q:"In which village do Harry and Dumbledore track down Horace Slughorn?",
+   o:["Budleigh Babberton","Ottery St Catchpole","Upper Flagley","Great Hangleton"],
+   c:0, x:"Budleigh Babberton — where Slughorn has been squatting in absent Muggles' houses, moving weekly to dodge the Death Eaters.", cite:"Ch. 4, Horace Slughorn"},
+  {s:"Wills & Wheezes", q:"When Harry and Dumbledore arrive, Slughorn is disguised as a piece of furniture. He also faked a struggle using what for blood?",
+   o:["An armchair — with dragon's blood on the walls","A sofa — with bubotuber pus on the carpet","A wardrobe — with red ink from an Auto-Answer Quill","A grandfather clock — with essence of murtlap"],
+   c:0, x:"Dumbledore prods the armchair, which yelps and becomes Slughorn — who grumbles that the splattered dragon's blood was his last bottle, and prices are sky-high.", cite:"Ch. 4, Horace Slughorn"},
+  {s:"Wills & Wheezes", q:"On the Hogwarts Express, Slughorn's luncheon invitation summons Harry and Neville to which compartment?",
+   o:["Compartment C","Compartment 9","The last compartment of the rear carriage","Compartment A"],
+   c:0, x:"The violet ribbon-tied scroll invites them to 'a bite of lunch in compartment C' — where the Slug Club auditions begin.", cite:"Ch. 7, The Slug Club"},
+  {s:"Wills & Wheezes", q:"Marcus Belby's uncle Damocles earned an Order of Merlin for inventing which potion?",
+   o:["The Wolfsbane Potion","Skele-Gro","Felix Felicis","The Draught of Peace"],
+   c:0, x:"Damocles Belby invented the Wolfsbane Potion — though Marcus's stammering admission that he doesn't see much of his uncle loses Slughorn's interest fast.", cite:"Ch. 7, The Slug Club"},
+  {s:"Wills & Wheezes", q:"According to gossip, Blaise Zabini's famously beautiful mother has been widowed how many times — each husband dying mysteriously and leaving her gold?",
+   o:["Seven","Three","Five","Nine"],
+   c:0, x:"Seven husbands, each of whom died mysteriously and left her mounds of gold — a résumé even Slughorn tiptoes around.", cite:"Ch. 7, The Slug Club"},
+  {s:"Wills & Wheezes", q:"Ginny is recruited into the Slug Club after Slughorn sees her do what on the train?",
+   o:["Cast a superb Bat-Bogey Hex","Hex Zacharias Smith clean off his feet","Conjure a shield that repelled three stinging jinxes","Transfigure a toad into a teacup"],
+   c:0, x:"Slughorn witnesses her Bat-Bogey Hex (poor Zacharias Smith was the target) and invites her to lunch on the strength of it.", cite:"Ch. 7, The Slug Club"},
+  {s:"Wills & Wheezes", q:"After Draco petrifies Harry and breaks his nose on the train, who finds Harry and mends the nose — and with what spell?",
+   o:["Tonks, with 'Episkey'","Luna, with 'Episkey'","Madam Pomfrey, with 'Ferula'","Ginny, with 'Reparo'"],
+   c:0, x:"In the book it's Tonks — pale, mousy-haired Tonks — who pulls off the Cloak and mutters 'Episkey.' (The film hands the scene to Luna; the book does not.)", cite:"Ch. 8, Snape Victorious"},
+
+  /* -------- IV. O.W.L.s, SHOPPING & THE BURROW (Ch 5–6) -------- */
+  {s:"O.W.L.s & Diagon Alley", q:"Harry's O.W.L. results bring exactly one 'Outstanding.' In which subject?",
+   o:["Defence Against the Dark Arts","Potions","Charms","Care of Magical Creatures"],
+   c:0, x:"One O — in Defence Against the Dark Arts. He took Exceeds Expectations in five subjects, an A in Astronomy, a P in Divination and a D in History of Magic.", cite:"Ch. 5, An Excess of Phlegm"},
+  {s:"O.W.L.s & Diagon Alley", q:"Which grade did Harry receive in History of Magic — the exam he collapsed in during his vision?",
+   o:["D (Dreadful)","P (Poor)","T (Troll)","A (Acceptable)"],
+   c:0, x:"A 'Dreadful' — though Harry reflects he could hardly have expected better, having collapsed mid-exam during his vision of Sirius.", cite:"Ch. 5, An Excess of Phlegm"},
+  {s:"O.W.L.s & Diagon Alley", q:"Hermione earned 'Outstanding' in every O.W.L. except one, where she took an 'Exceeds Expectations.' Which subject?",
+   o:["Defence Against the Dark Arts","Ancient Runes","Astronomy","Arithmancy"],
+   c:0, x:"Ten O.W.L.s: nine Outstandings and one Exceeds Expectations — in Defence Against the Dark Arts. Ron is scandalized that she's disappointed.", cite:"Ch. 5, An Excess of Phlegm"},
+  {s:"O.W.L.s & Diagon Alley", q:"Under the Ministry's new security rules, Molly checks Arthur's identity by asking his dearest ambition. His answer?",
+   o:["To find out how aeroplanes stay up","To own a rubber duck that really quacks","To fill in for the Minister for a day","To take apart and rebuild a Muggle telly"],
+   c:0, x:"'To find out how aeroplanes stay up.' Arthur retaliates by making Molly confirm that he calls her 'Mollywobbles' when they're alone.", cite:"Ch. 5, An Excess of Phlegm"},
+  {s:"O.W.L.s & Diagon Alley", q:"Weasleys' Wizard Wheezes' window poster asks why you're worrying about You-Know-Who and suggests worrying instead about…",
+   o:["U-No-Poo, 'the Constipation Sensation that's gripping the nation'","No-Mo-Doe, 'the money worry emptying every vault'","U-No-Hoo, 'the memory potion nobody remembers buying'","Poo-No-Mo, 'relief in a single sip'"],
+   c:0, x:"'Why Are You Worrying About You-Know-Who? You SHOULD Be Worrying About U-NO-POO — the Constipation Sensation That's Gripping the Nation!' Molly fears they'll be murdered in their beds for it.", cite:"Ch. 6, Draco's Detour"},
+  {s:"O.W.L.s & Diagon Alley", q:"What does Ginny name the purple Pygmy Puff she buys at her brothers' shop?",
+   o:["Arnold","Percy","Nigel","Barnaby"],
+   c:0, x:"Arnold — the miniature Puffskein rides on her shoulder for much of the year, and even Crookshanks leaves it be.", cite:"Ch. 6, Draco's Detour"},
+  {s:"O.W.L.s & Diagon Alley", q:"The cursed opal necklace in Borgin and Burkes carries a warning label. How many Muggle owners has it claimed 'to date'?",
+   o:["Nineteen","Thirteen","Seven","Twenty-two"],
+   c:0, x:"'Caution: Do Not Touch. Cursed — Has Claimed the Lives of Nineteen Muggle Owners to Date.' Harry first read that label back in his second year — the same necklace that later nearly kills Katie Bell.", cite:"Chamber of Secrets Ch. 4; here Ch. 6 & 12"},
+
+  /* -------- V. POTIONS & THE PRINCE (Ch 9, 11–12, 18) -------- */
+  {s:"Potions & the Prince", q:"Snape only took students with 'Outstanding' O.W.L.s into N.E.W.T. Potions. What minimum grade does Slughorn accept?",
+   o:["Exceeds Expectations","Acceptable","Outstanding, same as Snape","Any grade, if they buy their own ingredients"],
+   c:0, x:"Slughorn happily takes 'Exceeds Expectations' students — which is how Harry and Ron get dragged back into Potions without so much as a warning.", cite:"Ch. 9, The Half-Blood Prince"},
+  {s:"Potions & the Prince", q:"Who wrote the class textbook, 'Advanced Potion-Making'?",
+   o:["Libatius Borage","Arsenius Jigger","Phyllida Spore","Zygmunt Budge"],
+   c:0, x:"Libatius Borage — and the battered school copy Harry borrows has fifty years of the Half-Blood Prince's improvements crammed in the margins.", cite:"Ch. 9, The Half-Blood Prince"},
+  {s:"Potions & the Prince", q:"In Slughorn's first lesson, Harry smells treacle tart and the woody scent of a broomstick handle in the Amortentia. The third smell is…",
+   o:["'Something flowery he thought he might have smelled at the Burrow'","'Fresh parchment and warm butterbeer'","'His mother's perfume, though he could not have known it'","'Cut grass after a Quidditch match'"],
+   c:0, x:"Something flowery from the Burrow — which he later realizes, with some alarm, is the scent of Ginny.", cite:"Ch. 9, The Half-Blood Prince"},
+  {s:"Potions & the Prince", q:"Slughorn says he's taken Felix Felicis twice in his life — at which two ages?",
+   o:["Twenty-four and fifty-seven","Twenty-one and fifty","Seventeen and seventy","Thirty and sixty-six"],
+   c:0, x:"Two tablespoonfuls taken with breakfast: once at twenty-four, once at fifty-seven. 'Two perfect days.'", cite:"Ch. 9, The Half-Blood Prince"},
+  {s:"Potions & the Prince", q:"The Prince's winning trick for the Draught of Living Death is to handle the sopophorous bean how?",
+   o:["Crush it with the flat side of a silver dagger instead of cutting","Peel it under moonwater before slicing","Freeze it solid, then grate it","Boil it whole and discard the skin"],
+   c:0, x:"'Crush with flat side of silver dagger, releases juice better than cutting.' The bean that defied Harry's knife collapses instantly.", cite:"Ch. 9, The Half-Blood Prince"},
+  {s:"Potions & the Prince", q:"And the Prince's amendment to the stirring instructions for that same potion?",
+   o:["Add a clockwise stir after every seventh counter-clockwise stir","Stir only clockwise, thirteen times, then rest the potion","Alternate directions every third stir","Stop stirring entirely once it turns lilac"],
+   c:0, x:"The book says counter-clockwise only; the Prince adds one clockwise stir after every seventh counter-clockwise stir — and the potion turns palest pink.", cite:"Ch. 9, The Half-Blood Prince"},
+  {s:"Potions & the Prince", q:"Suspicious of Harry's sudden genius, Hermione tests his textbook by rapping it with her wand and saying…",
+   o:["'Specialis Revelio!'","'Aparecium!'","'Revelio Incantatem!'","'Finite Incantatem!'"],
+   c:0, x:"'Specialis Revelio!' The book merely lies there, unimpressed, being exactly what it claims: a fifty-year-old copy of Advanced Potion-Making.", cite:"Ch. 9, The Half-Blood Prince"},
+  {s:"Potions & the Prince", q:"Which two Prince inventions does Harry gleefully field-test on Filch and Crabbe, respectively?",
+   o:["Langlock (tongue stuck to palate) and a toenail-growing hex","Levicorpus and Muffliato","A tap-dancing jinx and Twitchy-Ears Hex","Muffliato and a hair-thickening charm"],
+   c:0, x:"Langlock glued Filch's tongue to the roof of his mouth — twice, to general applause — and Crabbe's toenails grew at an alarming rate.", cite:"Ch. 19, Elf Tails"},
+  {s:"Potions & the Prince", q:"Levicorpus, the jinx that hoists victims by the ankle, has a counter-jinx. What is it?",
+   o:["Liberacorpus","Levicorpus Finite","Descendo","Relashio"],
+   c:0, x:"Liberacorpus — Harry finds it after a frantic search, having dangled Ron from the dormitory ceiling by his ankle at dawn.", cite:"Ch. 12, Silver and Opals"},
+  {s:"Potions & the Prince", q:"Golpalott's Third Law — the bane of Harry's antidote lessons — states that the antidote for a blended poison will be…",
+   o:["Equal to more than the sum of the antidotes for each component","Equal to exactly the sum of its separate antidotes","Impossible without a sample of the original poison","Weaker than the strongest single antidote"],
+   c:0, x:"'…equal to more than the sum of the antidotes for each of the separate components.' Harry's response: shove a bezoar down their throat.", cite:"Ch. 18, Birthday Surprises"},
+
+  /* -------- VI. THE PENSIEVE: VOLDEMORT'S PAST (Ch 10, 13, 17, 20, 23) -------- */
+  {s:"The Pensieve", q:"Bob Ogden, whose memory opens the story of the Gaunts, held what Ministry post?",
+   o:["Head of the Magical Law Enforcement Squad","Head Auror","Chief Warlock of the Wizengamot","Head of the Improper Use of Magic Office"],
+   c:0, x:"Ogden led the Magical Law Enforcement Squad — and arrived at the Gaunt hovel in a frock coat and spats over a striped bathing costume.", cite:"Ch. 10, The House of Gaunt"},
+  {s:"The Pensieve", q:"Marvolo Gaunt brandishes his black-stoned ring at Ogden, claiming the stone is engraved with what?",
+   o:["The Peverell coat of arms","The Slytherin serpent crest","The mark of Merlin's line","The Gaunt family motto"],
+   c:0, x:"'The Peverell coat of arms!' Marvolo bellows — centuries in the family. Neither he nor Ogden could know what that stone truly was.", cite:"Ch. 10, The House of Gaunt"},
+  {s:"The Pensieve", q:"After the Gaunt men attack Ministry officials, what sentences do Morfin and Marvolo receive in Azkaban?",
+   o:["Morfin three years; Marvolo six months","Both get one year","Morfin six months; Marvolo three years","Morfin life; Marvolo a fine"],
+   c:0, x:"Morfin, with a prior conviction and having attacked both a Muggle and Ministry men, gets three years; old Marvolo, six months — and he never lived to see his son come home.", cite:"Ch. 10, The House of Gaunt"},
+  {s:"The Pensieve", q:"Destitute and pregnant in London, Merope sells Slytherin's locket to Caractacus Burke for how much?",
+   o:["10 Galleons","50 Galleons","100 Galleons","3 Galleons and a hot meal"],
+   c:0, x:"Ten Galleons for a priceless relic of Salazar Slytherin — Burke's proudest bargain, recalled with relish in Dumbledore's collected memory.", cite:"Ch. 13, The Secret Riddle"},
+  {s:"The Pensieve", q:"Mrs. Cole, matron of the orphanage, warms up considerably to Dumbledore once he offers her what?",
+   o:["A glass (or several) of gin","A donation to the orphanage fund","A charmed self-filling teapot","News of a wealthy adopter for Tom"],
+   c:0, x:"Gin — 'never says no to a drop,' and by the third glass she's telling Dumbledore everything about Tom Riddle's strangeness.", cite:"Ch. 13, The Secret Riddle"},
+  {s:"The Pensieve", q:"Young Tom Riddle's cardboard box of trophies contains a yo-yo, a silver thimble, and what third item?",
+   o:["A tarnished mouth organ","A brass compass","A chipped marble","A cracked pocket watch"],
+   c:0, x:"A tarnished mouth organ — Dumbledore makes him return them all, and notes that Tom steals as trophies, like a magpie.", cite:"Ch. 13, The Secret Riddle"},
+  {s:"The Pensieve", q:"Which two orphans were 'never quite right' after Tom Riddle took them into a cave on the orphanage's seaside outing?",
+   o:["Amy Benson and Dennis Bishop","Billy Stubbs and Eric Whalley","Agnes Hawkins and Daniel Price","Martha Prewett and Simon Dodd"],
+   c:0, x:"Amy Benson and Dennis Bishop — the same cave Voldemort would one day trust with a piece of his soul. (Billy Stubbs merely lost his rabbit to the rafters.)", cite:"Ch. 13, The Secret Riddle"},
+  {s:"The Pensieve", q:"Hepzibah Smith's two treasures — shown fatally to young Tom Riddle — are Slytherin's locket and what else?",
+   o:["Helga Hufflepuff's golden cup","Rowena Ravenclaw's diadem","Godric Gryffindor's goblet","A Peverell signet ring"],
+   c:0, x:"Hufflepuff's small golden cup with two finely wrought handles and a badger engraved on it. Hepzibah was dead two days later; her elf Hokey took the blame.", cite:"Ch. 20, Lord Voldemort's Request"},
+  {s:"The Pensieve", q:"Voldemort applied for the Defence Against the Dark Arts post twice. Who refused him the first time?",
+   o:["Headmaster Armando Dippet, who said he was too young at eighteen","Dumbledore, then Deputy Headmaster","The Board of Governors, by unanimous vote","Headmaster Phineas Nigellus Black"],
+   c:0, x:"Fresh out of school, Riddle asked Dippet and was told to reapply in a few years. A decade later, a changed creature asked Dumbledore — and since that refusal, no DADA teacher has lasted a year.", cite:"Ch. 20, Lord Voldemort's Request"},
+  {s:"The Pensieve", q:"In Slughorn's true memory, Tom Riddle asks whether the soul can be split more than once — into how many pieces, citing 'the most powerfully magical number'?",
+   o:["Seven","Three","Nine","Thirteen"],
+   c:0, x:"'Wouldn't seven be…? Isn't seven the most powerfully magical number?' Slughorn's horrified answer haunts him for fifty years.", cite:"Ch. 23, Horcruxes"},
+  {s:"The Pensieve", q:"By Dumbledore's reckoning, Voldemort meant to make his sixth and final Horcrux with whose murder?",
+   o:["Harry Potter's","Albus Dumbledore's","Neville Longbottom's","James Potter's"],
+   c:0, x:"Dumbledore believes Voldemort reserved the making of his last Horcrux for the death of the child the prophecy named — Harry. The seventh fragment lives in Voldemort's own body.", cite:"Ch. 23, Horcruxes"},
+
+  /* -------- VII. LIFE & LOVE AT HOGWARTS (Ch 8, 11, 14–16, 19, 21–22, 24) -------- */
+  {s:"Life at Hogwarts", q:"Gryffindor's rebuilt Quidditch team: Katie Bell, Ginny, and which third Chaser joins them after tryouts?",
+   o:["Demelza Robins","Romilda Vane","Vicky Frobisher","Natalie McDonald"],
+   c:0, x:"Demelza Robins — particularly good at dodging Bludgers. Peakes and Coote take the Beaters' bats.", cite:"Ch. 11, Hermione's Helping Hand"},
+  {s:"Life at Hogwarts", q:"How does Hermione sabotage Cormac McLaggen at Keeper tryouts?",
+   o:["A Confundus Charm as he dives for his final save","A Jelly-Fingers jinx on his gloves","She loosened his broom's foot-grips","A whispered Leg-Locker as he mounted"],
+   c:0, x:"She Confunds him — he shoots off comically in the wrong direction for the fifth penalty — and Ron takes the Keeper's spot. She reasons McLaggen deserved it for badmouthing Ron and Ginny.", cite:"Ch. 11, Hermione's Helping Hand"},
+  {s:"Life at Hogwarts", q:"When Ron kisses Lavender at the party, Hermione sets a flock of conjured canaries on him with which incantation?",
+   o:["'Oppugno!'","'Avis Attackum!'","'Impetus!'","'Volatus!'"],
+   c:0, x:"'Oppugno!' — the little golden birds streak at Ron like fat feathered bullets, and Won-Won earns his scratches.", cite:"Ch. 14, Felix Felicis"},
+  {s:"Life at Hogwarts", q:"Before Ron's triumphant match against Slytherin, what does Harry actually do with the Felix Felicis at breakfast?",
+   o:["Only pretends to pour it into Ron's juice","Adds one careful drop to Ron's juice","Drinks a drop himself to steady his own nerves","Slips it into Ron's porridge with Ginny's help"],
+   c:0, x:"Harry mimes the tipping motion; Hermione's outrage sells the lie. Ron saves everything in sight on pure confidence — then explodes when he learns the truth.", cite:"Ch. 14, Felix Felicis"},
+  {s:"Life at Hogwarts", q:"At Slughorn's Christmas party, the author Eldred Worple offers to write Harry's biography. Who — or what — is Worple's companion?",
+   o:["Sanguini, a vampire","Firenze, a centaur","A ghoul named Gordon","A banshee under a Silencing Charm"],
+   c:0, x:"Sanguini the vampire, drifting hungrily toward a knot of girls while Worple (author of 'Blood Brothers: My Life Amongst the Vampires') barks 'Sanguini, stay here!'", cite:"Ch. 15, The Unbreakable Vow"},
+  {s:"Life at Hogwarts", q:"Which Celestina Warbeck number does Molly Weasley sway to on Christmas Eve, to Fleur's poorly hidden disgust?",
+   o:["'A Cauldron Full of Hot, Strong Love'","'A Broomstick Built for Two'","'My Baby Gave Me a Hippogriff'","'Stir My Potion, Darling'"],
+   c:0, x:"'A Cauldron Full of Hot, Strong Love' — followed by 'You Charmed the Heart Right Out of Me.' Fleur's loud conversation nearly starts a war.", cite:"Ch. 16, A Very Frosty Christmas"},
+  {s:"Life at Hogwarts", q:"When Minister Scrimgeour asks Harry to be the Ministry's poster boy at Christmas, Harry declares himself…",
+   o:["'Dumbledore's man through and through'","'Nobody's man but my own'","'An Order of the Phoenix man, first and last'","'The last person the Ministry should trust'"],
+   c:0, x:"'Dumbledore's man through and through.' When Harry repeats it in the headmaster's office, Fawkes gives a low, soft cry and Dumbledore says, 'I am very touched, Harry.'", cite:"Ch. 16, A Very Frosty Christmas"},
+  {s:"Life at Hogwarts", q:"Substituting as Keeper against Hufflepuff, Cormac McLaggen ends Harry's match how?",
+   o:["Grabs a Beater's bat and cracks Harry's skull with a Bludger","Collides with Harry while chasing the Snitch","Knocks Harry off his broom fighting for the Quaffle","Accidentally hexes Harry while showing off"],
+   c:0, x:"McLaggen seizes a Beater's bat to demonstrate proper technique and drives the Bludger straight into Harry's head. Gryffindor lose 320–60.", cite:"Ch. 19, Elf Tails"},
+  {s:"Life at Hogwarts", q:"Commentating that same match, Luna Lovegood suggests Zacharias Smith's poor play stems from a condition she calls…",
+   o:["'Loser's Lurgy'","'Snitch-Blindness'","'Wrackspurt Fever'","'Quaffle-Pox'"],
+   c:0, x:"'Loser's Lurgy' — one of several Luna touches, along with forgetting players' names and admiring cloud shapes, that make McGonagall regret the appointment.", cite:"Ch. 19, Elf Tails"},
+  {s:"Life at Hogwarts", q:"Standing watch for Draco outside the Room of Requirement, Crabbe and Goyle take Polyjuice Potion to pose as what?",
+   o:["Small girls (one drops a set of brass scales)","First-year boys with lost toads","A pair of Hufflepuff prefects","Ravenclaw twins with matching satchels"],
+   c:0, x:"Draco has them lurk as little girls — one drops her brass scales, which a kindly Harry returns before he works out the trick. Draco sneers out the whole scheme on the tower.", cite:"Ch. 21 / Ch. 27"},
+  {s:"Life at Hogwarts", q:"Slughorn turns up to Aragog's funeral clutching bottles — and quietly milks the corpse for what windfall?",
+   o:["Acromantula venom","Spider silk from the spinnerets","The pincers, prized for wand cores","Eight eyes, for advanced potion work"],
+   c:0, x:"Acromantula venom — worth a hundred Galleons a pint, and nearly impossible to collect from a living specimen. Slughorn arrives with a eulogy ('Farewell, Aragog, king of arachnids!') and conveniently empty bottles.", cite:"Ch. 22, After the Burial"},
+  {s:"Life at Hogwarts", q:"When Snape demands Harry's Potions book after the Sectumsempra affair, Harry hands over Ron's copy — inscribed with what name, courtesy of a faulty Spell-Check quill?",
+   o:["Roonil Wazlib","Ronald Weezly","Runil Wazlum","Ronnie Wheezy"],
+   c:0, x:"'Roonil Wazlib.' Harry, under Snape's glare, gamely claims it's his nickname.", cite:"Ch. 24, Sectumsempra"},
+  {s:"Life at Hogwarts", q:"Trapped in Snape's detention, Harry misses the Quidditch Cup final against Ravenclaw. What final score do Ron and Ginny announce when he returns?",
+   o:["Four hundred and fifty to a hundred and forty","Three hundred and ten to zero","Four hundred to ninety","Three hundred and fifty to fifty"],
+   c:0, x:"'We won! Four hundred and fifty to a hundred and forty!' Gryffindor needed a 300-point margin, Ginny caught the Snitch — and Harry, without thinking, kisses her in front of the whole common room.", cite:"Ch. 24, Sectumsempra"},
+  {s:"Life at Hogwarts", q:"Returning from Christmas, Harry finds the Fat Lady demanding a pointed new password: 'abstinence.' What prompted the theme?",
+   o:["She and her friend Violet drank their way through all the wine in the painting of drunk monks","McGonagall imposed it after Slughorn's party got out of hand","She lost a Christmas wager to Sir Cadogan","The Fat Friar requested it as a new year's resolution for the House"],
+   c:0, x:"She and Violet had drunk their way through all the wine in that painting of drunk monks down by the Charms corridor — and she's still looking distinctly off-colour about it.", cite:"Ch. 17, A Sluggish Memory"},
+  {s:"Life at Hogwarts", q:"At the school gates, Snape needles Tonks: 'I think you were better off with the old one. The new one looks weak.' What is he sneering at?",
+   o:["Her Patronus, which has changed into an immense four-legged creature","Her Metamorphmagus disguise, stuck mousy-brown","Her new Ministry identification badge","Her repaired wand"],
+   c:0, x:"Her Patronus — no longer its old form but a great silvery four-legged beast. By the hospital-wing scene we learn why: it's a wolf, changed by her love for Remus Lupin.", cite:"Ch. 8, Snape Victorious"},
+
+  /* -------- VIII. DARK DEEDS (Ch 12–13, 15, 17–19, 21, 25) -------- */
+  {s:"Dark Deeds", q:"Katie Bell is cursed after touching the opal necklace. Where had the package been given to her?",
+   o:["In the bathroom of the Three Broomsticks","Behind Honeydukes' stockroom","Outside Scrivenshaft's Quill Shop","At the Hogsmeade post office"],
+   c:0, x:"In the ladies' of the Three Broomsticks — handed over by an Imperiused Madam Rosmerta, as Draco later confirms. Katie's friend Leanne wrestled her over it.", cite:"Ch. 12, Silver and Opals"},
+  {s:"Dark Deeds", q:"Ron survives his own birthday twice over. In order, he's dosed and then poisoned by…",
+   o:["Romilda Vane's love-potion Chocolate Cauldrons, then poisoned oak-matured mead in Slughorn's office","A jinxed birthday cake, then cursed firewhisky","Amortentia in his pumpkin juice, then a nettle wine","A tampered Wheezes sweet, then poisoned elf-made wine"],
+   c:0, x:"The Chocolate Cauldrons were Romilda's love-potion trap for Harry, months old by Ron's birthday; the mead Slughorn opened for the 'cure' celebration was meant for Dumbledore's Christmas. A bezoar saves him.", cite:"Ch. 18, Birthday Surprises"},
+  {s:"Dark Deeds", q:"Where did Slughorn's poisoned mead originally come from — and who was meant to drink it?",
+   o:["From Madam Rosmerta, intended as Slughorn's Christmas present to Dumbledore","From Aberforth, intended for the Order's stores","From the Hog's Head cellar, intended for Slughorn himself","From Borgin and Burkes, intended for Harry"],
+   c:0, x:"Rosmerta — under the Imperius Curse — supplied the poisoned bottle; Slughorn, meaning to gift it to Dumbledore, kept it for himself instead. Draco's plan twice misfired.", cite:"Ch. 18 / Ch. 27"},
+  {s:"Dark Deeds", q:"During Apparition practice, Susan Bones suffers the lesson's most memorable mishap. What happens?",
+   o:["She splinches herself, leaving a leg behind","She apparates into the rafters of the Great Hall","She swaps places with Instructor Twycross","She arrives inside her own hoop, upside down"],
+   c:0, x:"Susan splinches her leg — a nasty wobbling moment with smoke and a bang before the instructors reattach it. Wilkie Twycross presses on with his three D's: Destination, Determination, Deliberation.", cite:"Ch. 18, Birthday Surprises"},
+  {s:"Dark Deeds", q:"Ron fails his Apparition test by the narrowest margin in the book. What did he leave behind?",
+   o:["Half an eyebrow","A fingernail","The heel of one shoe","A single front tooth"],
+   c:0, x:"Half an eyebrow. Hermione, naturally, passes. Harry, still sixteen, couldn't take the test at all.", cite:"Ch. 22, After the Burial"},
+  {s:"Dark Deeds", q:"Trelawney keeps drawing one tarot card she calls 'calamity, disaster.' Which card?",
+   o:["The lightning-struck tower","The hanged man","Death, inverted","The ten of swords"],
+   c:0, x:"The lightning-struck tower — drawn again and again in the weeks before Death Eaters take the Astronomy Tower. The book hides its best prophecy in plain sight.", cite:"Ch. 25, The Seer Overheard"},
+  {s:"Dark Deeds", q:"Thrown out of the Room of Requirement while hiding her sherry bottles, Trelawney lets slip the identity of the eavesdropper who overheard her prophecy sixteen years earlier. Who was it?",
+   o:["Severus Snape","Peter Pettigrew","Mundungus Fletcher","Igor Karkaroff"],
+   c:0, x:"Snape — the 'rude young man' caught listening at the Hog's Head door. Harry's fury at Dumbledore's trust in Snape boils over hours before the tower.", cite:"Ch. 25, The Seer Overheard"},
+  {s:"Dark Deeds", q:"Draco's enchanted-coin trick for communicating with Rosmerta was stolen from whom, by his own sneering admission?",
+   o:["Hermione and the DA's fake Galleons","The Weasley twins' Patented Daydream Charms","A Borgin and Burkes catalogue","His aunt Bellatrix's Death Eater methods"],
+   c:0, x:"'I got the idea from the Mudblood Granger' — the DA's Protean-charmed Galleons, turned against the school.", cite:"Ch. 27, The Lightning-Struck Tower"},
+  {s:"Dark Deeds", q:"Whose unlucky story gave Draco the idea that the broken Vanishing Cabinet might form a passage into Hogwarts?",
+   o:["Montague's","Marcus Flint's","Theodore Nott's","Adrian Pucey's"],
+   c:0, x:"Montague — shoved into the cabinet by Fred and George the year before, trapped in limbo between school and shop, barely apparating out alive. Draco alone listened properly.", cite:"Ch. 27, The Lightning-Struck Tower"},
+
+  /* -------- IX. THE CAVE & THE TOWER (Ch 25–30) -------- */
+  {s:"The Cave & the Tower", q:"Summoned to the cave, Harry leaves his friends two protections behind. What are they?",
+   o:["The remaining Felix Felicis and the Marauder's Map","His Invisibility Cloak and the Map","Felix Felicis and the fake Galleons","The Cloak and his own wand"],
+   c:0, x:"The little bottle of lucky potion — to be shared between Ron, Hermione and Ginny — and the Map to watch Malfoy. That golden mouthful is why nobody dies in the corridors that night.", cite:"Ch. 25, The Seer Overheard"},
+  {s:"The Cave & the Tower", q:"The cave's inner archway demands a toll. What is it, and why does Dumbledore insist on paying it himself?",
+   o:["Blood — because Harry's, he says, is 'more valuable' than his own","Gold — because Harry carries none","A memory — because his are longer","A wand — because Harry will need his"],
+   c:0, x:"A blood payment on the rock. Harry's blood, Dumbledore insists, is 'more precious' than his own — gallows arithmetic from a wizard with one hand already blackened and dying.", cite:"Ch. 26, The Cave"},
+  {s:"The Cave & the Tower", q:"What does Dumbledore make Harry promise before drinking the emerald potion in the basin?",
+   o:["To force him to keep drinking, whatever he says or does","To leave him and save himself if things go wrong","Never to tell anyone what happens in the cave","To destroy the locket immediately if Dumbledore falls"],
+   c:0, x:"'That you will do all in your power to make me keep drinking… even if you have to tip the potion into my protesting mouth?' Harry's worst promise.", cite:"Ch. 26, The Cave"},
+  {s:"The Cave & the Tower", q:"When Harry says he's worried about the Inferi-filled lake crossing, Dumbledore replies…",
+   o:["'I am not worried, Harry. I am with you.'","'A little fear keeps the mind sharp.'","'The dead are slower than the living.'","'Worry is a luxury we cannot afford tonight.'"],
+   c:0, x:"One of the most quietly devastating lines in the series — Dumbledore returning, word for word, the faith Harry has always placed in him.", cite:"Ch. 26, The Cave"},
+  {s:"The Cave & the Tower", q:"When the Inferi swarm out of the black lake, what finally drives them back?",
+   o:["A ring of fire Dumbledore conjures around them","Harry's Patronus, doubled in strength","Sunlight summoned through the cavern roof","The locket's own screaming curse"],
+   c:0, x:"Fire — a crimson and gold lasso of flame encircling them as Dumbledore, half-dead from the potion, hauls them both back to the boat.", cite:"Ch. 26, The Cave"},
+  {s:"The Cave & the Tower", q:"Atop the Astronomy Tower, Dumbledore sacrifices his last free moment doing what — the reason he's defenceless when Draco bursts in?",
+   o:["Silently freezing Harry safe beneath the Invisibility Cloak","Sending Fawkes for the Order","Sealing the tower door behind them","Hiding the locket inside his robes"],
+   c:0, x:"He spends his final instant immobilizing Harry rather than defending himself — Harry can only watch, petrified, as his own wand-arm stays pinned.", cite:"Ch. 27, The Lightning-Struck Tower"},
+  {s:"The Cave & the Tower", q:"Which Death Eater dies on the tower — struck by a comrade's Killing Curse that was aimed at Remus Lupin?",
+   o:["Gibbon","Yaxley","Jugson","Selwyn"],
+   c:0, x:"Gibbon — sent up to fire the Dark Mark, then killed by friendly fire on his way back down, as the survivors piece the battle together in the hospital wing.", cite:"Ch. 29, The Phoenix Lament"},
+  {s:"The Cave & the Tower", q:"Dumbledore's final words, spoken to the man who kills him, are…",
+   o:["'Severus… please…'","'Severus… you promised…'","'Draco… it's not too late…'","'Harry… forgive me…'"],
+   c:0, x:"'Severus… please…' — words that read as begging for mercy, until Book 7 turns them inside out.", cite:"Ch. 27, The Lightning-Struck Tower"},
+  {s:"The Cave & the Tower", q:"As Harry pursues him across the grounds, Snape roars that the Death Eaters must leave Harry untouched — why?",
+   o:["'Potter belongs to the Dark Lord — we are to leave him!'","'The boy is worth more alive than dead!'","'He carries something the Dark Lord wants!'","'Touch him and the Vow claims us all!'"],
+   c:0, x:"Snape blocks every spell Harry throws — including two attempted Cruciatus curses — screams 'No Unforgivable Curses from you, Potter!', and forbids the others to harm him.", cite:"Ch. 28, Flight of the Prince"},
+  {s:"The Cave & the Tower", q:"The locket from the cave is a fake. The note inside is signed 'R.A.B.' and declares what?",
+   o:["'I have stolen the real Horcrux and intend to destroy it as soon as I can'","'The true locket lies where kings are crowned'","'You taught me the magic I used against you'","'Seven pieces will never make you whole'"],
+   c:0, x:"'…I face death in the hope that when you meet your match, you will be mortal once more.' Regulus Arcturus Black's defiance, one book early.", cite:"Ch. 28, Flight of the Prince"},
+  {s:"The Cave & the Tower", q:"With Bill savaged by Greyback, Fleur scorches Molly's doubts about the wedding by declaring…",
+   o:["'I am good-looking enough for both of us, I theenk!'","'Scars are ze marks of a brave 'usband!'","'I did not agree to marry 'is face!'","'Ze wedding will go on if I must carry 'im!'"],
+   c:0, x:"'…All these scars show is zat my husband is brave!' Molly's answer is Auntie Muriel's goblin-made tiara — and the two women weep into each other's arms.", cite:"Ch. 29, The Phoenix Lament"},
+  {s:"The Cave & the Tower", q:"Hermione's library digging reveals the Half-Blood Prince's mother, Eileen Prince, once captained which Hogwarts team?",
+   o:["The Gobstones Team","The Slytherin Quidditch team","The Wizard Chess Club","The Duelling Club"],
+   c:0, x:"Captain of the Hogwarts Gobstones Team, per an old Daily Prophet announcement Hermione finally unearths. Eileen married the Muggle Tobias Snape — making their son Severus a Prince by blood and a prince by pun.", cite:"Ch. 30, The White Tomb"},
+  {s:"The Cave & the Tower", q:"At the white tomb, tributes come from beyond the castle. What do the merpeople and the centaurs each do?",
+   o:["The merpeople sing beneath the lake's surface; the centaurs let fly arrows in salute from the trees","Both bow their heads in silence at the shoreline","The merpeople surface holding torches; the centaurs kneel","The merpeople keen a lament; the centaurs lay wildflowers"],
+   c:0, x:"A merpeople chorus sings just below the surface, and the centaurs — who honour no wizard lightly — let fly a shower of arrows that falls far short of the crowd, then turn tail into the trees.", cite:"Ch. 30, The White Tomb"},
+  {s:"The Cave & the Tower", q:"Breaking up with Ginny at the funeral, Harry hears his reason described — by Ginny herself — as what?",
+   o:["'Some stupid, noble reason'","'The prophecy talking, not you'","'A coward's kind of courage'","'Exactly what Michael Corner would never do'"],
+   c:0, x:"'It's for some stupid, noble reason, isn't it?' She never cries; she says she never really gave up on him. The chapter ends with Godric's Hollow, a wedding, and two friends who refuse to be left behind.", cite:"Ch. 30, The White Tomb"},
+];
+
+/* ============================================================ */
+const GRADES = [
+  {min:.90, letter:"O", name:"Outstanding", flavor:"The Wizarding Examinations Authority suspects you of possessing a Time-Turner and a first edition. Slughorn wants you for the Slug Club; Hermione wants a rematch."},
+  {min:.75, letter:"E", name:"Exceeds Expectations", flavor:"A superb result. You may now brew Draught of Living Death unsupervised — just crush the bean, don't cut it."},
+  {min:.60, letter:"A", name:"Acceptable", flavor:"A solid pass. You'd survive a Slug Club dinner, though Slughorn will have forgotten your name by pudding."},
+  {min:.45, letter:"P", name:"Poor", flavor:"The examiners suspect you watched the film. The film, we remind you, gave Tonks's best line to Luna."},
+  {min:.30, letter:"D", name:"Dreadful", flavor:"You have left more than half an eyebrow behind. Kindly report for remedial reading with Madam Pince."},
+  {min:0,   letter:"T", name:"Troll", flavor:"U-No-Poo shows more familiarity with this book than you do. Even Crabbe scored higher, and he was disguised as a small girl at the time."},
+];
+
+let order = [], idx = 0, score = 0, missed = [], answered = false;
+
+function buildStars(){
+  const c = document.getElementById('stars');
+  for(let i=0;i<70;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    const size = Math.random()*2.2+0.8;
+    s.style.width=s.style.height=size+'px';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=(Math.random()*3)+'s';
+    s.style.animationDuration=(2.2+Math.random()*3)+'s';
+    c.appendChild(s);
+  }
+}
+buildStars();
+document.getElementById('qCount').textContent = QUESTIONS.length;
+
+function startQuiz(){
+  order = QUESTIONS.map((_,i)=>i);
+  idx = 0; score = 0; missed = [];
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+  renderQuestion();
+  window.scrollTo({top:0});
+}
+
+function renderQuestion(){
+  answered = false;
+  const q = QUESTIONS[order[idx]];
+  document.getElementById('qNum').textContent = 'Question '+(idx+1)+' of '+QUESTIONS.length;
+  document.getElementById('scoreLive').textContent = 'Score: '+score;
+  document.getElementById('barFill').style.width = (idx/QUESTIONS.length*100)+'%';
+  document.getElementById('sectionTag').textContent = q.s;
+  document.getElementById('qText').textContent = q.q;
+
+  // shuffle options
+  const opts = q.o.map((t,i)=>({t, correct: i===q.c}));
+  for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]];}
+
+  const box = document.getElementById('answers');
+  box.innerHTML='';
+  const letters=['A','B','C','D'];
+  opts.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className='answer';
+    b.innerHTML='<span class="letter">'+letters[i]+'</span><span>'+opt.t+'</span>';
+    b.onclick=()=>choose(b, opt.correct, q);
+    box.appendChild(b);
+  });
+  document.getElementById('verdict').className='verdict';
+  document.getElementById('nextRow').style.display='none';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function choose(btn, isCorrect, q){
+  if(answered) return;
+  answered = true;
+  const all = document.querySelectorAll('.answer');
+  all.forEach(a=>{
+    a.classList.add('locked');
+    const txt = a.children[1].textContent;
+    if(txt === q.o[q.c]) a.classList.add('correct');
+    else if(a===btn) a.classList.add('wrong');
+    else a.classList.add('faded');
+  });
+  const v = document.getElementById('verdict');
+  const vt = document.getElementById('vTitle');
+  const vb = document.getElementById('vBody');
+  const vc = document.getElementById('vCite');
+  if(isCorrect){
+    score++;
+    vt.textContent = pick(["✦ Ten points to your house!","✦ Outstanding!","✦ Even Hermione is impressed.","✦ Correct — Slughorn beams at you.","✦ The Prince approves.","✦ Take a Chocolate Frog!"]);
+    v.className='verdict good';
+  } else {
+    missed.push(q);
+    vt.textContent = pick(["✗ Alas — the answer slips away like a Snitch.","✗ Not quite — Peeves is cackling somewhere.","✗ Incorrect — kindly see Madam Pince for remedial reading.","✗ The examiners wince.","✗ Wrong — that answer was a fake locket.","✗ Missed — no Felix Felicis for you."]);
+    v.className='verdict bad';
+  }
+  vb.textContent = q.x;
+  vc.textContent = '— '+q.cite;
+  document.getElementById('scoreLive').textContent = 'Score: '+score;
+  const nb = document.getElementById('nextBtn');
+  nb.textContent = (idx === QUESTIONS.length-1) ? 'See Your Marks 🦉' : 'Next Question ⚡';
+  document.getElementById('nextRow').style.display='block';
+}
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function nextQuestion(){
+  idx++;
+  if(idx >= QUESTIONS.length){ showResults(); return; }
+  renderQuestion();
+}
+
+function showResults(){
+  document.getElementById('quizScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+  const pct = score/QUESTIONS.length;
+  const g = GRADES.find(g=>pct>=g.min);
+  document.getElementById('gradeLetter').textContent=g.letter;
+  document.getElementById('gradeName').textContent=g.name;
+  document.getElementById('gradeFlavor').textContent=g.flavor;
+  document.getElementById('finalScore').textContent=score;
+  document.getElementById('finalTotal').textContent=QUESTIONS.length;
+  document.getElementById('finalPct').textContent=Math.round(pct*100)+'%';
+
+  const scaleBox=document.getElementById('gradeScale');
+  scaleBox.innerHTML='<div style="justify-content:center;color:var(--gold);font-family:var(--display);font-size:15px;margin-bottom:6px;">The N.E.W.T. Grading Scale</div>';
+  const bounds=[["O · Outstanding","90–100%"],["E · Exceeds Expectations","75–89%"],["A · Acceptable","60–74%"],["P · Poor","45–59%"],["D · Dreadful","30–44%"],["T · Troll","0–29%"]];
+  bounds.forEach((b,i)=>{
+    const d=document.createElement('div');
+    if(GRADES[i].letter===g.letter) d.className='me';
+    d.innerHTML='<span>'+b[0]+'</span><span>'+b[1]+'</span>';
+    scaleBox.appendChild(d);
+  });
+
+  const list=document.getElementById('reviewList');
+  const intro=document.getElementById('reviewIntro');
+  list.innerHTML='';
+  if(missed.length===0){
+    intro.textContent='Nothing to review. The examiners have checked your quill for Auto-Answer enchantments and found none. Astonishing.';
+  } else {
+    intro.textContent='The '+missed.length+' question'+(missed.length>1?'s':'')+' that escaped you, for your remedial studies:';
+    missed.forEach(q=>{
+      const d=document.createElement('div');
+      d.className='review-item';
+      d.innerHTML='<div class="rq">'+q.q+'</div><div class="ra">✦ '+q.o[q.c]+'</div><div style="color:var(--ink-dim);font-style:italic;font-size:15px;">'+q.cite+'</div>';
+      list.appendChild(d);
+    });
+  }
+  document.getElementById('barFill').style.width='100%';
+  window.scrollTo({top:0});
+}
+
+function shareScore(){
+  const pct = Math.round(score/QUESTIONS.length*100);
+  const g = GRADES.find(g=>score/QUESTIONS.length>=g.min);
+  const text = "⚡ I scored "+score+"/"+QUESTIONS.length+" ("+pct+"%) on the Half-Blood Prince N.E.W.T. — official mark: "+g.letter+" ("+g.name+")! Think you know Book 6 better? "+location.href;
+  if(navigator.share){
+    navigator.share({text}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>{
+      const b=document.getElementById('shareBtn');
+      b.textContent='Copied to Clipboard! 📜';
+      setTimeout(()=>b.textContent='Share Your Mark 🦉',2200);
+    });
+  }
+}
+</script>
+</body>
+</html>
