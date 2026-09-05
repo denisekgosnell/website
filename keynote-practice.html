@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Keynote Note Cards</title>
+<meta name="description" content="Flashcard practice for the Duality of AI keynote, with microphone scoring for word-for-word memorization.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --bg:#f3efe6; --bg2:#e9e3d6; --paper:#fffdf7; --ink:#1f1d1a; --ink2:#5b554c; --ink3:#8a8378;
+  --line:#ddd6c8; --accent:#1f1d1a; --ok:#15803d; --okbg:#dcfce7; --close:#a16207; --closebg:#fef3c7;
+  --bad:#b91c1c; --badbg:#fee2e2; --rec:#dc2626; --shadow:0 10px 30px rgba(40,30,10,.10), 0 1px 3px rgba(40,30,10,.08);
+  --serif:"Charter","Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#15140f; --bg2:#1d1b15; --paper:#23211a; --ink:#f1ece0; --ink2:#b9b1a2; --ink3:#857d70;
+    --line:#3a362c; --okbg:#14361f; --ok:#4ade80; --closebg:#3d2f0a; --close:#fbbf24; --badbg:#3f1515; --bad:#f87171;
+    --shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 3px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none !important}
+
+.sticky{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 4px 14px rgba(40,30,10,.06)}
+.topbar{display:flex;align-items:center;gap:14px;padding:10px 16px 6px}
+.controlbar{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:2px 16px 10px}
+.controlbar .prev{justify-self:start} .controlbar .next{justify-self:end}
+.cb-mid{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.cb-status{font-size:12px;color:var(--ink3);text-align:center;max-width:460px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:1.2em;font-variant-numeric:tabular-nums}
+.cb-status .live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--rec);margin-right:5px;animation:blink 1s infinite;vertical-align:0}
+.scene{margin:8px 22px 0;font-size:13px;font-weight:600;letter-spacing:.2px;color:var(--c)}
+.scene::before{content:'Scene · ';color:var(--ink3);font-weight:500}
+.brand{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.2px;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.brand small{display:block;font-family:var(--sans);font-weight:400;font-size:11px;color:var(--ink3);letter-spacing:.4px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis}
+.tabs{flex:none}
+.tabs{display:flex;gap:4px;margin-left:auto;background:var(--bg2);padding:3px;border-radius:999px}
+.tabs button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-size:14px;color:var(--ink2)}
+.tabs button.active{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.deckstat{font-size:13px;color:var(--ink2);white-space:nowrap}
+@media (max-width:640px){ .deckstat{display:none} .brand small{display:none} .topbar{gap:8px;padding:8px 12px 4px} .brand{font-size:15px} }
+
+.wrap{max-width:900px;margin:0 auto;padding:14px 16px 60px}
+
+.section-map{display:flex;gap:2px;height:14px;margin:6px 0 8px}
+.section-map .seg{flex:1;min-width:2px;border-radius:2px;background:var(--seg);opacity:.28;border:0;padding:0;transition:opacity .15s,transform .15s}
+.section-map .seg.tried{opacity:.6}
+.section-map .seg.mastered{opacity:1}
+.section-map .seg.current{outline:2px solid var(--ink);outline-offset:1px;transform:scaleY(1.35)}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.legend .chip{border:0;display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 6px;border-radius:999px;background:var(--paper);font-size:12px;color:var(--ink2);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.legend .chip .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.legend .chip b{color:var(--ink);font-weight:600}
+.legend .chip.current{box-shadow:0 0 0 2px var(--c)}
+
+.card{position:relative;background:var(--paper);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+.card-band{height:8px;background:var(--c)}
+.card-head{display:flex;align-items:center;gap:10px;padding:14px 22px 0;font-size:13px;color:var(--ink2);flex-wrap:wrap}
+.card-head .sec{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--c)}
+.card-head .sec .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.card-head .pos{margin-left:auto;font-variant-numeric:tabular-nums}
+.card-head .best{font-variant-numeric:tabular-nums}
+.card-head .best.good{color:var(--ok)} .card-head .best.mid{color:var(--close)} .card-head .best.low{color:var(--bad)}
+.card-title{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink2);margin:12px 22px 0;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.card-body{padding:16px 22px 22px;font-family:var(--serif);font-size:20px;line-height:1.6;transition:filter .2s}
+.card-body p{margin:0 0 .85em}
+.card-body p:last-child{margin-bottom:0}
+.card-body .note{font-family:var(--sans);font-size:13px;font-style:italic;color:var(--ink3);background:var(--bg2);padding:1px 8px;border-radius:6px;vertical-align:middle}
+.card-body.blur{filter:blur(9px);user-select:none;pointer-events:none}
+.hidden-note{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;font-size:15px;color:var(--ink2);pointer-events:none}
+.hidden-note span{background:var(--paper);padding:10px 16px;border-radius:10px;box-shadow:var(--shadow)}
+@media (max-width:640px){ .card-body{font-size:18px;padding:14px 16px 18px} .card-head{padding:12px 16px 0} .card-title{margin:10px 16px 0} }
+
+/* graded words */
+.w{border-radius:4px;padding:0 1px}
+.w.ok{color:var(--ok)}
+.w.close{background:var(--closebg);color:var(--close)}
+.w.sub{background:var(--badbg);color:var(--bad);text-decoration:underline dotted;cursor:help}
+.w.miss{background:var(--badbg);color:var(--bad);text-decoration:line-through}
+
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 16px;font-size:15px;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.btn:hover{filter:brightness(.97)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.prev{justify-self:start} .btn.next{justify-self:end}
+.btn.rec{background:var(--rec);color:#fff;border-color:transparent;padding:11px 26px;font-size:16px;border-radius:999px;min-width:190px;box-shadow:0 6px 18px rgba(220,38,38,.35)}
+.btn.rec.on{background:var(--ink);color:var(--paper);box-shadow:none}
+.btn.rec .ico{display:inline-block;width:12px;height:12px;border-radius:50%;background:#fff;margin-right:9px;vertical-align:-1px}
+.btn.rec.on .ico{border-radius:2px;animation:blink 1s infinite;background:var(--rec)}
+@keyframes blink{50%{opacity:.25}}
+.btn.ghost{background:transparent;border-color:transparent;box-shadow:none;font-weight:500;color:var(--ink2)}
+.btn.small{padding:8px 12px;font-size:14px}
+@media (max-width:640px){ .controlbar{gap:6px;padding:0 10px 8px} .controlbar .btn.prev,.controlbar .btn.next{padding:9px 10px;font-size:13px} .btn.rec{min-width:140px;padding:10px 16px;font-size:15px} .cb-status{max-width:170px;font-size:11px} .scene{margin:8px 16px 0} }
+.options{margin-top:14px}
+
+.options{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:14px;color:var(--ink2);margin-bottom:10px}
+.options label{display:inline-flex;align-items:center;gap:6px}
+.options select{font:inherit;padding:2px 6px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-top:12px;box-shadow:var(--shadow)}
+.panel-head{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;color:var(--ink2);margin-bottom:8px}
+.panel-head .time{margin-left:auto;font-variant-numeric:tabular-nums;font-family:var(--mono);font-weight:400}
+.pulse{width:10px;height:10px;border-radius:50%;background:var(--rec);box-shadow:0 0 0 0 rgba(220,38,38,.5);animation:pulse 1.2s infinite}
+@keyframes pulse{to{box-shadow:0 0 0 10px rgba(220,38,38,0)}}
+.live{font-family:var(--serif);font-size:17px;min-height:1.6em;color:var(--ink)}
+.live .interim{color:var(--ink3)}
+.msg{font-size:14px;color:var(--bad);margin-top:8px}
+
+.score{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.ring{--p:0;--rc:var(--ok);width:110px;height:110px;border-radius:50%;background:conic-gradient(var(--rc) calc(var(--p)*1%),var(--bg2) 0);display:grid;place-items:center;flex:none}
+.ring > div{width:84px;height:84px;border-radius:50%;background:var(--paper);display:flex;align-items:baseline;justify-content:center;padding-top:26px;font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.5px;line-height:1}
+.ring > div small{font-size:14px;font-weight:600;color:var(--ink3);margin-left:1px}
+.score h3{margin:0 0 4px;font-size:20px}
+.score .sub{color:var(--ink2);font-size:14px}
+.stats{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:13px;color:var(--ink2)}
+.stats b{color:var(--ink)}
+.stats .k{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.graded{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);font-family:var(--serif);font-size:18px;line-height:1.65}
+.graded p{margin:0 0 .8em}
+.graded p:last-child{margin:0}
+.graded .note{font-family:var(--sans);font-size:12px;font-style:italic;color:var(--ink3);background:var(--bg2);padding:1px 8px;border-radius:6px}
+.extras{margin-top:12px;font-size:14px;color:var(--ink2)}
+.extras .x{display:inline-block;background:var(--badbg);color:var(--bad);border-radius:5px;padding:0 6px;margin:2px 3px 2px 0;font-family:var(--serif);font-size:15px}
+details.transcript{margin-top:12px;font-size:14px;color:var(--ink2)}
+details.transcript summary{cursor:pointer}
+details.transcript div{font-family:var(--serif);font-size:16px;color:var(--ink);margin-top:6px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.fallback textarea{width:100%;min-height:110px;font:inherit;font-family:var(--serif);font-size:17px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+.hint{font-size:12px;color:var(--ink3);text-align:center;margin-top:18px}
+.hint kbd{font-family:var(--mono);background:var(--bg2);border-radius:4px;padding:0 5px;border:1px solid var(--line)}
+
+/* progress view */
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.tile .v{font-size:30px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1.1}
+.tile .l{font-size:12px;color:var(--ink2);text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
+.secrow{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);border-left:6px solid var(--c)}
+.secrow .top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.secrow .name{font-weight:700}
+.secrow .full{font-size:12px;color:var(--ink3);flex-basis:100%;margin-top:-2px}
+.secrow .pct{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
+.secrow .pct.good{color:var(--ok)} .secrow .pct.mid{color:var(--close)} .secrow .pct.low{color:var(--bad)}
+.bar{height:8px;background:var(--bg2);border-radius:999px;overflow:hidden;margin:8px 0 10px}
+.bar > i{display:block;height:100%;background:var(--c);border-radius:999px;transition:width .3s}
+.minis{display:flex;flex-wrap:wrap;gap:5px}
+.mini{border:1px solid var(--line);background:var(--bg);border-radius:7px;min-width:44px;padding:4px 6px;font-size:12px;text-align:center;font-variant-numeric:tabular-nums;color:var(--ink2);line-height:1.2}
+.mini b{display:block;font-size:13px;color:var(--ink)}
+.mini.good{background:var(--okbg);border-color:transparent} .mini.good b{color:var(--ok)}
+.mini.mid{background:var(--closebg);border-color:transparent} .mini.mid b{color:var(--close)}
+.mini.low{background:var(--badbg);border-color:transparent} .mini.low b{color:var(--bad)}
+.secrow .verdict{font-size:13px;color:var(--ink2);margin-top:8px}
+h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
+.weak{list-style:none;margin:0;padding:0}
+.weak li{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:6px;cursor:pointer}
+.weak li:hover{filter:brightness(.98)}
+.weak .dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.weak .cue{font-family:var(--serif);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.weak .num{font-size:12px;color:var(--ink3);flex:none}
+.weak .sc{font-weight:700;font-variant-numeric:tabular-nums;flex:none;min-width:44px;text-align:right}
+.weak .sc.low{color:var(--bad)} .weak .sc.mid{color:var(--close)} .weak .sc.none{color:var(--ink3);font-weight:500}
+.empty{color:var(--ink2);font-size:14px;background:var(--paper);border:1px dashed var(--line);border-radius:10px;padding:14px}
+.danger{color:var(--bad)}
+.mode{display:inline-flex;background:var(--bg2);border-radius:999px;padding:2px}
+.mode button{border:0;background:transparent;border-radius:999px;padding:4px 12px;font-size:13px;color:var(--ink2)}
+.mode button.active{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12);font-weight:600}
+.alt{display:inline-block;font-size:13px;color:var(--ink2);background:var(--bg2);border-radius:999px;padding:3px 10px;margin-top:8px}
+.alt b{color:var(--ink)}
+.rtabs{display:flex;gap:6px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.rtabs button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink2)}
+.rtabs button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.graded{border-top:0;padding-top:0;margin-top:12px}
+.beats{list-style:none;margin:12px 0 0;padding:0}
+.beats li{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:8px 10px;border-radius:10px;margin-bottom:6px;font-family:var(--serif);font-size:17px;line-height:1.45}
+.beats li .mark{font-family:var(--sans);font-weight:700;text-align:center;line-height:1.5}
+.beats li.hit{background:var(--okbg)} .beats li.hit .mark{color:var(--ok)}
+.beats li.part{background:var(--closebg)} .beats li.part .mark{color:var(--close)}
+.beats li.miss{background:var(--badbg)} .beats li.miss .mark{color:var(--bad)}
+.beats li .gap{grid-column:2;font-family:var(--sans);font-size:12.5px;color:var(--ink2);margin-top:2px}
+.beats li .gap b{color:var(--bad);font-weight:600}
+.beats li .said{font-family:var(--sans);font-size:12.5px;color:var(--ink3);grid-column:2}
+.beats .kw{color:var(--ink);font-weight:600}
+.beats .k{display:inline-block;border-radius:5px;padding:0 6px;margin:2px 2px 0 0;font-size:12px;background:var(--paper);color:var(--ink2)}
+.beats .k.hit{color:var(--ok);text-decoration:none} .beats .k.miss{color:var(--bad);text-decoration:line-through}
+.explain{font-size:12.5px;color:var(--ink3);margin-top:10px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="sticky">
+  <header class="topbar">
+    <div class="brand">Keynote Note Cards<small>The Duality of AI · practice deck</small></div>
+    <nav class="tabs" role="tablist">
+      <button data-view="cards" class="active" aria-selected="true">Cards</button>
+      <button data-view="progress" aria-selected="false">Progress</button>
+    </nav>
+    <div class="deckstat" id="deckStat"></div>
+  </header>
+  <div class="controlbar" id="controlbar">
+    <button class="btn prev" id="prevBtn">← Prev</button>
+    <div class="cb-mid">
+      <button class="btn rec" id="recBtn"><span class="ico"></span><span id="recLabel">Record</span></button>
+      <div class="cb-status" id="cbStatus"></div>
+    </div>
+    <button class="btn next" id="nextBtn">Next →</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="section-map" id="sectionMap" aria-label="All cards, colored by section"></div>
+  <div class="legend" id="legend"></div>
+
+  <main id="viewCards">
+    <article class="card" id="card">
+      <div class="card-band"></div>
+      <header class="card-head">
+        <span class="sec"><span class="dot"></span><span id="cardSection"></span></span>
+        <span class="best" id="cardBest"></span>
+        <span class="pos" id="cardPos"></span>
+      </header>
+      <div class="scene" id="cardScene" hidden></div>
+      <h2 class="card-title" id="cardTitle" hidden></h2>
+      <div class="card-body" id="cardBody"></div>
+      <div class="hidden-note" id="hiddenNote" hidden><span>Text hidden — recite from memory. Press <b>H</b> or tap the card to peek.</span></div>
+    </article>
+
+    <div class="options">
+      <span style="display:inline-flex;align-items:center;gap:8px">Grade by <span class="mode" id="modeToggle"><button data-mode="ideas">Ideas</button><button data-mode="words">Exact words</button></span></span>
+      <label><input type="checkbox" id="hideToggle"> Hide text while recording</label>
+      <label><input type="checkbox" id="drillToggle"> Drill weak cards only</label>
+      <label>Target <select id="targetSel"><option value="80">80%</option><option value="90">90%</option><option value="95">95%</option><option value="100">100%</option></select></label>
+    </div>
+
+    <section class="panel" id="livePanel" hidden>
+      <div class="panel-head"><span class="pulse"></span> Listening… speak the card, then press Stop <span class="time" id="liveTime">0:00</span></div>
+      <div class="live" id="liveText"></div>
+      <div class="msg" id="liveMsg" hidden></div>
+    </section>
+
+    <section class="panel" id="resultPanel" hidden>
+      <div class="score">
+        <div class="ring" id="ring"><div><span id="scoreNum">0</span><small>%</small></div></div>
+        <div>
+          <h3 id="scoreTitle"></h3>
+          <div class="sub" id="scoreSub"></div>
+          <div class="alt" id="altScore"></div>
+        </div>
+      </div>
+      <div class="rtabs"><button id="tabIdeas">Ideas covered</button><button id="tabWords">Word by word</button></div>
+      <div id="ideasDetail">
+        <ul class="beats" id="beats"></ul>
+        <div class="explain">Ideas mode checks each idea's key words anywhere in your take, in any order, so your wording can differ. An idea counts as covered when at least half of the words it listens for are heard. Edit the ideas in <code>_keynote/beats.txt</code>.</div>
+      </div>
+      <div id="wordsDetail">
+        <div class="stats" id="scoreStats" style="margin-top:12px"></div>
+        <div class="graded" id="graded"></div>
+        <div class="extras" id="extras" hidden></div>
+      </div>
+      <details class="transcript"><summary>What the microphone heard</summary><div id="transcript"></div></details>
+      <div class="actions">
+        <button class="btn small" id="againBtn">↻ Try again</button>
+        <button class="btn small" id="nextAfterBtn">Next card →</button>
+        <button class="btn small ghost" id="toProgressBtn">See progress</button>
+      </div>
+    </section>
+
+    <section class="panel fallback" id="fallbackPanel" hidden>
+      <div class="panel-head">Microphone scoring isn't available in this browser</div>
+      <p style="margin:0 0 10px;font-size:14px;color:var(--ink2)">Speech recognition works in Chrome, Edge, and Safari (desktop and mobile). Or type or paste what you said below and grade it.</p>
+      <textarea id="fallbackText" placeholder="Type what you recited…"></textarea>
+      <div class="actions"><button class="btn small" id="fallbackGrade">Grade it</button></div>
+    </section>
+
+    <p class="hint"><kbd>←</kbd> <kbd>→</kbd> cards · <kbd>Space</kbd> record / stop · <kbd>H</kbd> hide or peek text · <kbd>Esc</kbd> cancel recording</p>
+  </main>
+
+  <main id="viewProgress" hidden>
+    <p id="modeNote" style="margin:0 0 10px;font-size:13px;color:var(--ink2)"></p>
+    <div class="summary" id="summary"></div>
+    <div id="sectionRows"></div>
+    <h2 class="h">Keep repeating these</h2>
+    <p style="margin:-4px 0 10px;font-size:13px;color:var(--ink2)">Cards below your target, weakest first. Unattempted cards are listed at the end. Tap one to practice it.</p>
+    <ul class="weak" id="weakList"></ul>
+    <div class="actions" style="margin-top:22px">
+      <button class="btn small" id="drillBtn">Drill weak cards</button>
+      <button class="btn small ghost danger" id="resetBtn">Reset all progress</button>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>window.KEYNOTE = {"sections":[{"title":"Part 1. Personal anecdote—when you first saw the power of Opening Doors for others","cards":4,"words":621,"short":"Part 1 · Micah","color":"#d97706"},{"title":"Part 2. Who I am / Introduction of the “Duality of AI”","cards":10,"words":2424,"short":"Part 2 · Who I Am","color":"#0d9488"},{"title":"Part 3. Duality and the Tensions We Must Resolve","cards":3,"words":556,"short":"Part 3 · Tensions","color":"#64748b"},{"title":"The First Great Tension: AI Will Eliminate Jobs—and Create New Ones","cards":6,"words":1200,"short":"Tension 1 · Jobs","color":"#2563eb"},{"title":"The Second Great Tension: AI Can Create Shared Prosperity—or Become Extractive","cards":5,"words":1000,"short":"Tension 2 · Prosperity","color":"#16a34a"},{"title":"The Third Great Tension: AI Can Democratize Control—or Concentrate It","cards":9,"words":2162,"short":"Tension 3 · Control","color":"#e11d48"},{"title":"Part 4. Conclusion: Be a Door-Opener","cards":4,"words":878,"short":"Part 4 · Door-Opener","color":"#7c3aed"}],"cards":[{"section":0,"paragraphs":["In late April of 2014, I was 27 years old, standing at the front of a lecture hall, just down the street.","It was room 525 in the brand new Min Kao building. I was proctoring the final exam for Dr. Mike Berry's spring CS 102 class. This was my last final as a teaching assistant. There were about a hundred and twenty students, heads down, working through the written part of their computer science final. This was their last gate before summer break, and you could feel the freedom boxed into the lecture hall, yearning to be set loose.","Like any college class, some of the students were deeply passionate about the subject. This was what they loved. Others were simply checking a “general education” box in order to graduate. They thought computer science would be easy or interesting enough compared to their other choices like stats or calculus."],"id":1,"words":150,"beats":[{"label":"Late April 2014, I was 27, at the front of a lecture hall just down the street","keys":[["april"],["2014"],["27"],["lecture hall"],["down the street"]]},{"label":"Room 525 in the brand new Min Kao building","keys":[["525"],["min kao","min cow","minkao"],["brand new"]]},{"label":"Proctoring Dr. Mike Berry's spring CS 102 final, my last as a teaching assistant","keys":[["proctoring"],["berry"],["102"],["last final"],["teaching assistant","ta"]]},{"label":"About 120 students, heads down, working through the written part of their final","keys":[["120"],["heads down"],["written"],["students"]]},{"label":"Their last gate before summer break; freedom boxed into the hall, yearning to be set loose","keys":[["last gate"],["summer break"],["freedom"],["set loose"]]},{"label":"Some students were deeply passionate, this was what they loved; others were checking a general-education box to graduate","keys":[["passionate"],["loved"],["general education"],["box"]]},{"label":"They figured CS would be easy or interesting enough compared to stats or calculus","keys":[["easy"],["interesting"],["stats"],["calculus"]]}],"title":"Room 525: the lecture hall, April 2014"},{"section":0,"paragraphs":["One of those students was Micah. Micah was just shy of 6 feet tall, dark haired. Kinda generic college student from central casting for your “average student.” In the beginning, he mostly attended classes, got middle of the pack grades, and usually turned in his homework. He reminds me of so many of my colleagues and employees: they show up, do the work, and don’t make waves in either direction.","Micah never really stood out. But he was a curious student. As the semester went on, you could see him getting more and more energized by the subject. The “mostly showed up” turned into “always showed up.” I could see that something was clicking for him. Something was energizing him. I get energized just thinking about how excited he was—I can still see his face, his smile when he figured out “for loops” in the lab by printing out each iteration’s data.","That was when Micah saw the compounding benefits of automation."],"id":2,"words":162,"beats":[{"label":"One of those students was Micah: just shy of 6 feet tall, dark haired","keys":[["micah"],["6 feet"],["dark haired"]]},{"label":"Generic college student from central casting, your average student","keys":[["generic"],["central casting"],["average student"]]},{"label":"Mostly attended, middle-of-the-pack grades, usually turned in his homework","keys":[["attended"],["middle of the pack"],["grades"],["homework"]]},{"label":"Like so many colleagues and employees: show up, do the work, don't make waves","keys":[["colleagues"],["employees"],["show up"],["do the work"],["waves"]]},{"label":"Micah never stood out, but he was a curious student","keys":[["stood out"],["curious"]]},{"label":"As the semester went on he got more and more energized; \"mostly showed up\" became \"always showed up\"","keys":[["semester"],["energized"],["mostly showed up"],["always showed up"]]},{"label":"Something was clicking; I can still see his smile when he figured out for loops by printing out each iteration's data","keys":[["clicking"],["smile"],["for loops"],["printing"],["iteration"]]},{"label":"That was when Micah saw the compounding benefits of automation","keys":[["compounding"],["benefits"],["automation"]]}],"title":"Micah: from middle of the pack to lit on fire"},{"section":0,"paragraphs":["So there I was, standing in room 525, in front of Dr. Berry’s CS 102 final exam. Students are finishing, turning in their blue books—remember those? Well, they’re probably coming back.","Then, Micah puts his pencil down, packs up, walks to the front, and instead of placing his blue book on the desk, he hands it to me. Then he proceeds to give me the biggest bear hug of my life, lifts me clean off the ground.","He puts me down, thanks me and tells me that he took this class just wanting a box checked, but somewhere in the semester he found a new passion for solving invisible math puzzles. Which is pretty much what computer science in industry actually feels like…if you add in solving those puzzles while driving a speeding Ferrari down a moving highway of burning cars and collapsing bridges, that’s exactly what it feels like today, but I’m skipping ahead."],"id":3,"words":155,"beats":[{"label":"So there I was, standing in room 525, at Dr. Berry's CS 102 final exam","keys":[["525"],["berry"],["102"],["final exam"]]},{"label":"Students finishing, turning in blue books; remember those? They're probably coming back","keys":[["blue books"],["remember those"],["coming back"]]},{"label":"Micah puts his pencil down, packs up, walks to the front, and hands his blue book to me instead of the desk","keys":[["pencil"],["packs up"],["front"],["desk"],["hands it to me"]]},{"label":"The biggest bear hug of my life; lifts me clean off the ground","keys":[["bear hug"],["biggest"],["lifts"],["off the ground"]]},{"label":"He puts me down, thanks me: he took the class just wanting a box checked","keys":[["puts me down"],["thanks me"],["box checked"]]},{"label":"Somewhere in the semester he found a new passion for solving invisible math puzzles","keys":[["passion"],["invisible math puzzles","invisible"],["puzzles"]]},{"label":"That's what industry CS feels like, plus a speeding Ferrari down a highway of burning cars and collapsing bridges; but I'm skipping ahead","keys":[["ferrari"],["speeding"],["burning cars"],["collapsing bridges"],["skipping ahead"]]}],"title":"Back in room 525: blue books and the bear hug"},{"section":0,"paragraphs":["Micah walked out of the room, and Dr. Berry turned to me and said, \"I've never seen anything like that. The way you share your curiosity and your passion for computing, you've lit that kid on fire.\" Micah later told Dr. Berry that he was switching his major to computer science, and he wanted to thank me for showing him his path.","And that is why I'm standing here today.","We live through millions of moments. Most pass through us. Some become memories. A small handful become something more. They become a part of the story we tell about who we are. Psychologists call them self-defining memories—moments that stick with us and define what we believe about ourselves.","I thought I had spent the semester teaching computer science. What I had really done was open a door. Micah was the one who walked through it. But first, somebody had to make the door visible.","[~3 min]"],"id":4,"words":154,"beats":[{"label":"Micah walked out; Dr. Berry turned to me: \"I've never seen anything like that\"","keys":[["walked out"],["berry"],["never seen anything like that"]]},{"label":"\"The way you share your curiosity and passion for computing, you've lit that kid on fire\"","keys":[["curiosity"],["passion"],["computing"],["lit that kid on fire"]]},{"label":"Micah later told Dr. Berry he was switching his major to computer science and wanted to thank me for showing him his path","keys":[["switching his major"],["computer science"],["thank"],["path"]]},{"label":"And that is why I'm standing here today","keys":[["standing here today"]]},{"label":"We live through millions of moments; most pass through us, some become memories, a small handful become part of the story we tell about who we are","keys":[["millions of moments"],["pass through"],["memories"],["handful"],["story"]]},{"label":"Psychologists call them self-defining memories","keys":[["psychologists"],["self-defining memories"]]},{"label":"I thought I'd taught computer science; what I really did was open a door; Micah walked through it, but first somebody had to make the door visible","keys":[["teaching computer science"],["open a door"],["walked through"],["visible"]]}],"title":"Dr. Berry's words, and the door made visible"},{"section":1,"paragraphs":["Good morning and Welcome to the inaugural AI-NO-vation Summit. My name is Denise Gosnell.","I love a good puzzle. Whether it’s the “invisible math puzzles” that Micah discovered he loved, or the practical business puzzle, or the 2000 piece jigsaw puzzle of the Appalachian Trail…I can lose myself in them for hours or days on end. Puzzles have never once felt like work.","I’m fortunate in that way. I love what I get to do.","And like many things in life, I got here because of a happy accident…or rather an unhappy one at first that turned into a happy one.","I didn't plan on this field. When the 2008 crash took the job market with it, math sent me back to school, and two people at Tennessee, Dr. Langston and Dr. Cynthia Peterson, opened the door to computer science for a mathematician who didn't yet know she belonged there.","By 2009 I was on a pool deck at a swim meet in Maryville. While I waited for my next athlete to take the blocks, I was scribbling test cases for modeling RNA structures with neural networks. Today you'd call that using AI for scientific discovery. Back then I just called it the best fun I'd ever had.","I met Micah on my way to earning my PhD in computer science from the Center for Intelligent Systems and Machine Learning at the University of Tennessee."],"id":5,"words":235,"beats":[{"label":"Good morning, welcome to the inaugural AI-NO-vation Summit; my name is Denise Gosnell","keys":[["good morning"],["inaugural"],["summit"],["denise gosnell"]]},{"label":"I love a good puzzle: invisible math puzzles, the business puzzle, the 2000-piece Appalachian Trail jigsaw","keys":[["puzzle"],["business puzzle"],["2000"],["appalachian trail"],["jigsaw"]]},{"label":"Hours or days on end; puzzles never once felt like work; I'm fortunate, I love what I get to do","keys":[["hours"],["days"],["felt like work"],["fortunate"],["love what I get to do"]]},{"label":"A happy accident, or an unhappy one at first that turned into a happy one","keys":[["happy accident"],["unhappy"]]},{"label":"I didn't plan on this field; the 2008 crash took the job market, and math sent me back to school","keys":[["plan"],["2008"],["crash"],["job market"],["back to school"]]},{"label":"Dr. Langston and Dr. Cynthia Peterson opened the door to CS for a mathematician who didn't yet know she belonged","keys":[["langston"],["peterson","cynthia"],["opened the door"],["mathematician"],["belonged"]]},{"label":"2009, a pool deck at a swim meet in Maryville, scribbling test cases for modeling RNA structures with neural networks","keys":[["2009"],["pool deck"],["swim meet"],["maryville"],["rna"],["neural networks"]]},{"label":"Today you'd call that AI for scientific discovery; back then, the best fun I'd ever had","keys":[["scientific discovery"],["best fun"]]},{"label":"I met Micah on my way to my PhD at UT's Center for Intelligent Systems and Machine Learning","keys":[["micah"],["phd"],["intelligent systems"],["machine learning"],["university of tennessee"]]}],"title":"Good morning: puzzles, and a happy accident"},{"section":1,"paragraphs":["After finishing my PhD, there was only one destination for me: Silicon Valley. I wanted to learn and build from the best. I wanted to learn how the best builders in the world turned code into products. But I also wanted to see how those products became things people could actually use. How people’s jobs or lives were impacted and enhanced by things that started out as an idea and some code.","I’ve always been fascinated by the intersection of technology and life, how one impacts the other and creates a feedback loop. Someone invents a tool, it changes how we work, which gives someone else an idea for a new tool to create, which works great and also has the unintended consequence of changing how we communicate with our friends…and a few more cycles of this feedback loop, and pretty soon we’ve all got iPhones in our pockets.","My career has been a little like this. More zig-zag than ladder. It’s more like one of those levels in an old Nintendo game, where you have to jump back and forth from platform to platform in order to go up and beat the boss. I think the boss fight might be against Elon. Or Donkey Kong. Six of one. But I’m not there yet. I’m still jumping.","My zig zag jumps have gone back and forth between deeply technical work and deeply human work. From writing code to leading teams."],"id":6,"words":240,"beats":[{"label":"After my PhD, one destination: Silicon Valley, to learn and build from the best","keys":[["phd"],["destination"],["silicon valley"],["learn and build"],["best"]]},{"label":"How the best builders turned code into products, and how products became things people could actually use","keys":[["builders"],["code into products"],["actually use"]]},{"label":"How people's jobs and lives were impacted and enhanced by an idea and some code","keys":[["jobs"],["lives"],["impacted"],["enhanced"],["idea"]]},{"label":"Fascinated by the intersection of technology and life, and the feedback loop between them","keys":[["fascinated"],["intersection"],["technology and life"],["feedback loop"]]},{"label":"Someone invents a tool, it changes how we work, which gives someone else an idea for a new tool, which also changes how we talk with friends","keys":[["invents"],["how we work"],["new tool"],["unintended consequence"],["friends"]]},{"label":"A few more cycles and we've all got iPhones in our pockets","keys":[["cycles"],["iphones"],["pockets"]]},{"label":"My career: more zig-zag than ladder; an old Nintendo level, platform to platform, up to beat the boss","keys":[["career"],["zig zag"],["ladder"],["nintendo"],["platform"],["boss"]]},{"label":"The boss fight might be Elon, or Donkey Kong, six of one; not there yet, still jumping","keys":[["elon"],["donkey kong"],["six of one"],["still jumping"]]},{"label":"Zig-zagging between deeply technical and deeply human work, writing code to leading teams","keys":[["technical"],["human"],["writing code"],["leading teams"]]}],"title":"Silicon Valley, the feedback loop, and the zig-zag career"},{"section":1,"paragraphs":["While in Silicon Valley, I quickly fell into the gravity well of open source. Think of open source like academia at its best. Everyone's invited, everyone shares, and the reward isn't hoarding what you know. It's being the one who figured it out first and told everybody.","I became a leader in open-source graph technology and authored a bestselling book on the topic.","I was Chief Data Officer for a Silicon Valley billion dollar unicorn that got acquired by IBM.","I led a team of about 100 amazing builders at a nine-figure business unit at AWS and secured a US patent for data infrastructure I developed. That patent turned into a new database engine that has become a memory layer for coordinating agents in enterprises all over the world. Agents without coordination and shared context are like a neighborhood where Amazon Prime just guesses whose house is whose. You get your neighbor's blood pressure meds, they get your karaoke machine, and somehow the whole cul-de-sac has to sort it out before dinner. At AWS, My team and I solved that puzzle together. Coordinating systems and memory is wonky, but super cool.","My latest #1 bestselling book Tech Confidential gives you the full details behind it all."],"id":7,"words":206,"beats":[{"label":"In Silicon Valley I fell into the gravity well of open source","keys":[["silicon valley"],["gravity well"],["open source"]]},{"label":"Open source is academia at its best: everyone's invited, everyone shares; the reward isn't hoarding, it's figuring it out first and telling everybody","keys":[["academia"],["invited"],["shares"],["hoarding"],["first"],["told everybody"]]},{"label":"Leader in open-source graph technology; bestselling book on it","keys":[["leader"],["graph"],["bestselling"],["book"]]},{"label":"Chief Data Officer of a Silicon Valley billion-dollar unicorn acquired by IBM","keys":[["chief data officer"],["billion"],["unicorn"],["ibm"]]},{"label":"Led about 100 builders at a nine-figure AWS business unit; secured a US patent","keys":[["100"],["nine-figure"],["aws"],["patent"]]},{"label":"The patent became a database engine, a memory layer for coordinating agents in enterprises worldwide","keys":[["database engine"],["memory layer"],["coordinating agents"],["enterprises"]]},{"label":"Agents without shared context: Amazon Prime guessing whose house is whose; neighbor's blood pressure meds, your karaoke machine, the cul-de-sac sorts it out before dinner","keys":[["amazon prime"],["guesses"],["blood pressure"],["karaoke"],["cul-de-sac"],["dinner"]]},{"label":"We solved that puzzle together at AWS; coordination and memory is wonky but super cool","keys":[["solved"],["puzzle"],["wonky"],["super cool"]]},{"label":"My #1 bestseller Tech Confidential has the full details","keys":[["number 1"],["tech confidential"],["details"]]}],"title":"Open source, graph, IBM, AWS, and the patent"},{"section":1,"paragraphs":["Through every bit of my zig-zag career, I’ve witnessed and experienced the duality of technology. The ability of it to create things and to break things. At the same time. I've lived both ends of this.","Right after my PhD here at Tennessee, at a healthcare startup, I helped to expose a $20M medicare fraud scheme simply by connecting data sets together.","That same start-up built automated healthcare claims processing and saved people real money. But it did it by making pharmaceutical drug prices transparent and exposed games the PBMs were running…  so you can guess what happened next: [pause] a PBM sued us out of existence.","Throughout my careerDespite the early start-up shut-down, I continued my career in connecting data together with graph databases and analytics. I’ve helped dozens of organizations like connect enterprise data at Netflix, Starbucks, Home Depot, FedEx, SnapChat, and the Federal Government , and so many more. Every new way I found to connect data in ways that break silos. Of course, a broken silo itself is a duality—it breaks across enterprise silos broke somebody's closed, comfortable model of how the world was supposed to work and replaces it with an opportunity for someone else.","After enough times, you stop seeing innovation as one thing. What you build as a door for one person is a wall coming down for someone else.","The technology doesn't pick. People do."],"id":8,"words":232,"beats":[{"label":"Through my zig-zag career I've seen the duality of technology: it creates and it breaks, at the same time; I've lived both ends","keys":[["duality"],["create"],["break"],["same time"],["both ends"]]},{"label":"After my PhD, at a healthcare startup, I helped expose a $20M Medicare fraud scheme by connecting data sets","keys":[["healthcare startup"],["20 million"],["medicare"],["fraud"],["connecting data sets"]]},{"label":"That startup automated claims processing and saved people real money","keys":[["claims processing"],["saved"],["real money"]]},{"label":"It made drug prices transparent and exposed the PBMs' games, so a PBM sued us out of existence","keys":[["drug prices"],["transparent"],["pbms"],["sued"],["out of existence"]]},{"label":"Despite the shutdown I kept connecting data with graph databases and analytics","keys":[["shut-down"],["connecting data"],["graph databases"],["analytics"]]},{"label":"Dozens of organizations: Netflix, Starbucks, Home Depot, FedEx, SnapChat, the Federal Government","keys":[["netflix"],["starbucks"],["home depot"],["fedex"],["snapchat"],["federal government"]]},{"label":"Breaking silos is itself a duality: it breaks somebody's comfortable model and replaces it with someone else's opportunity","keys":[["silos"],["duality"],["comfortable"],["model"],["opportunity"]]},{"label":"You stop seeing innovation as one thing: a door for one person is a wall coming down for someone else","keys":[["innovation"],["one thing"],["door"],["wall coming down"]]},{"label":"The technology doesn't pick. People do.","keys":[["technology doesn't pick"],["people do"]]}],"title":"The duality of technology: fraud, PBMs, and broken silos"},{"section":1,"paragraphs":["So here's something else about me. I've always felt like I lived in a duality between what makes sense to me and what everybody else says is true. This isn’t like colorblindness where I think green looks orange. Or my firm belief that Peyton Manning is the actual mayor of Knoxville, period. It’s more that my biggest moments of synthesis often don’t arrive in the moment, while reading at my desk, or listening to a lecture back here in my grad days. Rather, they arrive later, when I’m moving.","Once, while I was swimming laps at the Allen Jones aquatic center, the last piece of an algorithm I had been working on suddenly clicked into place in my brain. I immediately climbed out, wrapped myself in a towel, got into my car soaking wet, and drove straight home to the wall-sized whiteboard in my apartment so I could get it down before it disappeared.","That is how my mind works. I understand by moving. Talking. Testing. Making. If you go down the research rabbit hole on this, professionals in this space sort people’s creating and learning styles into four buckets.","Visual.","Auditory.","Reading and writing.","Kinesthetic.","I’m the kinesthetic type. Things click for me when I’m moving."],"id":9,"words":207,"beats":[{"label":"I've always lived in a duality between what makes sense to me and what everybody else says is true","keys":[["duality"],["makes sense"],["everybody else"],["true"]]},{"label":"Not colorblindness where green looks orange, or my firm belief that Peyton Manning is the mayor of Knoxville","keys":[["colorblindness"],["green"],["orange"],["peyton manning"],["mayor"],["knoxville"]]},{"label":"My biggest moments of synthesis don't arrive at my desk or in a lecture; they arrive later, when I'm moving","keys":[["synthesis"],["desk"],["lecture"],["moving"]]},{"label":"Swimming laps at the Allen Jones aquatic center, the last piece of an algorithm clicked into place","keys":[["swimming laps"],["allen jones"],["aquatic center"],["algorithm"],["clicked"]]},{"label":"Climbed out, towel, into the car soaking wet, straight home to the wall-sized whiteboard before it disappeared","keys":[["climbed out"],["towel"],["soaking wet"],["whiteboard"],["disappeared"]]},{"label":"That's how my mind works: I understand by moving, talking, testing, making","keys":[["mind works"],["moving"],["talking"],["testing"],["making"]]},{"label":"Researchers sort learning styles into four buckets: visual, auditory, reading and writing, kinesthetic","keys":[["four buckets"],["visual"],["auditory"],["reading and writing"],["kinesthetic"]]},{"label":"I'm the kinesthetic type; things click for me when I'm moving","keys":[["kinesthetic type"],["click"],["moving"]]}],"title":"Living in a duality: the swim, the whiteboard, kinesthetic"},{"section":1,"paragraphs":["Traditional software development works for builders, like me, but it’s not tailor-made for us. There is a door for us. It’s not the biggest door, but it’s there. It’s part of why I love open source—the freedom, no, the demand to build, to experiment.","But software development is really tailored for the reading and writing learners. That’s the biggest door. And even moreso, it’s tailored for people in that group who can articulate a solution to a problem through one or more foreign languages, by which I mean Python, Java, Javascript, Ruby, C, C++. If that’s hard for you, then you will struggle in this world. If it’s hard, you were not in the club. You were standing outside the door.","Now, however, I’m watching AI create new doorways. A new set of doors for creating and sharing, open to other people who were stuck on the outside before.","Someone who cannot read or write or think in computer programming languages can now simply speak a problem in plain English—or French or Mandarin or Hungarian—and begin to build their solution. Someone who struggles to turn an idea into a polished memo can literally talk it through and discuss it with Claude to find the shape of their argument. Someone overwhelmed by a dozen competing responsibilities can create a system that gives them more of their day—and more of themselves—back.","That is real. I see it happening in front of me. We all do."],"id":10,"words":243,"beats":[{"label":"Traditional software development works for builders like me but isn't tailor-made for us; there is a door, not the biggest, but it's there","keys":[["traditional"],["software development"],["builders"],["tailor-made"],["door"],["biggest"]]},{"label":"Part of why I love open source: the freedom, no, the demand to build and experiment","keys":[["open source"],["freedom"],["demand"],["build"],["experiment"]]},{"label":"Software development is really tailored for reading-and-writing learners; that's the biggest door","keys":[["reading and writing"],["learners"],["biggest door"]]},{"label":"Even more for those who can articulate a solution in foreign languages: Python, Java, Javascript, Ruby, C, C++","keys":[["articulate"],["foreign languages"],["python"],["java"],["javascript"],["ruby"],["c++"]]},{"label":"If that's hard for you, you struggle; you were not in the club; you were standing outside the door","keys":[["struggle"],["club"],["outside the door"]]},{"label":"Now I'm watching AI create new doorways for people who were stuck on the outside","keys":[["new doorways"],["stuck"],["outside"]]},{"label":"Someone who can't think in programming languages can speak a problem in plain English, or French, Mandarin, Hungarian, and begin to build","keys":[["programming languages"],["plain english"],["french"],["mandarin"],["hungarian"],["build"]]},{"label":"Someone who struggles to write a memo can talk it through with Claude to find the shape of their argument","keys":[["memo"],["talk it through"],["claude"],["shape"],["argument"]]},{"label":"Someone overwhelmed by a dozen responsibilities can create a system that gives them their day, and themselves, back","keys":[["overwhelmed"],["dozen"],["responsibilities"],["system"],["more of their day"]]},{"label":"That is real; I see it happening in front of me; we all do","keys":[["real"],["happening"],["we all do"]]}],"title":"The biggest door, and the new doorways AI creates"},{"section":1,"paragraphs":["But even as I talk about the positives AI delivers, I need to acknowledge that AI is not immune from the duality of technology. The disruption, the displacement, the fear—these are real too.","It is not irrational for people to worry about their job security. It is not irrational for people to worry about their elderly parents falling victim to identity theft or deepfake scams. It is not irrational for people to worry about their children growing up in a less stable world disrupted more quickly than a UT freshman changes majors.","Some of the most powerful people in the AI world use language that leaves an independent observer uneasy. And for good reason.","This is the Duality of AI.","AI can give voice to people who have been talked over—and it can make it easier to counterfeit someone’s voice and steal their identity.","AI can help a first-time builder create something valuable—and it can allow a small group of companies to control the tools on which every builder depends.","AI can give us time back which we can use for our families, our friends, or ourselves—and it can tempt us to automate away the relationships that make the time worth having.","Both sides are real. Neither is guaranteed.","AI is not Field of Dreams. If we build it, the positive side will not magically come. As much as I love James Earl Jones and want this to be true.","No. The positive side of the duality has to be built on purpose. It requires people in positions of leadership—in technology, in business, in society—to become door openers.","But when we open the door and show people through, we create a whole new group of builders who can finally be seen, and who build better human experiences."],"id":11,"words":297,"beats":[{"label":"Even with the positives, AI isn't immune from the duality of technology: disruption, displacement, fear are real too","keys":[["positives"],["immune"],["duality"],["disruption"],["displacement"],["fear"]]},{"label":"Not irrational to worry about job security, elderly parents and identity theft or deepfake scams, or children in a less stable world disrupted faster than a UT freshman changes majors","keys":[["irrational"],["job security"],["elderly parents"],["identity theft"],["deepfake"],["children"],["freshman"],["majors"]]},{"label":"Some of the most powerful people in AI use language that leaves an observer uneasy, for good reason; this is the Duality of AI","keys":[["powerful people"],["language"],["uneasy"],["good reason"],["duality of ai"]]},{"label":"AI can give voice to the talked-over, and make it easier to counterfeit a voice and steal an identity","keys":[["voice"],["talked over"],["counterfeit"],["steal"],["identity"]]},{"label":"AI can help a first-time builder create value, and let a small group of companies control the tools every builder depends on","keys":[["first-time builder"],["valuable"],["small group of companies"],["control the tools"],["depends"]]},{"label":"AI can give us time back for family and friends, and tempt us to automate away the relationships that make the time worth having","keys":[["time back"],["families"],["friends"],["automate away"],["relationships"],["worth having"]]},{"label":"Both sides are real; neither is guaranteed","keys":[["both sides"],["real"],["neither"],["guaranteed"]]},{"label":"AI is not Field of Dreams: build it and the positive side won't magically come, much as I love James Earl Jones","keys":[["field of dreams"],["build it"],["magically"],["james earl jones"]]},{"label":"The positive side has to be built on purpose: leaders in technology, business, and society becoming door openers","keys":[["on purpose"],["leadership"],["technology"],["business"],["society"],["door openers"]]},{"label":"When we open the door and show people through, we get a new group of builders who can finally be seen and who build better human experiences","keys":[["open the door"],["show people through"],["builders"],["seen"],["human experiences"]]}],"title":"The Duality of AI: real fears, both sides, built on purpose"},{"section":1,"paragraphs":["Take J, my chief of staff. J is a former pro golfer. She won on the LPGA tour. Then, she excelled in a career as an operations expert in tech. I showed her how to use plain language to design an app in Lovable. She's built a whole series of apps since.","The one she is most proud of solved a problem that had her completely buried. She was running a charity golf event for Folds of Honor. The whole thing was being run out of her inbox. Sourcing donations over email, tracking donations over email, all of it. And the donors had no way to follow the players, who were golfing 185 holes in a single day to raise money to fund the education of kids for fallen military members.","J built a Lovable app to manage the donations coming in and send status updates back out. It took her a few hours. Then she added live scoring. Then she added a way for donors to send messages to the players while they were out on the course. All of this in a weekend.","What used to keep her up working until 2am just to stay afloat was now a slick app that not only let her get some sleep at night but was a better experience for the donors to a good cause.","I'll never forget how excited she was to tell me her app got over a thousand views on the day of the event.","Now, I can't stand up here and tell you that application views went up some clean percentage year over year. There's no baseline. That's the whole point. We're talking about doing brand-new things. Solving problems people used to be buried under. J could do it because she finally had a door open to her that, when she walked through it, enabled her to design and build software."],"id":12,"words":315,"beats":[{"label":"J, my chief of staff: former pro golfer, won on the LPGA tour, then an operations expert in tech","keys":[["j","jay"],["chief of staff"],["pro golfer"],["lpga"],["operations"]]},{"label":"I showed her plain-language app design in Lovable; she's built a whole series of apps since","keys":[["plain language"],["lovable","loveable"],["series of apps"]]},{"label":"Her proudest one solved a problem that had her buried: a Folds of Honor charity golf event run out of her inbox","keys":[["proud"],["buried"],["folds of honor"],["charity"],["inbox"]]},{"label":"Sourcing and tracking donations over email; donors had no way to follow players golfing 185 holes in a single day","keys":[["donations"],["email"],["donors"],["185"],["holes"],["single day"]]},{"label":"To fund the education of kids of fallen military members","keys":[["education"],["kids"],["fallen"],["military"]]},{"label":"J built a Lovable app for donations and status updates in a few hours; then live scoring, then donor messages to players; all in a weekend","keys":[["lovable","loveable"],["status updates"],["few hours"],["live scoring"],["messages"],["weekend"]]},{"label":"What kept her up until 2am became a slick app: some sleep, and a better experience for donors to a good cause","keys":[["2am"],["slick"],["sleep"],["better experience"],["good cause"]]},{"label":"She was so excited it got over a thousand views on the day of the event","keys":[["excited"],["thousand views"],["day of the event"]]},{"label":"I can't cite a clean year-over-year percentage; there's no baseline; that's the whole point: brand-new things, problems people were buried under","keys":[["percentage"],["year over year"],["baseline"],["whole point"],["brand-new"],["buried"]]},{"label":"J could do it because a door was finally open to her, and she walked through it to design and build software","keys":[["door"],["walked through"],["design and build"],["software"]]}],"title":"J, the LPGA pro who built the Folds of Honor app"},{"section":1,"paragraphs":["Or take an executive I work with, Karen. She owns tech for a multi-billion-dollar company. Before we ever met, Karen spent millions out of her own P&L on a project with Salesforce to modernize and secure her data infrastructure. A year and a half later, it still didn't work.","Karen walked into our first meeting like someone on a losing streak, bracing for one more. She'd been buried under a run of projects that didn't land, and somewhere in there she'd started to believe the problem was her.","It wasn't. So we didn't hire an army. We used open source, patterns, templates, and AI. And we built. Ninety days later she had the thing Salesforce couldn't deliver in eighteen months, and it cost her about 40% less.","The numbers aren't the only part I remember. What I remember is the text she sent me after. It said, \"working with you was the best decision in my career.\"","That’s not self promotion. All I did was open the door for her.","For years those tools sat behind a vendor and a purchase order, and Karen figured that door was closed to her. It wasn't. Open source had been open the whole time, everyone invited to the party, and the moment Karen walked through it she stopped buying software and started building it."],"id":13,"words":221,"beats":[{"label":"Karen owns tech for a multi-billion-dollar company","keys":[["karen"],["owns tech"],["multi-billion"],["company"]]},{"label":"She'd spent millions from her own P&L with Salesforce to modernize and secure her data infrastructure; a year and a half later it still didn't work","keys":[["millions"],["p&l"],["salesforce"],["modernize"],["secure"],["data infrastructure"],["year and a half"],["didn't work"]]},{"label":"She walked into our first meeting like someone on a losing streak, bracing for one more","keys":[["first meeting"],["losing streak"],["bracing"]]},{"label":"Buried under projects that didn't land, she'd started to believe the problem was her","keys":[["buried"],["projects"],["didn't land"],["problem was her"]]},{"label":"It wasn't. We didn't hire an army; open source, patterns, templates, AI, and we built","keys":[["hire an army"],["open source"],["patterns"],["templates"],["built"]]},{"label":"Ninety days later she had what Salesforce couldn't deliver in eighteen months, at about 40% less","keys":[["ninety days"],["salesforce"],["eighteen months"],["40 percent"]]},{"label":"What I remember is her text: \"working with you was the best decision in my career\"","keys":[["text"],["best decision"],["career"]]},{"label":"That's not self-promotion; all I did was open the door","keys":[["self promotion"],["open the door"]]},{"label":"Those tools sat behind a vendor and a purchase order; Karen figured that door was closed to her","keys":[["vendor"],["purchase order"],["door"],["closed"]]},{"label":"It wasn't; open source had been open the whole time, everyone invited to the party; she stopped buying software and started building it","keys":[["open source"],["whole time"],["invited"],["party"],["stopped buying"],["started building"]]}],"title":"Karen: 18 months with Salesforce, 90 days with open source"},{"section":1,"paragraphs":["Over more than a decade since I left Tennessee, my hands have been on code, and ideas, and product direction that touch a big share of the Fortune 100's technology stacks. I will never be able to prove the exact number. A friend of mine who is a researcher in politics tells me, it doesn’t matter if it’s true, as long as people perceive it to be true. Still, I won’t lie to you and say “more than 75 percent of Fortune 100 companies use technology that I helped build.” But it's roughly around there.","And when I decided to leave AWS, and start my own company in April 2025, with a mission to educate the curious about AI and to connect people through technology, Dr. Mike Berry sent me a note. It said, \"I've been waiting for you to do this.\"","And so this is what I want to talk about. This is why I am glad to be standing here and for you all to be here with me today.","This is the group of people who can help build the positive side of the duality. This is the group of people who can help open doors for more people.","I want to show you three places where that choice, that opportunity is already in front of us, so we can all be better door openers.","[~17 min]"],"id":14,"words":228,"beats":[{"label":"Over a decade since Tennessee, my hands on code, ideas, and product direction across a big share of Fortune 100 tech stacks","keys":[["decade"],["tennessee"],["code"],["product direction"],["fortune 100"],["technology stacks"]]},{"label":"I can't prove the exact number; a researcher friend in politics says it doesn't matter if it's true, as long as people perceive it","keys":[["prove"],["exact number"],["researcher"],["politics"],["perceive"]]},{"label":"I won't say \"more than 75 percent of the Fortune 100 use tech I helped build,\" but it's roughly around there","keys":[["75 percent"],["fortune 100"],["helped build"],["roughly"]]},{"label":"I left AWS in April 2025 to start my company: educate the curious about AI, connect people through technology","keys":[["aws"],["april 2025"],["educate"],["curious"],["connect people"]]},{"label":"Dr. Mike Berry sent a note: \"I've been waiting for you to do this\"","keys":[["berry"],["note"],["waiting for you"]]},{"label":"This is what I want to talk about; glad to be standing here with you all today","keys":[["talk about"],["glad"],["here with me"]]},{"label":"This is the group that can build the positive side of the duality and open doors for more people","keys":[["positive side"],["duality"],["open doors"],["more people"]]},{"label":"Three places where that choice, that opportunity, is already in front of us, so we can all be better door openers","keys":[["three places"],["choice"],["in front of us"],["door openers"]]}],"title":"Fortune 100, Dr. Berry's note, and three places"},{"section":2,"paragraphs":["Let me show you a quote that I read recently that rings true to me:","\"Today we stand on the threshold of a new industrial revolution, the revolution of automation. This is a revolution bright with the hope of a new prosperity for labor and a new abundance for America. But it is also a revolution which carries the dark menace of industrial dislocation, increasing unemployment, and deepening poverty.\"","Anyone know who that was? Any guesses?","That's John F. Kennedy. Read it again and try to tell me it wasn't written for this moment. What does that tell us? What does it tell us that a quote from the early 60s is equally applicable today? I suspect if we looked hard enough—or asked AI to look for us—we could find something similar from the 1890s or 1920s. In prehistoric times, Thog probably lamented the downfall of his sledge business when Grog invented the wheel.","As Mark Twain said—probably apocryphal because most things attributed to him weren’t said by him—history doesn’t repeat, but it rhymes. And AI is one of those rhymes of history."],"id":15,"words":183,"beats":[{"label":"A quote I read recently that rings true to me","keys":[["quote"],["recently"],["rings true"]]},{"label":"\"Threshold of a new industrial revolution, the revolution of automation; bright with the hope of new prosperity for labor and new abundance for America\"","keys":[["threshold"],["industrial revolution"],["automation"],["prosperity"],["labor"],["abundance"],["america"]]},{"label":"\"But also a revolution which carries the dark menace of industrial dislocation, increasing unemployment, and deepening poverty\"","keys":[["dark menace"],["dislocation"],["unemployment"],["poverty"]]},{"label":"Anyone know who that was? Any guesses? That's John F. Kennedy; try to tell me it wasn't written for this moment","keys":[["guesses"],["kennedy"],["written for this moment"]]},{"label":"What does it tell us that a quote from the early 60s applies today? Look hard enough, or ask AI, and you'd find one from the 1890s or 1920s","keys":[["early 60s"],["1890s"],["1920s"],["ask ai"]]},{"label":"Prehistoric times: Thog lamented the downfall of his sledge business when Grog invented the wheel","keys":[["prehistoric"],["thog"],["sledge"],["grog"],["wheel"]]},{"label":"Mark Twain, probably apocryphal: history doesn't repeat, but it rhymes; AI is one of those rhymes of history","keys":[["mark twain"],["apocryphal"],["repeat"],["rhymes"]]}],"title":"The JFK quote, Thog and Grog, history rhymes"},{"section":2,"paragraphs":["We invent new things. Those new things bring change. Change is disruptive. That disruption has positive effects and negative effects. This is the inherent tension in change.","But humans don’t like change. Macro, we are very adaptable as a species. Micro, we individuals like our things the way we like them. I have a passion (borderline obsession) with creating memorable experiences for other people. But when my Amazon prime delivery with cupcake toppers for a birthday party is late, I mentally spiral over my vision not being perfect.","We may understand intellectually that change is inevitable. But when it happens to us—when it alters our routines, threatens something we worked hard to build, or removes a path we thought we could count on—it does not feel like progress. It feels like loss. And sometimes, these paths we were counting on were built over years, decades, or even a whole lifetime. What do we do then?","And that is important, because it is tempting for those of us who are excited about AI to dismiss resistance as ignorance. We tell people they need to understand the technology better. We tell them disruption has happened before. We tell them that, in the long run, innovation creates more prosperity.","And that’s true, but tell that to the person who lost their job."],"id":16,"words":219,"beats":[{"label":"We invent new things; they bring change; change is disruptive, with positive and negative effects; that's the inherent tension in change","keys":[["invent"],["change"],["disruptive"],["positive"],["negative"],["inherent tension"]]},{"label":"Humans don't like change: macro, we're adaptable as a species; micro, we like our things the way we like them","keys":[["humans"],["macro"],["adaptable"],["species"],["micro"],["the way we like them"]]},{"label":"I'm obsessed with creating memorable experiences, but a late Amazon Prime delivery of cupcake toppers sends me into a spiral","keys":[["memorable experiences"],["amazon prime"],["cupcake toppers"],["birthday"],["late"],["spiral"]]},{"label":"We understand intellectually that change is inevitable, but when it alters our routines, threatens what we built, or removes a path we counted on, it feels like loss, not progress","keys":[["intellectually"],["inevitable"],["routines"],["threatens"],["path"],["count on"],["progress"],["loss"]]},{"label":"Sometimes those paths took years, decades, or a whole lifetime; what do we do then?","keys":[["years"],["decades"],["lifetime"],["what do we do then"]]},{"label":"It's tempting for those excited about AI to dismiss resistance as ignorance: understand the tech better, disruption happened before, the long run creates prosperity","keys":[["tempting"],["dismiss"],["resistance"],["ignorance"],["understand the technology"],["happened before"],["long run"],["prosperity"]]},{"label":"That's true, but tell that to the person who lost their job","keys":[["tell that"],["lost their job"]]}],"title":"Change feels like loss, not progress"},{"section":2,"paragraphs":["The long run is an abstraction. People live in the present. They experience change one job, one bill, one community, and one decision at a time.","That is where leadership comes in. That is where people in this room with the power to resolve these tensions and open doors comes in.","The leaders in this room cannot make every consequence of AI positive. We cannot promise that no job will disappear, no community will face new costs, and no powerful institution will use AI in ways we wish it would not.","But we can influence how the change is experienced.","We can make the benefits more accessible. We can anticipate who is likely to carry the costs. We can help people move from one opportunity to the next. We can give more people a voice in the decisions that will shape their lives.","That is what it means to navigate the Duality of AI."],"id":17,"words":154,"beats":[{"label":"The long run is an abstraction; people live in the present, one job, one bill, one community, one decision at a time","keys":[["long run"],["abstraction"],["present"],["one job"],["one bill"],["one community"],["one decision"]]},{"label":"That's where leadership comes in: people in this room with the power to resolve these tensions and open doors","keys":[["leadership"],["this room"],["power"],["resolve"],["tensions"],["open doors"]]},{"label":"Leaders can't make every consequence positive; we can't promise no job disappears, no community faces new costs, no powerful institution misuses AI","keys":[["every consequence"],["promise"],["disappear"],["new costs"],["powerful institution"]]},{"label":"But we can influence how the change is experienced","keys":[["influence"],["experienced"]]},{"label":"Make the benefits more accessible; anticipate who carries the costs; help people move to the next opportunity; give more people a voice in the decisions shaping their lives","keys":[["benefits"],["accessible"],["anticipate"],["costs"],["opportunity"],["voice"],["decisions"]]},{"label":"That is what it means to navigate the Duality of AI","keys":[["navigate"],["duality of ai"]]}],"title":"The long run is an abstraction: where leadership comes in"},{"section":3,"paragraphs":["Let’s take the first great tension: jobs.","As with every major technological disruption, AI will eliminate jobs.","That is as inevitable as the decline of Thog’s sledge-making shop.","But equally inevitable is the creation of new work.","Grog needed someone to make wheels. Then someone had to build the cart. Someone had to repair it, improve it, sell it, and figure out what else could be moved once moving things became easier.","Sometimes, the skills transfer.","If you can make a sledge, probably you can make a cart. Perhaps you can learn to make a wheel.","But sometimes, the skills do not transfer easily.","When a robot automates an assembly-line job, it is technically possible that the displaced worker will retrain in advanced robotics or software engineering.","But “technically possible” is doing a lot of work there.","The evidence from previous waves of automation does not give us great confidence that everyone who loses a job will simply move into one of the new jobs being created. In 1950, almost 1.5 million people worked as telephone switchboard operators, either for the Bell system or in offices, hotels, and factories. By 1984 that number fell to 40,000. Today, it’s under 2,000."],"id":18,"words":200,"beats":[{"label":"First great tension, jobs: like every disruption, AI will eliminate jobs, as inevitable as the decline of Thog's sledge-making shop","keys":[["first great tension"],["eliminate"],["inevitable"],["thog"],["sledge"]]},{"label":"Equally inevitable: the creation of new work; Grog needed wheel makers, cart builders, repairers, sellers, and people to figure out what else to move","keys":[["equally inevitable"],["creation"],["new work"],["grog"],["wheels"],["cart"],["repair"],["sell"],["moved"]]},{"label":"Sometimes the skills transfer: a sledge maker can make a cart, maybe learn to make a wheel; but sometimes they don't transfer easily","keys":[["skills transfer"],["sledge"],["cart"],["wheel"],["transfer easily"]]},{"label":"A robot automates an assembly-line job; it's \"technically possible\" the displaced worker retrains in robotics or software engineering","keys":[["robot"],["assembly-line"],["technically possible"],["retrain"],["robotics"],["software engineering"]]},{"label":"\"Technically possible\" is doing a lot of work there","keys":[["technically possible"],["lot of work"]]},{"label":"Previous waves of automation don't give us confidence that everyone who loses a job moves into a new one","keys":[["previous waves"],["confidence"],["loses a job"],["new jobs"]]},{"label":"In 1950, almost 1.5 million telephone switchboard operators, for the Bell system or in offices, hotels, and factories","keys":[["1950"],["1.5 million","half million"],["telephone"],["switchboard"],["operators"],["bell"],["hotels"]]},{"label":"By 1984 that fell to 40,000; today it's under 2,000","keys":[["1984"],["40,000"],["today"],["2,000"]]}],"title":"Jobs: Thog's sledge shop and the switchboard operators"},{"section":3,"paragraphs":["These jobs disappeared as new ones were created—first people to design and build the automation systems, engineering jobs; then people to maintain that automation, like linemen and other electrical and mechanical repair jobs; then eventually it’s computerized, which is a whole new category of jobs, and so on. Those new jobs may require different skills. They may be located somewhere else. They may arrive years after the old job disappears. And they may go to entirely different people.","That is the part we lose when we talk only in aggregate.","There’s a quote that's misattributed to Stalin—which is great because I don’t really want to be up here quoting Josef Stalin—but the quote is apt. It goes something like: “A single death is a tragedy. A million deaths is a statistic.”","Economists may eventually tell us that the economy gained more jobs than it lost. But for an That can be true while for an individual worker who lost their job, She, her family, and her community are left worse off.","Economists treat say jobs as a statistic. But for an individual, they are mortgages, college tuitions, food on the table; and they are also identity, dignity, community, and a sense of value. y re not interchangeable units .A job is income.","But it can also be identity, dignity, expertise, community, and the belief that if you work hard, there will be a place for you."],"id":19,"words":236,"beats":[{"label":"New jobs came: first engineers to design and build the automation; then maintenance, linemen, electrical and mechanical repair; then it's computerized, a whole new category","keys":[["design and build"],["automation"],["engineering"],["maintain"],["linemen"],["electrical"],["mechanical"],["computerized"],["category"]]},{"label":"New jobs may require different skills, be located somewhere else, arrive years after the old job disappears, and go to entirely different people","keys":[["different skills"],["somewhere else"],["years after"],["different people"]]},{"label":"That's the part we lose when we talk only in aggregate","keys":[["lose"],["aggregate"]]},{"label":"The quote misattributed to Stalin, whom I'd rather not be quoting: a single death is a tragedy, a million deaths is a statistic","keys":[["misattributed"],["stalin"],["single death"],["tragedy"],["million deaths"],["statistic"]]},{"label":"Economists may say the economy gained more jobs than it lost, while the individual worker, her family, and her community are left worse off","keys":[["economists"],["gained"],["lost"],["individual worker"],["family"],["community"],["worse off"]]},{"label":"Economists treat jobs as a statistic; for an individual they're mortgages, college tuitions, food on the table, and identity, dignity, community, a sense of value","keys":[["statistic"],["mortgages"],["tuitions"],["food on the table"],["identity"],["dignity"],["sense of value"]]},{"label":"A job is income, but also identity, dignity, expertise, community, and the belief that if you work hard there will be a place for you","keys":[["income"],["identity"],["expertise"],["work hard"],["place for you"]]}],"title":"New jobs, somewhere else, for someone else; a job is income and identity"},{"section":3,"paragraphs":["And what happens when the disruption may begins early in a career? ier in a career than we expect.","AI is already capable of performing some of the basic work traditionally assigned to entry-level employees: initial research, first drafts, basic analysis, routine coding, and administrative coordination.","Those tasks may not be glamorous. But they are often how people learn.","The first rung of a career is where someone watches more experienced colleagues, makes manageable mistakes, begins developing judgment, and earns the opportunity to take on more consequential work.","If AI removes the first rung, how does the next generation reach the second? We told young people to get an education and prepare for the jobs of the future. They did. And today, 42% of recent college graduates are underemployed—working in jobs that don’t require degrees and another 6% are cannot find work at all.This is literally happening with Gen Z today [STAT ON UN/UNDEREMPLOYMENT]","And it’s not just the lack of opportunity. It’s deeper. A young person can do everything we told them to do—study hard, earn the credential, develop the right skills—and still discover that the bargain changed while they were preparing to enter it.","That’s a recipe for someone losing faith in the system. And why not?"],"id":20,"words":206,"beats":[{"label":"What happens when the disruption begins earlier in a career than we expect?","keys":[["disruption"],["early"],["career"],["expect"]]},{"label":"AI already does entry-level work: initial research, first drafts, basic analysis, routine coding, administrative coordination","keys":[["entry-level"],["initial research"],["first drafts"],["basic analysis"],["routine coding"],["administrative coordination"]]},{"label":"Not glamorous, but that's often how people learn","keys":[["glamorous"],["how people learn"]]},{"label":"The first rung: watch experienced colleagues, make manageable mistakes, develop judgment, earn more consequential work","keys":[["first rung"],["experienced colleagues"],["manageable mistakes"],["judgment"],["consequential"]]},{"label":"If AI removes the first rung, how does the next generation reach the second?","keys":[["removes the first rung"],["next generation"],["second"]]},{"label":"We told young people to get an education for the jobs of the future; they did; today 42% of recent grads are underemployed and another 6% can't find work; Gen Z today","keys":[["education"],["jobs of the future"],["42 percent"],["underemployed"],["degrees"],["6 percent"],["gen z"]]},{"label":"It's deeper than lack of opportunity: study hard, earn the credential, develop the skills, and still find the bargain changed while you were preparing to enter it","keys":[["deeper"],["study hard"],["credential"],["bargain"],["changed"]]},{"label":"That's a recipe for someone losing faith in the system; and why not?","keys":[["recipe"],["faith"],["system"],["why not"]]}],"title":"The first rung: entry-level work and Gen Z"},{"section":3,"paragraphs":["We should not answer that anxiety with a lecture about productivity.","We should answer it with honesty.","Some jobs will disappear. Some career paths will narrow. Some hard-earned skills will become less valuable. And the people with the least financial cushion, the weakest professional networks, and the least access to AI will have the hardest time adapting.","That is one side of the Duality.","But it is not the only side.","At the same time that AI is closing off some forms of work, it is dramatically lowering the threshold for creating others.","My dear friend Joyce is a Pilates instructor. She runs her own studio. She is talented, disciplined, and exceptionally capable — she has helped people like me, with severe disabling injuries, find mobility again.","But she never thought of herself as a software developer.","In one hour, I showed her how she could use AI to create an email agent.","I did not build anything for her. I did not hand her a finished answer.","I simply helped her see that a door she had assumed was closed was now open."],"id":21,"words":184,"beats":[{"label":"Don't answer that anxiety with a lecture about productivity; answer it with honesty","keys":[["anxiety"],["lecture"],["productivity"],["honesty"]]},{"label":"Some jobs will disappear, some career paths narrow, some hard-earned skills become less valuable","keys":[["disappear"],["narrow"],["hard-earned"],["less valuable"]]},{"label":"The least financial cushion, weakest professional networks, least access to AI: the hardest time adapting","keys":[["financial cushion"],["professional networks"],["access to ai"],["adapting"]]},{"label":"That's one side of the duality; but not the only side","keys":[["one side"],["duality"],["only side"]]},{"label":"Even as AI closes off some work, it dramatically lowers the threshold for creating other work","keys":[["closing off"],["dramatically"],["lowering the threshold"],["creating others"]]},{"label":"My dear friend Joyce, a Pilates instructor with her own studio; talented, disciplined, exceptionally capable; she helped people like me with severe disabling injuries find mobility again","keys":[["joyce"],["pilates"],["studio"],["talented"],["disabling injuries"],["mobility"]]},{"label":"But she never thought of herself as a software developer","keys":[["software developer"],["never thought"]]},{"label":"In one hour I showed her how she could use AI to create an email agent","keys":[["one hour"],["email agent"]]},{"label":"I didn't build anything or hand her a finished answer; I helped her see that a door she assumed was closed was now open","keys":[["did not build","didn't build"],["finished answer"],["door"],["assumed"],["closed"],["open"]]}],"title":"Answer with honesty; the other side of the duality: Joyce"},{"section":3,"paragraphs":["Joyce started as a one-woman shop teaching one-on-one lessons. Her business has since grown into a full gym — a room of clients, multiple teachers, and genuinely complicated schedules. The hour we spent together was on a Claude agent to help her with email.","Two weeks later, I opened her scheduling app to book a class and noticed something new. I could type: book me in the Tuesday 8am class for the next ten weeks.","And it just happened.","No hundred clicks. One sentence in English. She had gone from an email agent to connecting Claude and MCP servers into her business's actual stack.","I never asked her to build that. I only showed her how.","Now I save my time and show up differently at her studio. And in class, I hear other clients talking about the new feature and how much it helps them too.","It was something useful that had never existed, built by someone who had never thought the word \"builder\" applied to her.","That is also real.","AI can expand the range of things people are capable of doing. It can allow someone who understands a problem—but lacks technical vocabulary, formal credentials, or a large budget—to begin creating a solution."],"id":22,"words":205,"beats":[{"label":"Joyce went from a one-woman shop with one-on-one lessons to a full gym: a room of clients, multiple teachers, complicated schedules","keys":[["one-woman"],["one-on-one"],["full gym"],["clients"],["teachers"],["schedules"]]},{"label":"The hour we spent together was on a Claude agent to help with her email","keys":[["hour"],["claude agent"],["email"]]},{"label":"Two weeks later her scheduling app let me type \"book me in the Tuesday 8am class for the next ten weeks,\" and it just happened","keys":[["two weeks"],["scheduling app"],["tuesday"],["8am"],["ten weeks"],["just happened"]]},{"label":"No hundred clicks; one sentence in English; she'd gone from an email agent to connecting Claude and MCP servers into her business's actual stack","keys":[["hundred clicks"],["one sentence"],["english"],["mcp"],["actual stack"]]},{"label":"I never asked her to build that; I only showed her how","keys":[["never asked"],["showed her how"]]},{"label":"Now I save my time and show up differently at her studio; other clients talk about how much the new feature helps them too","keys":[["save my time"],["show up differently"],["studio"],["clients"],["new feature"]]},{"label":"Something useful that had never existed, built by someone who never thought the word \"builder\" applied to her; that is also real","keys":[["useful"],["never existed"],["builder"],["applied"],["also real"]]},{"label":"AI expands what people are capable of: someone who understands a problem but lacks technical vocabulary, formal credentials, or a large budget can begin creating a solution","keys":[["expand"],["capable"],["understands a problem"],["technical vocabulary"],["credentials"],["budget"],["solution"]]}],"title":"Joyce's scheduling app: one sentence in English"},{"section":3,"paragraphs":["But people will not automatically discover that potential simply because the technology exists.","AI is not magic opportunity dust. We cannot scatter it across an organization and assume everyone will benefit.","Joyce did not need me to build her app. But she did need someone to show her that she could. She did need someone to open the door for her.","That is the leadership responsibility inside this tension.","Who in your organization could do more meaningful work if someone made these new capabilities accessible to them?","Who has insight but not the title? Who understands the problem but lacks the technical vocabulary? Who has never been invited to see themselves as a builder?","And at the same time, who is standing in front of a closing door with no clear path to the next one?","Opening doors means doing both: giving people genuine access to the new tools and helping people navigate the disruption those tools create.","Access without transition is abandonment.","But protection without access is exclusion."],"id":23,"words":169,"beats":[{"label":"People won't automatically discover that potential just because the technology exists","keys":[["automatically"],["discover"],["potential"],["technology exists"]]},{"label":"AI is not magic opportunity dust to scatter across an organization","keys":[["magic opportunity dust"],["scatter"],["organization"]]},{"label":"Joyce didn't need me to build her app; she needed someone to show her that she could, to open the door; that's the leadership responsibility inside this tension","keys":[["joyce"],["build her app"],["show her"],["open the door"],["leadership responsibility"]]},{"label":"Who in your organization could do more meaningful work if these new capabilities were made accessible to them?","keys":[["organization"],["meaningful work"],["capabilities"],["accessible"]]},{"label":"Who has insight but not the title, understands the problem but lacks the vocabulary, has never been invited to see themselves as a builder?","keys":[["insight"],["title"],["vocabulary"],["invited"],["builder"]]},{"label":"And who is standing in front of a closing door with no clear path to the next one?","keys":[["closing door"],["clear path"],["next one"]]},{"label":"Opening doors means doing both: genuine access to the new tools, and help navigating the disruption those tools create","keys":[["doing both"],["genuine access"],["new tools"],["navigate"],["disruption"]]},{"label":"Access without transition is abandonment; protection without access is exclusion","keys":[["transition"],["abandonment"],["protection"],["exclusion"]]}],"title":"Not magic opportunity dust: the leadership responsibility"},{"section":4,"paragraphs":["The second great tension, data centers, is about who benefits—and who pays.","AI has the potential to create extraordinary value. It can help businesses grow, enable entrepreneurs to compete, accelerate scientific research, improve public services, and bring entirely new investment or products to places and communities that stand to benefit.","But economic growth does not automagically equate to community prosperity.","A company can become more productive while employing fewer people locally. Small businesses can gain powerful new capabilities and simultaneously find themselves competing against companies with vastly greater access to data and computing power. And the physical infrastructure required to power AI can bring new investment while placing new demands on land, electricity, water, and noise pollutionpublic resources. This is the data center debate that is raging today.","There Those are real benefits and real costs. That is the tension. ey are not mutually exclusive.","But tAnd this tension demands we acknowledge the responsibility that comes with those benefits.","These outcomes are not mutually exclusive.","A community can gain investment and still feel strained by it—again, data centers are not simply a cost-free economic boon. A business can become more productive while its workers feel less secure. A new technology can create real opportunity without making that opportunity visible or accessible to the people who live nearby.","That is the tension. And we need to be honest about it.","Will AI help more communities build durable prosperity? Or will its greatest benefits pass through them—or pass them by—while they absorb much of the disruption?"],"id":24,"words":254,"beats":[{"label":"The second great tension, data centers: who benefits, and who pays","keys":[["second great tension"],["data centers"],["benefits"],["pays"]]},{"label":"AI can create extraordinary value: businesses grow, entrepreneurs compete, research accelerates, public services improve, new investment reaches communities that stand to benefit","keys":[["extraordinary value"],["businesses grow"],["entrepreneurs"],["scientific research"],["public services"],["investment"],["communities"]]},{"label":"But economic growth does not automagically equate to community prosperity","keys":[["economic growth"],["automagically"],["community prosperity"]]},{"label":"A company gets more productive while employing fewer people locally; small businesses gain capabilities yet compete against companies with vastly more data and computing power","keys":[["productive"],["fewer people"],["locally"],["small businesses"],["capabilities"],["competing"],["computing power"]]},{"label":"AI's physical infrastructure brings investment while demanding land, electricity, water, and creating noise; that's the data center debate raging today","keys":[["physical infrastructure"],["land"],["electricity"],["water"],["noise"],["data center debate"]]},{"label":"Real benefits and real costs; that is the tension; it demands we acknowledge the responsibility that comes with the benefits","keys":[["real benefits"],["real costs"],["tension"],["responsibility"]]},{"label":"Not mutually exclusive: a community can gain investment and still feel strained, data centers aren't a cost-free boon, workers can feel less secure, opportunity can be invisible to the people nearby","keys":[["mutually exclusive"],["strained"],["cost-free"],["boon"],["less secure"],["visible"],["nearby"]]},{"label":"That's the tension; be honest: will AI help communities build durable prosperity, or will its benefits pass through them or pass them by while they absorb the disruption?","keys":[["honest"],["durable prosperity"],["pass through"],["pass them by"],["absorb"],["disruption"]]}],"title":"Data centers: who benefits and who pays"},{"section":4,"paragraphs":["Those questions are not anti-business or anti-technology. They are fundamental business questions.","What will this investment require? What value will it create? Who will be able to participate?","Henry Ford was an advocate for paying his workers a good wage because he knew the way to sell more cars was to facilitate more people with the wherewithal to buy them.","This tension demands we acknowledge the responsibility that comes with those benefits.","Responsible business leaders want AI investment to leave communities stronger than it found them. Because this creates a virtuous cycle of opportunity for the business.","That can mean creating pathways into new kinds of work rather than simply importing talent. It can mean helping local businesses adopt AI rather than allowing only the largest companies to capture its productivity gains. It can mean partnering with schools, universities, and workforce programs so that the capabilities created locally remain local.","And yes, it also means paying attention to infrastructure.","For many people, a data center is the first part of the AI economy they can actually see.","The model is abstract. The algorithm is invisible. But the building at the edge of town is concrete."],"id":25,"words":195,"beats":[{"label":"Not anti-business or anti-technology; fundamental business questions: what will it require, what value will it create, who can participate?","keys":[["anti-business"],["anti-technology"],["fundamental"],["require"],["value"],["participate"]]},{"label":"Henry Ford paid good wages because selling more cars meant more people with the wherewithal to buy them","keys":[["henry ford"],["wage"],["cars"],["wherewithal"],["buy"]]},{"label":"This tension demands we acknowledge the responsibility that comes with the benefits; responsible leaders want AI investment to leave communities stronger; a virtuous cycle for the business","keys":[["responsibility"],["benefits"],["responsible"],["stronger"],["virtuous cycle"]]},{"label":"Pathways into new kinds of work rather than importing talent; help local businesses adopt AI rather than only the largest capturing the productivity gains","keys":[["pathways"],["importing talent"],["local businesses"],["adopt"],["largest companies"],["productivity gains"]]},{"label":"Partner with schools, universities, and workforce programs so capabilities created locally remain local","keys":[["schools"],["universities"],["workforce programs"],["remain local"]]},{"label":"And yes, pay attention to infrastructure","keys":[["infrastructure"],["attention"]]},{"label":"For many people the data center is the first part of the AI economy they can actually see; the model is abstract, the algorithm invisible, the building at the edge of town is concrete","keys":[["data center"],["first part"],["ai economy"],["abstract"],["invisible"],["edge of town"],["concrete"]]}],"title":"Fundamental business questions: Henry Ford and local pathways"},{"section":4,"paragraphs":["A data center can expand the tax base, support construction, strengthen infrastructure, and connect a region to one of the most important technological transformations of our time.","It can also draw enormous amounts of electricity, occupy land, use water, create noise, and require significant public investment.","Residents may reasonably ask whether the long-term benefits will match the commitments their community is being asked to make. They are not necessarily rejecting progress. They are asking what progress will mean for them.","The answer is not to stop building. It is to build in a way that earns and sustains community support and trust. That means listening before the major decisions have already been made. It means being candid about costs as well as benefits. It means investing in the infrastructure a project requires rather than quietly shifting those burdens onto everyone else.","And it means asking what else we can build."],"id":26,"words":150,"beats":[{"label":"A data center can expand the tax base, support construction, strengthen infrastructure, and connect a region to one of the most important transformations of our time","keys":[["tax base"],["construction"],["infrastructure"],["region"],["transformations"]]},{"label":"It can also draw enormous electricity, occupy land, use water, create noise, and require significant public investment","keys":[["electricity"],["occupy land"],["water"],["noise"],["public investment"]]},{"label":"Residents reasonably ask whether long-term benefits match the commitments asked of their community; not rejecting progress, asking what progress will mean for them","keys":[["residents"],["long-term"],["commitments"],["rejecting progress"],["mean for them"]]},{"label":"The answer isn't to stop building; build in a way that earns and sustains community support and trust","keys":[["stop building"],["earns"],["sustains"],["support"],["trust"]]},{"label":"Listen before the major decisions are made; be candid about costs as well as benefits; invest in the infrastructure a project requires rather than quietly shifting burdens onto everyone else","keys":[["listening"],["major decisions"],["candid"],["costs"],["investing"],["quietly shifting"],["burdens"]]},{"label":"And it means asking what else we can build","keys":[["what else"],["build"]]}],"title":"What a data center brings and costs; build to earn trust"},{"section":4,"paragraphs":["Dr. Katie Schuman and I were doing our PhD research at the University of Tennessee at the same time. I left for Silicon Valley. Dr. Schuman stayed and became one of the leading neuromorphic-computing researchers in the world.","Neuromorphic computing uses chips designed more like a brain than a conventional processor. For our purposes today, the essential point is power: certain learning tasks can be performed using a fraction of the energy required by standard approaches.","I toured Dr. Schuman’s lab. Her summer research students demonstrated chips learning the classic pole-balancing problem. Using less than 10% of the energy required using today’s GPUs. I watched a different computing future take shape on a sliver of the power—right here in Tennessee.","Then they handed me a tray of the early chips.","And I dropped them.","My stomach fell through the floor. I thought I had just dropped millions of dollars of research.","The students looked at me and said, “Oh, don’t worry. Those are from years ago. We’re already generations past those. We wouldn’t hand you one of the new ones.”","Which made me feel better and worse at exactly the same time.","But those chips represented something important."],"id":27,"words":198,"beats":[{"label":"Dr. Katie Schuman and I did our PhD research at UT at the same time; I left for Silicon Valley; she stayed and became a leading neuromorphic-computing researcher","keys":[["schuman","schumann","shuman"],["phd"],["silicon valley"],["stayed"],["neuromorphic","neuro morphic"],["researchers"]]},{"label":"Neuromorphic chips are designed more like a brain than a conventional processor","keys":[["chips"],["brain"],["conventional processor"]]},{"label":"The essential point is power: certain learning tasks use a fraction of the energy of standard approaches","keys":[["power"],["learning tasks"],["fraction"],["energy"],["standard approaches"]]},{"label":"In her lab, summer students showed chips learning pole-balancing using under 10% of the energy of today's GPUs; a different computing future on a sliver of the power, right here in Tennessee","keys":[["lab"],["summer"],["students"],["pole-balancing"],["10 percent"],["gpus","gpu"],["sliver"],["tennessee"]]},{"label":"Then they handed me a tray of the early chips, and I dropped them","keys":[["tray"],["early chips"],["dropped"]]},{"label":"My stomach fell through the floor; I thought I'd dropped millions of dollars of research","keys":[["stomach"],["floor"],["millions of dollars"],["research"]]},{"label":"The students: \"Don't worry, those are from years ago, we're generations past those, we wouldn't hand you one of the new ones\"","keys":[["don't worry"],["years ago"],["generations"],["new ones"]]},{"label":"Better and worse at exactly the same time; but those chips represented something important","keys":[["better"],["worse"],["same time"],["represented"],["important"]]}],"title":"Katie Schuman's neuromorphic chips, and the tray I dropped"},{"section":4,"paragraphs":["We sometimes talk about the demands created by AI as if they are simply the unavoidable price of progress.","They are not.","They are shaped by decisions: what we fund, what we build, which technical approaches we pursue, and whose needs we consider along the way.","We can invest in more efficient architectures. We can support local research. We can build smaller and more specialized models. We can prepare local workers and businesses to participate. We can ensure that new infrastructure strengthens the systems communities will continue relying on long after construction is complete.","The leadership responsibility inside this tension is not to choose between innovation and community.","It is to connect them.","The strongest AI investments will not simply be located in a community. They will expand what that community is capable of doing.","They will create opportunities that last beyond the initial construction project or corporate announcement. They will help more local businesses compete, more workers develop valuable skills, and more people see a place for themselves in the future being built around them.","That is not charity.","It is stewardship. It is good business. It is opening doors for communities. And it is how economic growth becomes durable community prosperity.","[~35 min]"],"id":28,"words":203,"beats":[{"label":"We talk about the demands of AI as the unavoidable price of progress; they are not","keys":[["demands"],["unavoidable"],["price of progress"],["they are not"]]},{"label":"They are shaped by decisions: what we fund, what we build, which technical approaches we pursue, whose needs we consider","keys":[["shaped by decisions"],["fund"],["build"],["technical approaches"],["whose needs"]]},{"label":"Invest in efficient architectures, support local research, build smaller specialized models, prepare local workers and businesses to participate, ensure infrastructure strengthens the systems communities rely on after construction","keys":[["efficient architectures"],["local research"],["smaller"],["specialized models"],["local workers"],["participate"],["strengthens"],["construction"]]},{"label":"The leadership responsibility isn't to choose between innovation and community; it is to connect them","keys":[["leadership responsibility"],["innovation"],["community"],["connect them"]]},{"label":"The strongest AI investments won't simply be located in a community; they'll expand what it's capable of","keys":[["strongest"],["located"],["expand"],["capable"]]},{"label":"Opportunities that last beyond the construction project or corporate announcement: local businesses compete, workers gain valuable skills, people see a place for themselves in the future","keys":[["last beyond"],["construction project"],["corporate announcement"],["compete"],["valuable skills"],["place for themselves"]]},{"label":"Not charity: stewardship, good business, opening doors for communities; how economic growth becomes durable community prosperity","keys":[["charity"],["stewardship"],["good business"],["opening doors"],["durable"],["prosperity"]]}],"title":"Demands shaped by decisions; connect innovation and community"},{"section":5,"paragraphs":["And that brings us to the third great tension: control. We name this open versus closed source in software engineering communities.","Who gets to build with AI? Who gets to inspect it, question it, adapt it, and decide how it is used? And who retains agency over the parts of their lives that AI increasingly touches?","This tension can be narrow.","Will AI democratize software development, allowing far more people to build tools and solve problems more easily and more effectively than before?","Or will the essential technology be controlled by a handful of companies, with everyone else renting access on terms they did not set, having to forfeit their data, their privacy, their deeply personal thoughts?","[ZUCK QUOTE]","“You’re going to get a handful of companies that run these closed models that are going to be in control of the APIs and therefore able to tell you what you can build.”","But the tension can also be much wider.","Will AI give individuals more control over their time, knowledge, work, and choices? In short, will AI give people more control over their own lives?","Or will it give institutions more power to monitor people, predict them, influence them, and make decisions about them?"],"id":29,"words":202,"beats":[{"label":"The third great tension: control, what software engineers call open versus closed source","keys":[["third great tension"],["control"],["open versus closed"]]},{"label":"Who gets to build with AI, inspect it, question it, adapt it, decide how it's used, and who retains agency over their lives?","keys":[["build"],["inspect"],["question"],["adapt"],["agency"]]},{"label":"The narrow version: will AI democratize software development so far more people can build tools and solve problems?","keys":[["narrow"],["democratize"],["software development"],["more people"],["solve problems"]]},{"label":"Or a handful of companies controlling it, everyone else renting access on terms they didn't set, forfeiting their data, privacy, and personal thoughts?","keys":[["handful of companies"],["renting access"],["terms"],["forfeit"],["privacy"],["personal thoughts"]]},{"label":"The Zuckerberg quote: a handful of companies running closed models will control the APIs and tell you what you can build","keys":[["handful of companies"],["closed models"],["control of the apis"],["what you can build"]]},{"label":"The wider version: will AI give individuals more control over their time, knowledge, work, choices, their own lives?","keys":[["wider"],["individuals"],["control"],["time"],["knowledge"],["choices"],["own lives"]]},{"label":"Or give institutions more power to monitor people, predict them, influence them, and make decisions about them?","keys":[["institutions"],["monitor"],["predict"],["influence"],["decisions"]]}],"title":"Control: open versus closed, the narrow and the wide question"},{"section":5,"paragraphs":["You have all likely heard the term “surveillance capitalism.” In that world—for which the technology already exists—the institutions in power do not simply observe what we do. They collect the traces of our lives, use them to infer who we are, predict what we might do next, and shape the choices placed in front of us.","AI makes that system far more powerful.","It can draw conclusions from information we never realized we had provided. It can infer our preferences, vulnerabilities, relationships, health concerns, emotional states, and likely behavior. It can determine what information we see, how that information is framed, which opportunities are presented to us, and which are quietly withheld.","And increasingly, it can do more than influence a decision. It can make the decision—or take the action—on our behalf. And it can do so giving us the illusion of control. This is some Black Mirror shit, but it’s very real.","[ALTMAN QUOTE]","“Altman: \"We see a future where intelligence is a utility, like electricity or water, and people buy it from us on a meter.\"","Believe me, I’m not an alarmist, but this kind of quote should give most sane people pause.","And again, I think the wrong action is to put a pause on AI, per se. Rather, we should pause to think about our approach to AI. Is it opening doors or closing them?"],"id":30,"words":227,"beats":[{"label":"Surveillance capitalism: institutions don't simply observe; they collect the traces of our lives, infer who we are, predict what we'll do next, and shape the choices in front of us","keys":[["surveillance capitalism"],["observe"],["traces"],["infer"],["predict"],["shape the choices"]]},{"label":"AI makes that far more powerful: conclusions from information we never knew we gave; our preferences, vulnerabilities, relationships, health, emotional states, likely behavior","keys":[["far more powerful"],["conclusions"],["preferences"],["vulnerabilities"],["relationships"],["health"],["emotional"],["behavior"]]},{"label":"It determines what information we see, how it's framed, which opportunities are presented and which are quietly withheld","keys":[["what information we see"],["framed"],["opportunities"],["withheld"]]},{"label":"Increasingly it makes the decision or takes the action on our behalf, giving us the illusion of control; Black Mirror, but very real","keys":[["make the decision"],["take the action"],["illusion of control"],["black mirror"],["very real"]]},{"label":"The Altman quote: intelligence as a utility, like electricity or water, bought from us on a meter","keys":[["altman"],["utility"],["electricity"],["water"],["meter"]]},{"label":"I'm not an alarmist, but that kind of quote should give sane people pause","keys":[["alarmist"],["sane"],["pause"]]},{"label":"The wrong move is a pause on AI; pause instead to think about our approach: is it opening doors or closing them?","keys":[["pause on ai"],["approach"],["opening doors"],["closing"]]}],"title":"Surveillance capitalism, Black Mirror, and intelligence on a meter"},{"section":5,"paragraphs":["Here’s the part where I get to talk about what really gets me excited: Open Source.","The architecture of a technology helps determine the distribution of power around it. I have spent a significant part of my career in open source technology.","Open source does not mean that everything must be free. And it does not mean that anyone can wander in, change the code, and instantly push that change out to everyone who depends on it.","What it does mean is that the underlying code can be examined, tested, challenged, improved, and adapted. More people can understand the foundations on which they depend. They can identify weaknesses, question assumptions, modify a tool for their own needs, and create things the people at the center never anticipated.","On the flip side, closed is not a synonym for “bad.”","Closed systems can offer real benefits: integration, consistency, technical support, simplicity, and clearer lines of accountability. Anyone who is an Apple user knows what I’m talking about. Apple controls the entire experience, and much of the time, that is precisely why the experience works so well. It’s a beautiful walled garden on the inside. If you’re into that sorta thing."],"id":31,"words":198,"beats":[{"label":"The part where I get to talk about what really excites me: open source","keys":[["excited"],["open source"]]},{"label":"The architecture of a technology helps determine the distribution of power around it; a big part of my career has been open source","keys":[["architecture"],["distribution of power"],["career"],["open source"]]},{"label":"Open source doesn't mean everything is free, or that anyone can wander in, change the code, and instantly push it to everyone who depends on it","keys":[["free"],["wander in"],["change the code"],["push"],["depends"]]},{"label":"It means the code can be examined, tested, challenged, improved, adapted; people understand their foundations, find weaknesses, question assumptions, modify tools, create what the center never anticipated","keys":[["examined"],["tested"],["challenged"],["improved"],["adapted"],["foundations"],["weaknesses"],["assumptions"],["modify"],["anticipated"]]},{"label":"On the flip side, closed is not a synonym for bad","keys":[["flip side"],["closed"],["synonym"],["bad"]]},{"label":"Closed systems offer integration, consistency, technical support, simplicity, clearer lines of accountability","keys":[["integration"],["consistency"],["technical support"],["simplicity"],["accountability"]]},{"label":"Apple users know: Apple controls the entire experience, and that's often precisely why it works so well; a beautiful walled garden, if you're into that sorta thing","keys":[["apple"],["entire experience"],["works so well"],["walled garden"],["sorta thing"]]}],"title":"Open source explained; closed is not bad (Apple's walled garden)"},{"section":5,"paragraphs":["The risk calculus changes, however, when the closed system is not simply operating our phone or laptop, but increasingly mediating how we understand the world and make decisions within it.","AI can influence what information we receive, which sources we trust, how choices are framed, and what actions are taken on our behalf. When systems with that much influence cannot be meaningfully examined, challenged, modified, or left, we are no longer making a simple trade-off between openness and convenience. We are deciding how much control over our lives we are willing to place inside systems controlled by someone else. On a good day, that is simply maximizing their extractive capabilities over our lives—and bank accounts. On a bad day…it’s potentially much worse.","But the intentions of the people holding that control are almost beside the point. They may be thoughtful. They may be responsible. They may sincerely believe they are acting in the public interest. I can find quotes from Zuckerberg, Altman, even Elon saying as much. But when we cede that much control to so few people, we create a vulnerability. We become dependent on their continued judgment, their continued restraint, their continued competence, and their continued alignment with our interests.","We become dependent on business models we did not choose, rules we did not write, and systems we may not be able to inspect or leave. The vulnerability exists even if no one intends to exploit it.","That is why concentration is not neutral."],"id":32,"words":246,"beats":[{"label":"The risk calculus changes when the closed system isn't just operating our phone or laptop but mediating how we understand the world and make decisions in it","keys":[["risk calculus"],["phone"],["laptop"],["mediating"],["understand the world"],["decisions"]]},{"label":"AI influences what information we receive, which sources we trust, how choices are framed, what actions are taken on our behalf","keys":[["information"],["sources"],["trust"],["framed"],["actions"]]},{"label":"When systems that influential can't be examined, challenged, modified, or left, it's no longer openness versus convenience; we're deciding how much control over our lives to place in systems someone else controls","keys":[["examined"],["challenged"],["modified"],["left"],["openness"],["convenience"],["control over our lives"],["someone else"]]},{"label":"On a good day that maximizes their extraction from our lives and bank accounts; on a bad day, potentially much worse","keys":[["good day"],["extractive"],["bank accounts"],["bad day"],["much worse"]]},{"label":"The intentions of the people in control are almost beside the point: thoughtful, responsible, sincerely in the public interest; I can find such quotes from Zuckerberg, Altman, even Elon","keys":[["intentions"],["beside the point"],["thoughtful"],["responsible"],["public interest"],["zuckerberg"],["altman"],["elon"]]},{"label":"Ceding that much control to so few creates a vulnerability: dependence on their judgment, restraint, competence, and alignment with our interests","keys":[["cede"],["vulnerability"],["dependent"],["judgment"],["restraint"],["competence"],["alignment"]]},{"label":"Dependent on business models we didn't choose, rules we didn't write, systems we can't inspect or leave; the vulnerability exists even if no one intends to exploit it","keys":[["business models"],["rules"],["inspect"],["leave"],["exploit"]]},{"label":"That is why concentration is not neutral","keys":[["concentration"],["neutral"]]}],"title":"When the closed system mediates our world: concentration is not neutral"},{"section":5,"paragraphs":["And if AI were just another tool sitting at the edge of our lives, it wouldn’t matter. But increasingly, AI is becoming an intermediary—not just between us and information, like Google. But between us and how that information is leveraged at the individual and societal levels. Google often got in trouble in the EU for what was effectively a monopoly on the distribution of (and therefore access to) information.","This is that, on steroids.","We ask AI in chat what is true. We ask AI what matters. We ask it to summarize arguments, evaluate choices, recommend actions, organize our work, draft our words—how much of this keynote do you think I wrote and how much is sitting in OpenAI’s data centers?","And increasingly, we ask AI to act on our behalf.","That can be extraordinarily empowering. Remember J’s charity golf app she built on Loveable?","AI can give a person access to knowledge that once required years of specialized education. It can help someone interrogate an unfamiliar subject, compare competing claims, identify gaps in an argument, or reason through a problem from multiple perspectives. It can allow people to create software, analyze data, understand a medical document, prepare for an important conversation, or navigate a complicated institution that previously felt inaccessible.","Used well, AI can increase our capacity to think and act.","It can give people more command over their time, more confidence in their choices, and more ability to solve the problems directly in front of them."],"id":33,"words":248,"beats":[{"label":"If AI were just a tool at the edge of our lives it wouldn't matter; but it's becoming an intermediary, not just between us and information like Google, but between us and how information is leveraged","keys":[["edge of our lives"],["wouldn't matter"],["intermediary"],["information"],["google"],["leveraged"]]},{"label":"Google got in trouble in the EU for what was effectively a monopoly on the distribution of information; this is that, on steroids","keys":[["eu"],["monopoly"],["distribution"],["steroids"]]},{"label":"We ask AI what is true and what matters; to summarize, evaluate, recommend, organize, draft; how much of this keynote did I write versus OpenAI's data centers?","keys":[["what is true"],["matters"],["summarize"],["evaluate"],["recommend"],["draft"],["keynote"],["openai","open ai"]]},{"label":"And increasingly we ask AI to act on our behalf","keys":[["act on our behalf"]]},{"label":"That can be extraordinarily empowering; remember J's charity golf app built on Loveable?","keys":[["empowering"],["charity golf","jay"],["loveable","lovable"]]},{"label":"Access to knowledge that once required years of specialized education: interrogate a subject, compare claims, find gaps in an argument, reason from multiple perspectives","keys":[["knowledge"],["specialized education"],["interrogate"],["compare"],["gaps"],["perspectives"]]},{"label":"Create software, analyze data, understand a medical document, prepare for an important conversation, navigate an institution that felt inaccessible","keys":[["create software"],["analyze data"],["medical document"],["conversation"],["institution"],["inaccessible"]]},{"label":"Used well, AI increases our capacity to think and act: more command over our time, more confidence in our choices, more ability to solve what's in front of us","keys":[["capacity"],["think and act"],["command"],["confidence"],["solve"]]}],"title":"AI as intermediary: Google on steroids, and the empowering side"},{"section":5,"paragraphs":["But the same technology can also weaken the very capabilities it appears to expand.","If we routinely ask AI what to think before we have tried to think, we risk outsourcing more than a task. We risk outsourcing the struggle through which judgment develops.","Analytical cognition is not simply the production of an answer. It is the process of examining evidence, tolerating uncertainty, recognizing assumptions, changing our minds, and understanding why we believe what we believe.","AI can strengthen that process by challenging us, extending us, and helping us see what we missed.","Or it can short-circuit the process by giving us an answer that sounds complete before our own thinking has begun.","[RESEARCH FROM RAVEN, IF IT’S BEEN RELEASED]","And once again, convenience can conceal a transfer of control.","If a system chooses which sources to summarize, which arguments to emphasize, which options to present, and which conclusions appear reasonable, then it is helping shape our understanding of the world—even when it feels as though it is merely helping us save time.","That does not mean we should reject AI assistance, much less AI in general. It means we need to remain conscious of what we are delegating. Are we asking AI to help us reason or asking it to reason for us? Are we using it to expand our choices or allowing it to narrow them without our awareness? Are we gaining greater control over our lives or becoming more dependent on systems we cannot understand, challenge, or leave?","This is the tension."],"id":34,"words":248,"beats":[{"label":"But the same technology can weaken the very capabilities it appears to expand","keys":[["weaken"],["capabilities"],["expand"]]},{"label":"If we ask AI what to think before we've tried to think, we outsource more than a task: the struggle through which judgment develops","keys":[["what to think"],["outsourcing"],["struggle"],["judgment"]]},{"label":"Analytical cognition isn't just producing an answer: examining evidence, tolerating uncertainty, recognizing assumptions, changing our minds, understanding why we believe what we believe","keys":[["analytical cognition"],["evidence"],["uncertainty"],["assumptions"],["changing our minds"],["believe"]]},{"label":"AI can strengthen that by challenging and extending us, or short-circuit it with an answer that sounds complete before our own thinking has begun","keys":[["strengthen"],["challenging"],["extending"],["short-circuit"],["sounds complete"],["begun"]]},{"label":"Once again, convenience can conceal a transfer of control","keys":[["convenience"],["conceal"],["transfer of control"]]},{"label":"If a system chooses which sources, arguments, options, and conclusions appear reasonable, it shapes our understanding of the world even when it feels like it's merely saving us time","keys":[["sources"],["arguments"],["options"],["conclusions"],["understanding"],["save time"]]},{"label":"Not a reason to reject AI, but to stay conscious of what we're delegating: help us reason or reason for us? expand our choices or narrow them? gaining control or growing dependent? this is the tension","keys":[["reject"],["conscious"],["delegating"],["reason for us"],["expand"],["narrow"],["dependent"],["tension"]]}],"title":"Outsourcing the struggle: convenience conceals a transfer of control"},{"section":5,"paragraphs":["Open source is one response to that tension. It is not the only response, but it is a response I happen to love that you also touch daily, so I couldn’t stand in front of a room full of leaders and not plant that flag.","Open source, open access, or a well-governed proprietary approach—all can work, as long as they guarantee some fundamentals.","Privacy protections matter. Transparency matters. Competition and interoperability matter. The ability to move and retain control over our own data and our work matter.","None of these is the ultimate objective, but they are a means to that end.","Where the objective at the end is agency.","You know when you download an app, you have to read all those terms and conditions, then check a box saying you agreed to the 115 pages of terms and conditions which you definitely read all of before clicking that you agree.","Raise your hand if you have ever, before clicking that box, successfully called Google, or Apple, or Meta to negotiate the terms of that agreement? No one? No one’s negotiated how they can access, store, and share your data?","This is a room full of leaders accustomed to making decisions, negotiating contracts, and calling the shots. But in that moment, none of us had any real agency. We could accept the terms, or we could walk away from a tool that may have become nearly essential to modern life.","That is not meaningful choice. It is permission granted on someone else’s terms."],"id":35,"words":254,"beats":[{"label":"Open source is one response to that tension, not the only one, but one I love and you touch daily, so I couldn't stand here and not plant that flag","keys":[["open source"],["response"],["love"],["touch daily"],["plant that flag"]]},{"label":"Open source, open access, or a well-governed proprietary approach can all work, as long as they guarantee some fundamentals","keys":[["open access"],["well-governed"],["proprietary"],["fundamentals"]]},{"label":"Privacy, transparency, competition and interoperability, control over our own data and work; means to an end, and the end is agency","keys":[["privacy"],["transparency"],["competition"],["interoperability"],["our own data"],["objective"],["means"],["agency"]]},{"label":"Downloading an app: 115 pages of terms and conditions which you definitely read all of before clicking agree","keys":[["download"],["115"],["terms and conditions"],["definitely read"],["agree"]]},{"label":"Raise your hand if you've ever called Google, Apple, or Meta to negotiate those terms; no one?","keys":[["raise your hand"],["google"],["apple"],["meta"],["negotiate"],["no one"]]},{"label":"A room of leaders who make decisions, negotiate contracts, and call the shots had no real agency: accept the terms or walk away from a nearly essential tool","keys":[["leaders"],["contracts"],["calling the shots"],["real agency"],["accept the terms"],["walk away"],["essential"]]},{"label":"That is not meaningful choice; it is permission granted on someone else's terms","keys":[["meaningful choice"],["permission"],["someone else's terms"]]}],"title":"Open source as one response; the 115-page terms and conditions"},{"section":5,"paragraphs":["And sure, the end user terms for an app may be a relatively trivial example. But what if it weren’t just terms? What if it were a health care decision for a family member? Or a bank loan decision. Or how much you pay for a flight or a car or which restaurant serves the best bbq?","Agency means preserving the ability of people and institutions to participate in the future AI is creating, not merely to accept the version of that future handed to them. Can people understand the systems they depend on? Can they question a consequential decision? Can they protect their information? Can they choose another provider, another model, or another path? Can new builders enter and create something better?","And can society change course when a system no longer serves us?","That last question may be the most important. Because the greatest risk of concentrated control is not simply that the people in control will make bad decisions.","It is that their decisions become the boundaries within which everyone else must live, work, build, and think.","Most leaders in this room will not determine the global architecture of AI. There’s like a dozen people in that club, and we—every one of us—is on the outside looking in.","But every leader in this room will make choices that can open doors for others. Choices that either preserve agency for others or gradually close it off."],"id":36,"words":238,"beats":[{"label":"App terms are a trivial example; but what if it were a health care decision, a bank loan, the price of a flight or a car, or which restaurant serves the best bbq?","keys":[["trivial"],["health care"],["bank loan"],["flight"],["car"],["bbq"]]},{"label":"Agency means people and institutions can participate in the future AI is creating, not merely accept the version handed to them","keys":[["agency"],["participate"],["future"],["handed to them"]]},{"label":"Can people understand the systems they depend on, question a consequential decision, protect their information, choose another provider, model, or path, and can new builders create something better?","keys":[["understand the systems"],["question"],["protect"],["another provider"],["another model"],["new builders"]]},{"label":"And can society change course when a system no longer serves us?","keys":[["society"],["change course"],["serves us"]]},{"label":"That last question may matter most: the greatest risk of concentrated control isn't bad decisions; it's that their decisions become the boundaries everyone else must live, work, build, and think within","keys":[["most important"],["concentrated control"],["bad decisions"],["boundaries"],["live"],["work"],["build"],["think"]]},{"label":"Most leaders here won't determine the global architecture of AI; about a dozen people are in that club, and every one of us is on the outside looking in","keys":[["global architecture"],["dozen"],["club"],["outside looking in"]]},{"label":"But every leader here will make choices that can open doors for others, preserving agency or gradually closing it off","keys":[["every leader"],["choices"],["open doors"],["preserve agency"],["close it off"]]}],"title":"Agency: health care, bank loans, bbq, and the dozen people in the club"},{"section":5,"paragraphs":["When you introduce an AI system, will your employees be able to understand and question it? Will your customers retain meaningful control over their data? Will your organization remain free to change systems if the technology, the terms, or the leadership changes? Will people with new ideas have a genuine path to build upon what exists?","And will you use AI to strengthen the judgement of the people around you or simply to reduce the control they have over the judgements they get to make?","That is the leadership responsibility inside this duality.","I don’t think people with concerns about AI are Luddites. Well, maybe some. But the overwhelming majority fall in the camp of people who want to retain some control over their lives, some agency. It’s not necessarily that they don’t want AI to happen, it’s that they don’t want AI to happen TO them.","The positive promise of AI is not simply that it will do more for us. It is that it can enable more of us to do things we could not do before, to understand more, create more, solve more, and exercise greater control over our own lives.","But realizing that promise requires us to preserve the conditions that make participation possible: choice, knowledge, accountability, and the freedom to build something different.","That is what openness means in this context. Not that every system must be open source or that nothing should be protected, but that our future must remain open to scrutiny, open to challenge, open to competition, and open to people who want to create a better alternative.","Closed systems may sometimes serve us well. A closed future will not.","AI can open extraordinary doors.","Our responsibility is to ensure that no company, institution, or individual becomes the only one holding the key.","[~47 min]"],"id":37,"words":301,"beats":[{"label":"When you introduce an AI system: can your employees understand and question it? do customers retain meaningful control over their data?","keys":[["introduce"],["employees"],["understand"],["question"],["customers"],["control over their data"]]},{"label":"Can your organization change systems if the technology, terms, or leadership change? do people with new ideas have a genuine path to build upon what exists?","keys":[["change systems"],["technology"],["terms"],["leadership"],["new ideas"],["genuine path"],["build upon"]]},{"label":"Will you use AI to strengthen the judgement of people around you, or to reduce the control they have over the judgements they get to make? that's the leadership responsibility in this duality","keys":[["strengthen"],["judgement"],["reduce the control"],["leadership responsibility"],["duality"]]},{"label":"People with concerns about AI aren't Luddites, well, maybe some; most want to retain some control over their lives, some agency","keys":[["luddites"],["maybe some"],["retain some control"],["agency"]]},{"label":"It's not that they don't want AI to happen; they don't want AI to happen TO them","keys":[["don't want ai to happen"],["happen to them"]]},{"label":"The positive promise of AI isn't just doing more for us: enabling more of us to understand more, create more, solve more, and exercise greater control over our own lives","keys":[["positive promise"],["more of us"],["understand more"],["create more"],["solve more"],["control over our own lives"]]},{"label":"That requires preserving the conditions that make participation possible: choice, knowledge, accountability, and the freedom to build something different","keys":[["conditions"],["participation"],["choice"],["knowledge"],["accountability"],["freedom"],["different"]]},{"label":"Openness here isn't every system open source or nothing protected; it's a future open to scrutiny, challenge, competition, and people who want to create a better alternative","keys":[["openness"],["open source"],["protected"],["scrutiny"],["challenge"],["competition"],["better alternative"]]},{"label":"Closed systems may sometimes serve us well; a closed future will not; AI can open extraordinary doors; no company, institution, or individual should be the only one holding the key","keys":[["closed systems"],["closed future"],["extraordinary doors"],["company"],["institution"],["individual"],["holding the key"]]}],"title":"Your choices: employees, customers, Luddites, and who holds the key"},{"section":6,"paragraphs":["So let me tell you what is really lighting me up. Because it isn’t the chips. I’d still drop those anyway. It isn’t the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created. It isn’t even the inventions and new possibilities AI will unlock.","No.","I do what I do for that kid who sees an open door—a door I helped open—and walks through. That kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world. That kid who discovers an entire set of possibilities on the other side of a door he did not realize existed before.","Because for her, it didn’t. Until it did. And all she needed was for someone to open the door and show her where it was.","That’s it. That’s the whole thing. I do what I do for the Micahs of the world. I would go so far as to say I exist to light somebody else’s fire—and to help keep it burning.","That is my philosophical North Star. It is what gives me energy. It is what gives me purpose. And every one of the dualities we just walked through comes back to that same purpose."],"id":38,"words":213,"beats":[{"label":"What is really lighting me up isn't the chips (I'd still drop those), the layoff numbers, the record new businesses, the jobs to be created, or the inventions AI will unlock","keys":[["lighting me up"],["chips"],["drop"],["layoff"],["new businesses"],["jobs"],["inventions"],["unlock"]]},{"label":"No. I do what I do for that kid who sees an open door, a door I helped open, and walks through","keys":[["kid"],["open door"],["helped open"],["walks through"]]},{"label":"The kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world; who discovers possibilities on the other side of a door he didn't know existed","keys":[["hugs"],["off the ground"],["new way"],["see the world"],["discovers"],["possibilities"],["other side"],["existed"]]},{"label":"For her it didn't exist, until it did; all she needed was someone to open the door and show her where it was","keys":[["until it did"],["someone"],["open the door"],["show her where it was"]]},{"label":"That's it, that's the whole thing: I do what I do for the Micahs of the world; I exist to light somebody else's fire and help keep it burning","keys":[["whole thing"],["micahs"],["light"],["fire"],["burning"]]},{"label":"That is my philosophical North Star: what gives me energy and purpose; every duality we walked through comes back to that same purpose","keys":[["north star"],["energy"],["purpose"],["dualities"],["walked through"]]}],"title":"What lights me up: the Micahs of the world"},{"section":6,"paragraphs":["The jobs duality is about whether people whose old paths are disappearing can see a path into what comes next. It is about whether AI simply closes the door on work they once depended on, or whether someone helps them find the skills, tools, and opportunities waiting beyond it.","The community duality is about whether data center and AI investment leaves communities stronger than it found them. It is about whether growth simply arrives, consumes resources, and moves on, or whether it creates lasting capacity, local opportunity, and more ways for people to participate in the prosperity it generates.","And the control duality is about whether the future remains open at all: open to scrutiny, open to challenge, open to new builders, and open to people who want to create a better alternative. It is about making sure no company, institution, or individual becomes the only one holding the key.","These dualities are different in scale, but each presents us with the same choice: Will AI happen TO people, Or will we help people have agency in what happens next?"],"id":39,"words":180,"beats":[{"label":"The jobs duality: can people whose old paths are disappearing see a path into what comes next? does AI simply close the door, or does someone help them find the skills, tools, and opportunities beyond it?","keys":[["jobs duality"],["old paths"],["disappearing"],["closes the door"],["skills"],["tools"],["opportunities"]]},{"label":"The community duality: does data center and AI investment leave communities stronger, or does growth arrive, consume resources, and move on? lasting capacity, local opportunity, participation in the prosperity","keys":[["community duality"],["data center"],["investment"],["stronger"],["consumes resources"],["lasting capacity"],["local opportunity"],["participate"],["prosperity"]]},{"label":"The control duality: does the future remain open to scrutiny, challenge, new builders, and better alternatives? no company, institution, or individual the only one holding the key","keys":[["control duality"],["scrutiny"],["challenge"],["new builders"],["alternative"],["holding the key"]]},{"label":"Different in scale, but the same choice: will AI happen TO people, or will we help people have agency in what happens next?","keys":[["different in scale"],["same choice"],["happen to people"],["agency"],["what happens next"]]}],"title":"The three dualities, one choice"},{"section":6,"paragraphs":["The headlines want you to be afraid. And that fear is not unfounded. Change is hard. Fast change is unsettling. Fast change that affects individuals and society simultaneously, a mile wide and a mile deep, that is—if you genuinely pause and think what that means—in a word, terrifying.","But fear has a way of narrowing our field of vision. It makes us look for safety in certainty. It pushes us to pick a side: acceleration or obstruction, optimism or pessimism, opportunity or danger.","The Duality of AI demands something harder from us. It asks us to see both sides at once. To acknowledge the danger without surrendering the possibility. To pursue the possibility without pretending the danger is not real.","We do not have to choose between a future in which AI succeeds and one in which people do. It does not have to be zero-sum. But the better future does not happen automatically. It will take the people in this room—the leaders of businesses, institutions, and communities—to make it happen.","Because you are already making the choices that will determine how AI is experienced. You decide whether a worker receives a tool or a pink slip and whether someone standing in front of a closing door has a supported path toward the next one.","You decide whether an investment merely occupies a community or becomes part of that community’s future. You decide whether the systems you adopt give people greater capability and agency or quietly remove their ability to understand, question, and choose.","You will not control every force shaping the future of AI. But you can control whether the choices within your reach open doors or close them."],"id":40,"words":280,"beats":[{"label":"The headlines want you afraid; not unfounded: change is hard, fast change is unsettling; fast change hitting individuals and society at once, a mile wide and a mile deep, is, in a word, terrifying","keys":[["headlines"],["afraid"],["unfounded"],["fast change"],["unsettling"],["individuals and society"],["mile wide"],["mile deep"],["terrifying"]]},{"label":"Fear narrows our field of vision, seeks safety in certainty, pushes us to pick a side: acceleration or obstruction, optimism or pessimism, opportunity or danger","keys":[["narrowing"],["field of vision"],["safety in certainty"],["pick a side"],["acceleration"],["obstruction"],["optimism"],["pessimism"],["danger"]]},{"label":"The Duality of AI demands something harder: see both sides at once; acknowledge the danger without surrendering the possibility; pursue the possibility without pretending the danger isn't real","keys":[["harder"],["both sides at once"],["acknowledge"],["surrendering"],["possibility"],["pretending"]]},{"label":"We don't have to choose between a future where AI succeeds and one where people do; not zero-sum; but the better future isn't automatic; it takes the people in this room, the leaders","keys":[["choose"],["ai succeeds"],["people do"],["zero-sum"],["automatically"],["this room"],["leaders"]]},{"label":"You're already making the choices that determine how AI is experienced: a worker gets a tool or a pink slip; someone at a closing door gets a supported path or not","keys":[["already making"],["experienced"],["tool"],["pink slip"],["closing door"],["supported path"]]},{"label":"Whether an investment merely occupies a community or becomes part of its future; whether systems give people capability and agency or quietly remove their ability to understand, question, and choose","keys":[["investment"],["occupies"],["community"],["future"],["capability"],["agency"],["quietly remove"],["understand"],["question"],["choose"]]},{"label":"You won't control every force, but you can control whether the choices within your reach open doors or close them","keys":[["every force"],["within your reach"],["open doors"],["close them"]]}],"title":"Fear narrows vision; see both sides at once; you decide"},{"section":6,"paragraphs":["So that is my challenge to you.","Do not let a month go by when you cannot say, “I opened a door for someone.” Every month, find your Micah.","Find the person with the problem but not the title. The person with the idea but not the technical vocabulary. The person whose old path is disappearing. The person who does not look like you, think like you, learn like you, or arrive by the path you did.","You do not have to determine their future for them. You do not have to carry them through the door. Just open the door and make it visible.","Give them the tools. Help them reach the threshold. And then let them surprise you.","We are all going to move through this AI moment differently—you, me, J, [SOMEONE ELSE YOU KNOW IN THE ROOM]. Everyone in this room.","But none of us is moving through it alone.","Our choices shape the paths available to other people. And every door we open expands what someone else can imagine, attempt, and become.","AI will open extraordinary doors. AI will close some, too.","The technology alone will not decide which side of that Duality defines this era.","We will.","So keep it human.","And hold the door open."],"id":41,"words":205,"beats":[{"label":"My challenge: don't let a month go by when you can't say \"I opened a door for someone\"; every month, find your Micah","keys":[["challenge"],["month"],["opened a door"],["find your micah"]]},{"label":"The person with the problem but not the title; the idea but not the technical vocabulary; whose old path is disappearing; who doesn't look, think, learn, or arrive by the path you did","keys":[["problem"],["title"],["idea"],["technical vocabulary"],["old path"],["disappearing"],["look like you"],["arrive"]]},{"label":"You don't have to determine their future or carry them through the door; just open it and make it visible; give them the tools, help them reach the threshold, then let them surprise you","keys":[["determine"],["carry"],["open the door"],["visible"],["tools"],["threshold"],["surprise"]]},{"label":"We'll all move through this AI moment differently: you, me, J, everyone in this room; but none of us is moving through it alone","keys":[["ai moment"],["differently"],["j","jay"],["everyone in this room"],["alone"]]},{"label":"Our choices shape the paths available to other people; every door we open expands what someone else can imagine, attempt, and become","keys":[["choices"],["paths"],["door"],["imagine"],["attempt"],["become"]]},{"label":"AI will open extraordinary doors, and close some too; the technology alone won't decide which side of the duality defines this era; we will","keys":[["extraordinary doors"],["close some"],["technology alone"],["duality"],["era"],["we will"]]},{"label":"So keep it human, and hold the door open","keys":[["keep it human"],["hold the door open"]]}],"title":"The challenge: find your Micah, and hold the door open"}]};</script>
+<script>
+// Text normalization and matching shared by the practice page (browser) and the build/verification step (node).
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.KeynoteText = api;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+  var UNITS = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19 };
+  var TENS = { twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90 };
+  var SCALES = { hundred: 100, thousand: 1000, million: 1000000, billion: 1000000000 };
+  var ALIASES = {
+    jay: 'j', barbecue: 'bbq', barbeque: 'bbq', doctor: 'dr', mister: 'mr', okay: 'ok',
+    mica: 'micah', mika: 'micah', mikah: 'micah', myka: 'micah', micha: 'micah',
+    twenties: '20s', thirties: '30s', forties: '40s', fifties: '50s', sixties: '60s', seventies: '70s', eighties: '80s', nineties: '90s',
+    fourty: 'forty'
+  };
+  var FILLERS = { um: 1, uh: 1, umm: 1, uhh: 1, hmm: 1, mm: 1, er: 1, ah: 1, uhm: 1 };
+  var STOP = {};
+  ('a an the and or but so if then than that this these those there here it its i me my we our us you your he him his she her they them their ' +
+   'is am are was were be been being do does did done have has had having will would can could should may might must shall ' +
+   'of in on at to for from by with about into onto over under up down out off as through between after before again ' +
+   'not no nor yes very really just also too even still only ever never always often sometimes somewhere else ' +
+   'what which who whom whose when where why how all any both each few more most much some such own same other another ' +
+   'because while until since though although whether like kind kinda sort get got gets getting go goes going went gone ' +
+   'one thing things something someone somebody anything everything everyone everybody nothing nobody way ways well let lets ' +
+   'now today back right little lot lots part parts bit make makes made making take takes took taking put say says said saying ' +
+   'know knew think thought see saw seen come came coming want wanted look looked looking around theyre were dont im ive youre ' +
+   'thats whats isnt wasnt arent werent didnt doesnt cant couldnt wont wouldnt shouldnt hasnt havent hadnt aint').split(/\s+/).forEach(function (w) { STOP[w] = 1; });
+
+  function isDigits(w) { return /^\d+$/.test(w); }
+  function isNumWord(w) { return (w in UNITS) || (w in TENS) || (w in SCALES); }
+
+  function basicTokens(text) {
+    var s = text.toLowerCase();
+    s = s.replace(/[’‘`]/g, "'").replace(/[“”]/g, '"');
+    s = s.replace(/c\+\+/g, ' c plus plus ');
+    s = s.replace(/&/g, ' and ');
+    s = s.replace(/%/g, ' percent ');
+    s = s.replace(/(\d),(\d{3})/g, '$1$2').replace(/(\d),(\d{3})/g, '$1$2');
+    s = s.replace(/\$\s*(\d[\d.]*)\s*(million|billion|thousand|m|b|k)\b/g, function (m, n, sc) {
+      var full = { m: 'million', b: 'billion', k: 'thousand' }[sc] || sc; return n + ' ' + full + ' dollars';
+    });
+    s = s.replace(/\$\s*(\d[\d.]*)/g, '$1 dollars');
+    s = s.replace(/#\s*(\d+)/g, 'number $1');
+    s = s.replace(/(\d)\.(\d)/g, '$1 point $2');
+    s = s.replace(/(\d)\s*(am|pm)\b/g, '$1 $2');
+    s = s.replace(/\b([ap])\.m\b\.?/g, '$1m');
+    s = s.replace(/\ba\.i\b\.?/g, 'ai');
+    s = s.replace(/[—–\-]+/g, ' ');
+    s = s.replace(/…/g, ' ');
+    s = s.replace(/[^a-z0-9'\s]/g, ' ');
+    s = s.replace(/'/g, '');
+    return s.split(/\s+/).filter(Boolean).map(function (w) { return ALIASES[w] || w; });
+  }
+
+  // Merge spoken number words into digits so "twenty seven" == "27", "a hundred and twenty" == "120",
+  // "nineteen fifty" == "1950", "twenty million" == "20 million". Tokens are {t, src}.
+  function mergeNumbers(tokens) {
+    var out = [], i = 0;
+    while (i < tokens.length) {
+      var w = tokens[i].t, run = [];
+      var nextT = i + 1 < tokens.length ? tokens[i + 1].t : '';
+      if (w === 'a' && (nextT in SCALES)) { run.push({ t: 'one', src: tokens[i].src }); i++; }
+      else if (isDigits(w) && (nextT in SCALES) && nextT !== 'hundred') { run.push(tokens[i]); i++; }
+      else if (!isNumWord(w)) { out.push(tokens[i]); i++; continue; }
+      var andSrc = [];
+      while (i < tokens.length) {
+        var x = tokens[i].t;
+        if (isNumWord(x)) { run.push(tokens[i]); i++; continue; }
+        if (x === 'and' && run.length && (run[run.length - 1].t in SCALES) && i + 1 < tokens.length &&
+            ((tokens[i + 1].t in UNITS) || (tokens[i + 1].t in TENS))) { andSrc = andSrc.concat(tokens[i].src); i++; continue; }
+        break;
+      }
+      var res = numberRun(run);
+      if (andSrc.length && res.length) res[res.length - 1].src = res[res.length - 1].src.concat(andSrc);
+      // "eighteen" + "90s" -> "1890s"
+      if (res.length === 1 && /^\d\d$/.test(res[0].t) && i < tokens.length && /^\d\ds$/.test(tokens[i].t)) {
+        res[0] = { t: res[0].t + tokens[i].t, src: res[0].src.concat(tokens[i].src) }; i++;
+      }
+      out.push.apply(out, res);
+    }
+    return out;
+  }
+  function unionSrc(run) { var s = []; run.forEach(function (r) { r.src.forEach(function (v) { if (s.indexOf(v) < 0) s.push(v); }); }); return s; }
+  function numberRun(run) {
+    var words = run.map(function (r) { return r.t; });
+    var hasScale = words.some(function (w) { return w in SCALES; });
+    var src = unionSrc(run);
+    if (!hasScale) {
+      var groups = [], open = false;
+      words.forEach(function (w) {
+        if (w in TENS) { groups.push(TENS[w]); open = true; }
+        else if (UNITS[w] !== undefined) {
+          if (open && UNITS[w] > 0 && UNITS[w] < 10) { groups[groups.length - 1] += UNITS[w]; open = false; }
+          else { groups.push(UNITS[w]); open = false; }
+        } else if (isDigits(w)) { groups.push(parseInt(w, 10)); open = false; }
+      });
+      if (groups.length === 2 && groups[0] >= 10 && groups[0] <= 99 && groups[1] >= 10 && groups[1] <= 99) {
+        return [{ t: String(groups[0] * 100 + groups[1]), src: src }];
+      }
+      return groups.map(function (g) { return { t: String(g), src: src }; });
+    }
+    var total = 0, cur = 0;
+    words.forEach(function (w) {
+      if (UNITS[w] !== undefined) cur += UNITS[w];
+      else if (w in TENS) cur += TENS[w];
+      else if (isDigits(w)) cur += parseInt(w, 10);
+      else if (w === 'hundred') cur = (cur || 1) * 100;
+      else { total += (cur || 1) * SCALES[w]; cur = 0; }
+    });
+    total += cur;
+    if (total >= 1e9 && total % 1e9 === 0) return [{ t: String(total / 1e9), src: src }, { t: 'billion', src: src }];
+    if (total >= 1e6 && total % 1e6 === 0) return [{ t: String(total / 1e6), src: src }, { t: 'million', src: src }];
+    return [{ t: String(total), src: src }];
+  }
+
+  // Spoken text -> normalized tokens (fillers dropped, numbers merged).
+  function prepareSpoken(text) {
+    var toks = basicTokens(text).filter(function (w) { return !FILLERS[w]; }).map(function (t) { return { t: t, src: [] }; });
+    return mergeNumbers(toks).map(function (x) { return x.t; });
+  }
+
+  function lev(a, b) {
+    var m = a.length, n = b.length, prev = [], cur = [], i, j;
+    for (j = 0; j <= n; j++) prev[j] = j;
+    for (i = 1; i <= m; i++) {
+      cur[0] = i;
+      for (j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = cur.slice();
+    }
+    return prev[n];
+  }
+
+  // Light stemmer so "students"/"student", "created"/"creating" compare equal. Applied to both sides.
+  function stem(w) {
+    if (isDigits(w) || w.length < 4) return w;
+    var x = w;
+    if (x.length > 4 && /ies$/.test(x)) x = x.slice(0, -3) + 'y';
+    else if (x.length > 5 && /ing$/.test(x)) x = undouble(x.slice(0, -3));
+    else if (x.length > 4 && /ed$/.test(x)) x = undouble(x.slice(0, -2));
+    else if (x.length > 5 && /ly$/.test(x)) x = x.slice(0, -2);
+    else if (x.length > 3 && /s$/.test(x) && !/(ss|us|is)$/.test(x)) x = x.slice(0, -1);
+    if (x.length > 4 && /e$/.test(x)) x = x.slice(0, -1);
+    return x;
+  }
+  function undouble(x) { return /([^aeiou])\1$/.test(x) && !/(ll|ss|ff|zz)$/.test(x) ? x.slice(0, -1) : x; }
+
+  // Exact stem match, or a one-letter slip between two stems of 5+ letters sharing a first letter.
+  function stemsMatch(a, b) {
+    if (a === b) return true;
+    if (a.length < 5 || b.length < 5 || isDigits(a) || isDigits(b) || a[0] !== b[0]) return false;
+    return lev(a, b) <= 1;
+  }
+  function spokenBag(text) {
+    var toks = prepareSpoken(text).map(stem);
+    var set = {}; toks.forEach(function (t) { set[t] = 1; });
+    return { list: toks, set: set };
+  }
+  function bagHas(bag, st) {
+    if (bag.set[st]) return true;
+    for (var i = 0; i < bag.list.length; i++) if (stemsMatch(st, bag.list[i])) return true;
+    return false;
+  }
+  // A key phrase matches when its stems appear in order, contiguously, in the spoken bag.
+  function phraseIn(bag, phrase) {
+    var ph = prepareSpoken(phrase).map(stem);
+    if (!ph.length) return false;
+    outer: for (var i = 0; i + ph.length <= bag.list.length; i++) {
+      for (var k = 0; k < ph.length; k++) if (!stemsMatch(ph[k], bag.list[i + k])) continue outer;
+      return true;
+    }
+    return false;
+  }
+
+  return { UNITS: UNITS, TENS: TENS, SCALES: SCALES, STOP: STOP, FILLERS: FILLERS, isDigits: isDigits, basicTokens: basicTokens,
+    mergeNumbers: mergeNumbers, prepareSpoken: prepareSpoken, lev: lev, stem: stem, stemsMatch: stemsMatch, spokenBag: spokenBag,
+    bagHas: bagHas, phraseIn: phraseIn };
+});
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var DATA = window.KEYNOTE;
+  var T = window.KeynoteText;
+  var STOP = T.STOP, isDigits = T.isDigits, basicTokens = T.basicTokens, mergeNumbers = T.mergeNumbers, prepareSpoken = T.prepareSpoken,
+      lev = T.lev, stem = T.stem, stemsMatch = T.stemsMatch, spokenBag = T.spokenBag, bagHas = T.bagHas, phraseIn = T.phraseIn;
+  var sections = DATA.sections;
+  var cards = DATA.cards;
+  var STORE_KEY = 'keynote-practice-v1';
+
+  // ---------- persistence ----------
+  function loadState() {
+    try {
+      var s = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+      s.attempts = s.attempts || {};
+      s.settings = Object.assign({ hide: false, drill: false, target: 90, mode: 'ideas' }, s.settings || {});
+      if (s.settings.mode !== 'words' && s.settings.mode !== 'ideas') s.settings.mode = 'ideas';
+      s.pos = Math.min(Math.max(s.pos | 0, 0), cards.length - 1);
+      return s;
+    } catch (e) { return { attempts: {}, settings: { hide: false, drill: false, target: 90, mode: 'ideas' }, pos: 0 }; }
+  }
+  function saveState() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
+  var state = loadState();
+  var idx = state.pos;
+
+  // Reference card -> display segments + normalized tokens (each token remembers its display word indexes)
+  function prepareCard(card) {
+    var display = []; // {text, note, para, sp}
+    var tokens = [];
+    card.paragraphs.forEach(function (p, pi) {
+      var parts = p.split(/(\[[^\]]*\])/);
+      parts.forEach(function (part) {
+        if (!part) return;
+        if (/^\[[^\]]*\]$/.test(part)) { display.push({ text: part, note: true, para: pi }); return; }
+        part.split(/\s+/).forEach(function (word) {
+          if (!word) return;
+          var di = display.length;
+          display.push({ text: word, note: false, para: pi });
+          basicTokens(word).forEach(function (t) { tokens.push({ t: t, src: [di] }); });
+        });
+      });
+    });
+    return { display: display, tokens: mergeNumbers(tokens) };
+  }
+  // ---------- ideas mode: sentence beats + key-word coverage ----------
+  var ABBREV = /^(dr|mr|mrs|ms|st|vs|jr|sr|[a-z])$/i;
+  function splitSentences(paragraph) {
+    var words = paragraph.replace(/\[[^\]]*\]/g, ' ').split(/\s+/).filter(Boolean);
+    var out = [], buf = [];
+    words.forEach(function (w, i) {
+      buf.push(w);
+      var core = w.replace(/[“”"’')\]]+$/, '');
+      if (/[.?!]$/.test(core)) {
+        var bare = core.replace(/[.?!]+$/, '').replace(/^[“"‘'(]+/, '');
+        var next = words[i + 1];
+        var abbrev = ABBREV.test(bare) && next && /^[A-Z0-9]/.test(next);
+        if (!abbrev) { out.push(buf.join(' ')); buf = []; }
+      }
+    });
+    if (buf.length) out.push(buf.join(' '));
+    return out;
+  }
+  // Content words of a sentence: normalized, numbers merged, stopwords dropped, stemmed. Keeps the display word.
+  function contentWords(sentence) {
+    var toks = mergeNumbers(sentence.split(/\s+/).filter(Boolean).map(function (w, i) {
+      return basicTokens(w).map(function (t) { return { t: t, src: [i] }; });
+    }).reduce(function (acc, arr) { return acc.concat(arr); }, []));
+    var disp = sentence.split(/\s+/).filter(Boolean);
+    var perDisp = {}; toks.forEach(function (tok) { tok.src.forEach(function (i) { perDisp[i] = (perDisp[i] || 0) + 1; }); });
+    var seen = {}, out = [];
+    toks.forEach(function (tok) {
+      if (STOP[tok.t] || tok.t.length < 2) return;
+      var st = stem(tok.t);
+      if (seen[st]) return; seen[st] = 1;
+      var clean = function (i) { return disp[i].replace(/^[“"‘'(]+|[“”"’'),.;:?!]+$/g, ''); };
+      // A number phrase spans several display words; a dash-joined display word yields several tokens.
+      var word = tok.src.length > 1 ? tok.src.map(clean).join(' ') : (perDisp[tok.src[0]] > 1 ? tok.t : clean(tok.src[0]));
+      out.push({ stem: st, word: word, src: tok.src });
+    });
+    return out;
+  }
+  // Auto beats: one per sentence; sentences with fewer than 3 content words are merged with a neighbor.
+  function autoBeats(card) {
+    if (card.beats && card.beats.length) return card.beats.map(function (b) { return { label: b.label, keys: b.keys, custom: true }; });
+    var sents = [];
+    card.paragraphs.forEach(function (p) { splitSentences(p).forEach(function (t) { sents.push({ text: t, words: contentWords(t) }); }); });
+    var merged = [];
+    sents.forEach(function (sn) {
+      var prev = merged[merged.length - 1];
+      if (prev && prev.words.length < 3) { prev.text += ' ' + sn.text; prev.words = contentWords(prev.text); }
+      else merged.push({ text: sn.text, words: sn.words });
+    });
+    if (merged.length > 1 && merged[merged.length - 1].words.length < 3) {
+      var last = merged.pop(); var p2 = merged[merged.length - 1];
+      p2.text += ' ' + last.text; p2.words = contentWords(p2.text);
+    }
+    return merged.map(function (m) { return { label: m.text, words: m.words }; });
+  }
+  function scoreIdeas(card, spokenText) {
+    var beats = autoBeats(card), bag = spokenBag(spokenText);
+    var total = 0;
+    var rows = beats.map(function (b) {
+      var hit = [], missed = [], ratio;
+      if (b.custom) {
+        b.keys.forEach(function (alts) { (alts.some(function (p) { return phraseIn(bag, p); }) ? hit : missed).push(alts[0]); });
+        ratio = b.keys.length ? hit.length / b.keys.length : 1;
+      } else {
+        b.words.forEach(function (w) { (bagHas(bag, w.stem) ? hit : missed).push(w.word); });
+        ratio = b.words.length ? hit.length / b.words.length : 1;
+      }
+      var status = ratio >= 0.5 ? 'hit' : (hit.length && ratio >= 0.25) ? 'part' : 'miss';
+      total += status === 'hit' ? 1 : status === 'part' ? 0.5 : 0;
+      return { label: b.label, status: status, hit: hit, missed: missed, custom: !!b.custom, words: b.words };
+    });
+    var score = rows.length ? Math.round(100 * total / rows.length) : 100;
+    return { rows: rows, score: score, covered: rows.filter(function (r) { return r.status === 'hit'; }).length, partial: rows.filter(function (r) { return r.status === 'part'; }).length, n: rows.length };
+  }
+
+  // ---------- alignment / scoring ----------
+  function wordsEqual(a, b) {
+    if (a === b) return 0;
+    if (isDigits(a) || isDigits(b)) return -1;
+    var L = Math.min(a.length, b.length);
+    if (L >= 9 && lev(a, b) <= 2) return 1;
+    if (L >= 4 && lev(a, b) <= 1) return 1;
+    return -1;
+  }
+  function align(ref, hyp) {
+    var n = ref.length, m = hyp.length, i, j;
+    var dp = [], bt = [];
+    for (i = 0; i <= n; i++) { dp.push(new Int32Array(m + 1)); bt.push(new Uint8Array(m + 1)); }
+    for (i = 1; i <= n; i++) { dp[i][0] = i; bt[i][0] = 2; }
+    for (j = 1; j <= m; j++) { dp[0][j] = j; bt[0][j] = 3; }
+    // ops: 0 match, 4 close match, 1 substitution, 2 deletion (card word skipped), 3 insertion (extra spoken word).
+    // On equal cost prefer deletion, then match, then substitution, then insertion: this anchors a partial or
+    // truncated recitation to the earliest matching stretch of the card instead of drifting to a later repeat.
+    for (i = 1; i <= n; i++) for (j = 1; j <= m; j++) {
+      var eq = wordsEqual(ref[i - 1], hyp[j - 1]);
+      var diag = dp[i - 1][j - 1] + (eq >= 0 ? 0 : 1), del = dp[i - 1][j] + 1, ins = dp[i][j - 1] + 1;
+      var best = del, op = 2;
+      if (eq >= 0 && diag <= best) { best = diag; op = eq === 0 ? 0 : 4; }
+      else if (eq < 0 && diag < best) { best = diag; op = 1; }
+      if (ins < best) { best = ins; op = 3; }
+      dp[i][j] = best; bt[i][j] = op;
+    }
+    var status = new Array(n), heard = new Array(n), extras = [];
+    i = n; j = m;
+    while (i > 0 || j > 0) {
+      var op = bt[i][j];
+      if (i > 0 && j > 0 && (op === 0 || op === 4 || op === 1)) {
+        status[i - 1] = op === 0 ? 'ok' : op === 4 ? 'close' : 'sub'; heard[i - 1] = hyp[j - 1]; i--; j--;
+      } else if (i > 0 && (j === 0 || op === 2)) { status[i - 1] = 'miss'; i--; }
+      else { extras.push({ word: hyp[j - 1], at: i }); j--; }
+    }
+    extras.reverse();
+    var c = { ok: 0, close: 0, sub: 0, miss: 0 };
+    status.forEach(function (s) { c[s]++; });
+    var errors = c.sub + c.miss + extras.length;
+    var score = n ? Math.max(0, Math.round(100 * (1 - errors / n))) : 100;
+    return { status: status, heard: heard, extras: extras, counts: c, score: score, n: n, spoken: m };
+  }
+
+  // ---------- helpers ----------
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function tier(score) { return score >= state.settings.target ? 'good' : score >= state.settings.target - 15 ? 'mid' : 'low'; }
+  function gradeLabel(score) {
+    if (score >= 98) return 'Word perfect';
+    if (score >= 95) return 'Nailed it';
+    if (score >= 90) return 'Nearly there';
+    if (score >= 80) return 'Getting close';
+    if (score >= 65) return 'Keep drilling';
+    return 'Rough draft';
+  }
+  function attempt(id) { return state.attempts[id]; }
+  function modeIdeas() { return state.settings.mode === 'ideas'; }
+  function bestOf(a) { if (!a) return undefined; return modeIdeas() ? a.bestIdeas : a.best; }
+  function isWeak(card) { var b = bestOf(attempt(card.id)); return b === undefined || b < state.settings.target; }
+  function modeName() { return modeIdeas() ? 'ideas' : 'exact words'; }
+  function weakIds() { return cards.filter(isWeak).map(function (c) { return c.id; }); }
+  function cue(card) {
+    if (card.title) return card.title;
+    var words = card.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' ').split(/\s+/).filter(Boolean);
+    return words.slice(0, 11).join(' ') + (words.length > 11 ? ' …' : '');
+  }
+  var toastT;
+  function toast(msg) { var t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('show'); }, 2200); }
+  function fmtTime(ms) { var s = Math.floor(ms / 1000); return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+
+  // ---------- rendering: legend, map, card ----------
+  function renderLegend() {
+    var el = $('legend'); el.innerHTML = '';
+    sections.forEach(function (s, si) {
+      var done = cards.filter(function (c) { return c.section === si && !isWeak(c); }).length;
+      var b = document.createElement('button');
+      b.className = 'chip' + (cards[idx].section === si ? ' current' : '');
+      b.style.setProperty('--c', s.color);
+      b.innerHTML = '<span class="dot"></span><b>' + esc(s.short) + '</b> <span>' + done + '/' + s.cards + '</span>';
+      b.title = s.title;
+      b.onclick = function () { go(cards.findIndex(function (c) { return c.section === si; })); };
+      el.appendChild(b);
+    });
+  }
+  function renderMap() {
+    var el = $('sectionMap'); el.innerHTML = '';
+    cards.forEach(function (c, i) {
+      var a = attempt(c.id), bs = bestOf(a);
+      var b = document.createElement('button');
+      b.className = 'seg' + (i === idx ? ' current' : '') + (bs !== undefined ? (bs >= state.settings.target ? ' mastered' : ' tried') : '');
+      b.style.setProperty('--seg', sections[c.section].color);
+      b.title = 'Card ' + c.id + (bs !== undefined ? ' · best ' + bs + '% (' + modeName() + ')' : ' · not yet attempted');
+      b.onclick = function () { go(i); };
+      el.appendChild(b);
+    });
+    var mastered = cards.length - weakIds().length;
+    $('deckStat').textContent = mastered + ' of ' + cards.length + ' cards at target · ' + modeName();
+  }
+  function renderCardBody(card, graded) {
+    var prep = prepareCard(card);
+    var paras = card.paragraphs.map(function () { return []; });
+    var wordStatus = null;
+    if (graded) {
+      wordStatus = {};
+      prep.tokens.forEach(function (tok, ti) {
+        var st = graded.status[ti];
+        tok.src.forEach(function (di) {
+          var cur = wordStatus[di] || { rank: 0, st: 'ok', heard: [] };
+          var rank = st === 'miss' ? 4 : st === 'sub' ? 3 : st === 'close' ? 2 : 1;
+          if (rank > cur.rank) { cur.rank = rank; cur.st = st; }
+          if (st === 'sub' && graded.heard[ti]) cur.heard.push(graded.heard[ti]);
+          wordStatus[di] = cur;
+        });
+      });
+    }
+    prep.display.forEach(function (d, di) {
+      if (d.note) { paras[d.para].push('<span class="note">' + esc(d.text) + '</span>'); return; }
+      if (!graded) { paras[d.para].push(esc(d.text)); return; }
+      var ws = wordStatus[di];
+      if (!ws) { paras[d.para].push('<span class="w">' + esc(d.text) + '</span>'); return; }
+      var title = ws.st === 'sub' ? ' title="heard: ' + esc(ws.heard.join(' ')) + '"' : ws.st === 'miss' ? ' title="not heard"' : ws.st === 'close' ? ' title="close enough"' : '';
+      paras[d.para].push('<span class="w ' + ws.st + '"' + title + '>' + esc(d.text) + '</span>');
+    });
+    return paras.map(function (p) { return '<p>' + p.join(' ') + '</p>'; }).join('');
+  }
+  function updateStatus() {
+    var card = cards[idx], sec = sections[card.section];
+    var el = $('cbStatus');
+    if (recording) {
+      var said = (committed + sessionFinal + ' ' + interim).trim().split(/\s+/).filter(Boolean);
+      el.innerHTML = '<span class="live-dot"></span>' + esc(fmtTime(Date.now() - startedAt)) + (said.length ? ' · …' + esc(said.slice(-9).join(' ')) : ' · listening');
+    } else {
+      el.textContent = 'Card ' + card.id + ' of ' + cards.length + ' · ' + sec.short + (card.title ? ' · ' + card.title : '');
+    }
+  }
+  function renderCard() {
+    var card = cards[idx], sec = sections[card.section];
+    var el = $('card');
+    el.style.setProperty('--c', sec.color);
+    $('cardSection').textContent = sec.short;
+    var scene = $('cardScene');
+    if (card.title) { scene.textContent = card.title; scene.hidden = false; } else scene.hidden = true;
+    updateStatus();
+    var inSec = cards.filter(function (c) { return c.section === card.section; });
+    var posInSec = inSec.indexOf(card) + 1;
+    $('cardPos').textContent = 'Card ' + card.id + ' of ' + cards.length + ' · ' + posInSec + '/' + inSec.length + ' in section · ' + card.words + ' words';
+    renderBest(card);
+    var title = $('cardTitle');
+    if (posInSec === 1) { title.textContent = sec.title; title.hidden = false; } else { title.hidden = true; }
+    $('cardBody').innerHTML = renderCardBody(card, null);
+    $('cardBody').classList.remove('blur'); $('hiddenNote').hidden = true;
+    $('resultPanel').hidden = true; $('livePanel').hidden = true;
+    $('prevBtn').disabled = neighbor(-1) === null;
+    $('nextBtn').disabled = neighbor(1) === null;
+    state.pos = idx; saveState();
+    renderLegend(); renderMap();
+    document.title = 'Card ' + card.id + ' · Keynote Note Cards';
+  }
+  function renderBest(card) {
+    var a = attempt(card.id), best = $('cardBest'), bs = bestOf(a);
+    best.className = 'best' + (bs !== undefined ? ' ' + tier(bs) : '');
+    if (!a) { best.textContent = 'Not attempted'; return; }
+    var parts = [];
+    if (a.bestIdeas !== undefined) parts.push('ideas ' + a.bestIdeas + '%');
+    parts.push('words ' + a.best + '%');
+    if (modeIdeas() && a.bestIdeas === undefined) parts.unshift('ideas —');
+    best.textContent = 'Best: ' + parts.join(' · ') + ' · ' + a.count + (a.count === 1 ? ' try' : ' tries');
+  }
+  function neighbor(dir) {
+    if (!state.settings.drill) { var j = idx + dir; return j >= 0 && j < cards.length ? j : null; }
+    for (var k = idx + dir; k >= 0 && k < cards.length; k += dir) if (isWeak(cards[k])) return k;
+    return null;
+  }
+  function go(i) {
+    if (recording) cancelRecording();
+    if (i === null || i < 0 || i >= cards.length) return;
+    idx = i; showView('cards'); renderCard();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ---------- speech recognition ----------
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var recognition = null, recording = false, finalizing = false, committed = '', sessionFinal = '', interim = '';
+  var startedAt = 0, timerId = null, finalizeTimer = null, peeking = false;
+
+  function renderLive() {
+    var el = $('liveText');
+    el.innerHTML = esc((committed + sessionFinal).trim()) + (interim ? ' <span class="interim">' + esc(interim) + '</span>' : '');
+    updateStatus();
+  }
+  function newRecognizer() {
+    var r = new SR();
+    r.continuous = true; r.interimResults = true; r.lang = 'en-US'; r.maxAlternatives = 1;
+    r.onresult = function (e) {
+      sessionFinal = ''; interim = '';
+      for (var i = 0; i < e.results.length; i++) {
+        var t = e.results[i][0].transcript;
+        if (e.results[i].isFinal) sessionFinal += t + ' '; else interim += t;
+      }
+      renderLive();
+    };
+    r.onerror = function (e) {
+      var msg = $('liveMsg');
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        msg.textContent = 'Microphone access was blocked. Allow the microphone for this site and try again.'; msg.hidden = false; recording = false; stopTimer(); setRecUI(false);
+      } else if (e.error === 'audio-capture') {
+        msg.textContent = 'No microphone was found.'; msg.hidden = false; recording = false; stopTimer(); setRecUI(false);
+      } else if (e.error === 'network') {
+        msg.textContent = 'The speech service could not be reached (network). Check your connection and try again.'; msg.hidden = false;
+      }
+    };
+    r.onend = function () {
+      committed += sessionFinal; sessionFinal = ''; interim = '';
+      if (recording) { try { recognition = newRecognizer(); recognition.start(); } catch (err) {} }
+      else if (finalizing) finishGrading();
+    };
+    return r;
+  }
+  function setRecUI(on) {
+    var b = $('recBtn'); b.classList.toggle('on', on); $('recLabel').textContent = on ? 'Stop & grade' : 'Record';
+  }
+  function startTimer() { startedAt = Date.now(); $('liveTime').textContent = '0:00'; timerId = setInterval(function () { $('liveTime').textContent = fmtTime(Date.now() - startedAt); updateStatus(); }, 500); }
+  function stopTimer() { clearInterval(timerId); timerId = null; updateStatus(); }
+  function startRecording() {
+    if (!SR) { $('fallbackPanel').hidden = false; $('fallbackText').focus(); return; }
+    committed = ''; sessionFinal = ''; interim = ''; finalizing = false; peeking = false;
+    $('liveMsg').hidden = true; $('liveText').innerHTML = ''; $('resultPanel').hidden = true; $('livePanel').hidden = false;
+    if (state.settings.hide) { $('cardBody').classList.add('blur'); $('hiddenNote').hidden = false; }
+    try { recognition = newRecognizer(); recognition.start(); }
+    catch (e) { $('liveMsg').textContent = 'Could not start the microphone: ' + e.message; $('liveMsg').hidden = false; return; }
+    recording = true; setRecUI(true); startTimer(); updateStatus();
+  }
+  function stopRecording() {
+    if (!recording) return;
+    recording = false; finalizing = true; stopTimer(); setRecUI(false);
+    try { recognition.stop(); } catch (e) {}
+    finalizeTimer = setTimeout(function () { if (finalizing) finishGrading(); }, 1800);
+  }
+  function cancelRecording() {
+    recording = false; finalizing = false; stopTimer(); setRecUI(false);
+    clearTimeout(finalizeTimer);
+    try { recognition && recognition.abort(); } catch (e) {}
+    $('livePanel').hidden = true; $('cardBody').classList.remove('blur'); $('hiddenNote').hidden = true;
+  }
+  function finishGrading() {
+    if (!finalizing) return;
+    finalizing = false; clearTimeout(finalizeTimer);
+    var elapsed = Date.now() - startedAt;
+    grade((committed + sessionFinal + ' ' + interim).trim(), elapsed);
+  }
+
+  // ---------- grading ----------
+  function grade(spokenText, elapsedMs) {
+    var card = cards[idx];
+    var prep = prepareCard(card);
+    var ref = prep.tokens.map(function (t) { return t.t; });
+    var hyp = prepareSpoken(spokenText);
+    var res = align(ref, hyp);
+    var ideas = scoreIdeas(card, spokenText);
+
+    var a = state.attempts[card.id] || { best: 0, last: 0, count: 0 };
+    a.count++; a.last = res.score; a.best = Math.max(a.best, res.score); a.at = Date.now();
+    a.lastIdeas = ideas.score; a.bestIdeas = Math.max(a.bestIdeas === undefined ? 0 : a.bestIdeas, ideas.score);
+    state.attempts[card.id] = a; saveState();
+    var primary = modeIdeas() ? ideas.score : res.score, T = state.settings.target;
+
+    $('livePanel').hidden = true; $('cardBody').classList.remove('blur'); $('hiddenNote').hidden = true;
+    $('cardBody').innerHTML = renderCardBody(card, res);
+    var ring = $('ring'); ring.style.setProperty('--p', primary);
+    ring.style.setProperty('--rc', primary >= T ? 'var(--ok)' : primary >= T - 15 ? 'var(--close)' : 'var(--bad)');
+    $('scoreNum').textContent = primary;
+    var wpm = elapsedMs && elapsedMs > 3000 ? Math.round(res.spoken / (elapsedMs / 60000)) : 0;
+    if (modeIdeas()) {
+      $('scoreTitle').textContent = ideas.covered + ' of ' + ideas.n + ' ideas covered' + (ideas.partial ? ', ' + ideas.partial + ' partly' : '') + (primary >= T ? ' ✓' : '');
+      $('scoreSub').textContent = (primary >= T ? 'At or above your ' + T + '% target. ' : 'Target is ' + T + '%. ') +
+        'Best ideas score on this card: ' + a.bestIdeas + '% after ' + a.count + (a.count === 1 ? ' try.' : ' tries.') + (wpm ? ' Pace: ' + wpm + ' words/min.' : '');
+      $('altScore').innerHTML = 'Exact words: <b>' + res.score + '%</b> · ' + gradeLabel(res.score);
+    } else {
+      $('scoreTitle').textContent = gradeLabel(res.score) + (primary >= T ? ' ✓' : '');
+      $('scoreSub').textContent = (primary >= T ? 'At or above your ' + T + '% target. ' : 'Target is ' + T + '%. ') +
+        'Best on this card: ' + a.best + '% after ' + a.count + (a.count === 1 ? ' try.' : ' tries.') + (wpm ? ' Pace: ' + wpm + ' words/min.' : '');
+      $('altScore').innerHTML = 'Ideas: <b>' + ideas.score + '%</b> · ' + ideas.covered + ' of ' + ideas.n + ' covered';
+    }
+    renderBeats(ideas);
+    showDetail(modeIdeas() ? 'ideas' : 'words');
+    var c = res.counts;
+    $('scoreStats').innerHTML =
+      '<span><b>' + res.n + '</b> words on card</span>' +
+      '<span><span class="k" style="background:var(--ok)"></span><b>' + c.ok + '</b> exact</span>' +
+      '<span><span class="k" style="background:var(--close)"></span><b>' + c.close + '</b> close</span>' +
+      '<span><span class="k" style="background:var(--bad)"></span><b>' + c.sub + '</b> wrong word</span>' +
+      '<span><span class="k" style="background:var(--bad);opacity:.6"></span><b>' + c.miss + '</b> skipped</span>' +
+      '<span><b>' + res.extras.length + '</b> extra</span>';
+    $('graded').innerHTML = renderCardBody(card, res);
+    var ex = $('extras');
+    if (res.extras.length) {
+      ex.hidden = false;
+      ex.innerHTML = 'Extra words heard that are not on the card: ' + res.extras.map(function (x) { return '<span class="x">' + esc(x.word) + '</span>'; }).join('');
+    } else ex.hidden = true;
+    $('transcript').textContent = spokenText || '(nothing heard)';
+    $('resultPanel').hidden = false;
+    $('nextAfterBtn').disabled = neighbor(1) === null;
+    renderCard_afterGrade(card, res);
+    $('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function renderBeats(ideas) {
+    var ul = $('beats'); ul.innerHTML = '';
+    ideas.rows.forEach(function (r) {
+      var li = document.createElement('li'); li.className = r.status;
+      var label;
+      if (r.custom) label = esc(r.label);
+      else {
+        // bold the key words inside the sentence
+        var keyWords = {}; r.words.forEach(function (w) { keyWords[w.word.toLowerCase()] = 1; });
+        label = r.label.split(/(\s+)/).map(function (piece) {
+          var bare = piece.replace(/^[“"‘'(]+|[“”"’'),.;:?!]+$/g, '');
+          return keyWords[bare.toLowerCase()] ? esc(piece).replace(esc(bare), '<span class="kw">' + esc(bare) + '</span>') : esc(piece);
+        }).join('');
+      }
+      var mark = r.status === 'hit' ? '✓' : r.status === 'part' ? '~' : '✗';
+      var html = '<span class="mark">' + mark + '</span><span>' + label + '</span>';
+      if (r.custom) {
+        html += '<span class="said">Listens for: ' +
+          r.hit.map(function (k) { return '<span class="k hit">' + esc(k) + '</span>'; }).concat(
+          r.missed.map(function (k) { return '<span class="k miss">' + esc(k) + '</span>'; })).join(' ') + '</span>';
+      } else if (r.status !== 'hit' && r.missed.length) html += '<span class="gap">Not heard: <b>' + r.missed.map(esc).join('</b>, <b>') + '</b></span>';
+      li.innerHTML = html; ul.appendChild(li);
+    });
+  }
+  function showDetail(which) {
+    $('ideasDetail').hidden = which !== 'ideas'; $('wordsDetail').hidden = which !== 'words';
+    $('tabIdeas').classList.toggle('active', which === 'ideas'); $('tabWords').classList.toggle('active', which === 'words');
+  }
+  function renderCard_afterGrade(card, res) {
+    renderBest(card);
+    renderLegend(); renderMap();
+    if (idx === cards.length - 1 || (state.settings.drill && neighbor(1) === null)) {
+      setTimeout(function () { toast('End of the deck — check Progress to see what to repeat.'); }, 600);
+    }
+  }
+
+  // ---------- progress view ----------
+  function renderProgress() {
+    var T = state.settings.target;
+    var sc = function (c) { var b = bestOf(attempt(c.id)); return b === undefined ? 0 : b; };
+    var attempted = cards.filter(function (c) { return bestOf(attempt(c.id)) !== undefined; });
+    var mastered = cards.filter(function (c) { return !isWeak(c); });
+    var avgAtt = attempted.length ? Math.round(attempted.reduce(function (s, c) { return s + sc(c); }, 0) / attempted.length) : 0;
+    var deck = Math.round(cards.reduce(function (s, c) { return s + sc(c); }, 0) / cards.length);
+    var tries = cards.reduce(function (s, c) { return s + (attempt(c.id) ? attempt(c.id).count : 0); }, 0);
+    $('modeNote').innerHTML = 'Grading by <b>' + modeName() + '</b>. ' + (modeIdeas() ? 'Scores below measure whether each sentence\u2019s key ideas were said, in any wording.' : 'Scores below measure word-for-word accuracy.') + ' Switch modes on the Cards tab.';
+    $('summary').innerHTML =
+      '<div class="tile"><div class="v">' + deck + '%</div><div class="l">Deck score (unattempted = 0)</div></div>' +
+      '<div class="tile"><div class="v">' + mastered.length + '<span style="font-size:16px;color:var(--ink3)">/' + cards.length + '</span></div><div class="l">Cards at ' + T + '% target</div></div>' +
+      '<div class="tile"><div class="v">' + attempted.length + '<span style="font-size:16px;color:var(--ink3)">/' + cards.length + '</span></div><div class="l">Cards attempted</div></div>' +
+      '<div class="tile"><div class="v">' + avgAtt + '%</div><div class="l">Average best (attempted)</div></div>' +
+      '<div class="tile"><div class="v">' + tries + '</div><div class="l">Total recordings</div></div>';
+
+    var rows = $('sectionRows'); rows.innerHTML = '';
+    var verdicts = [];
+    sections.forEach(function (s, si) {
+      var cs = cards.filter(function (c) { return c.section === si; });
+      var att = cs.filter(function (c) { return bestOf(attempt(c.id)) !== undefined; });
+      var done = cs.filter(function (c) { return !isWeak(c); }).length;
+      var avg = Math.round(cs.reduce(function (sum, c) { return sum + sc(c); }, 0) / cs.length);
+      var t = avg >= T ? 'good' : avg >= T - 15 ? 'mid' : 'low';
+      var verdict;
+      if (!att.length) verdict = 'Not started yet.';
+      else if (done === cs.length) verdict = 'Every card in this section is at target. Keep it warm with an occasional pass.';
+      else if (att.length < cs.length) verdict = (cs.length - att.length) + ' card' + (cs.length - att.length === 1 ? '' : 's') + ' not attempted yet; ' + (att.length - done) + ' attempted but below target.';
+      else verdict = (cs.length - done) + ' card' + (cs.length - done === 1 ? '' : 's') + ' still below target — this section needs more repetitions.';
+      verdicts.push({ si: si, avg: avg, done: done, total: cs.length });
+      var row = document.createElement('div');
+      row.className = 'secrow'; row.style.setProperty('--c', s.color);
+      row.innerHTML = '<div class="top"><span class="name">' + esc(s.short) + '</span><span style="font-size:13px;color:var(--ink2)">' + done + '/' + cs.length + ' cards at target · ' + s.words + ' words</span><span class="pct ' + t + '">' + avg + '%</span><span class="full">' + esc(s.title) + '</span></div>' +
+        '<div class="bar"><i style="width:' + avg + '%"></i></div><div class="minis"></div><div class="verdict">' + verdict + '</div>';
+      var minis = row.querySelector('.minis');
+      cs.forEach(function (c) {
+        var b = bestOf(attempt(c.id));
+        var m = document.createElement('button');
+        m.className = 'mini' + (b !== undefined ? ' ' + tier(b) : '');
+        m.innerHTML = '<b>' + (b !== undefined ? b + '%' : '—') + '</b>#' + c.id;
+        m.title = cue(c); m.onclick = function () { go(cards.indexOf(c)); };
+        minis.appendChild(m);
+      });
+      rows.appendChild(row);
+    });
+
+    var weak = cards.filter(isWeak).sort(function (a, b) {
+      var aa = bestOf(attempt(a.id)), bb = bestOf(attempt(b.id));
+      if (aa !== undefined && bb !== undefined) return aa - bb || a.id - b.id;
+      if (aa !== undefined) return -1; if (bb !== undefined) return 1; return a.id - b.id;
+    });
+    var list = $('weakList'); list.innerHTML = '';
+    if (!weak.length) {
+      list.innerHTML = '<li class="empty" style="cursor:default">Every card is at or above your ' + T + '% target. Raise the target or keep polishing.</li>';
+    } else {
+      weak.forEach(function (c) {
+        var b = bestOf(attempt(c.id));
+        var li = document.createElement('li');
+        li.style.setProperty('--c', sections[c.section].color);
+        li.innerHTML = '<span class="dot"></span><span class="num">#' + c.id + '</span><span class="cue">' + esc(cue(c)) + '</span>' +
+          '<span class="sc ' + (b !== undefined ? tier(b) : 'none') + '">' + (b !== undefined ? b + '%' : 'new') + '</span>';
+        li.onclick = function () { go(cards.indexOf(c)); };
+        list.appendChild(li);
+      });
+    }
+    $('drillBtn').textContent = state.settings.drill ? 'Drilling weak cards (on)' : 'Drill weak cards';
+  }
+
+  // ---------- views & events ----------
+  function showView(v) {
+    $('viewCards').hidden = v !== 'cards'; $('viewProgress').hidden = v !== 'progress'; $('controlbar').hidden = v !== 'cards';
+    document.querySelectorAll('.tabs button').forEach(function (b) { var on = b.dataset.view === v; b.classList.toggle('active', on); b.setAttribute('aria-selected', on); });
+    if (v === 'progress') { if (recording) cancelRecording(); renderProgress(); }
+  }
+  document.querySelectorAll('.tabs button').forEach(function (b) { b.onclick = function () { showView(b.dataset.view); }; });
+  $('prevBtn').onclick = function () { go(neighbor(-1)); };
+  $('nextBtn').onclick = function () { go(neighbor(1)); };
+  $('nextAfterBtn').onclick = function () { go(neighbor(1)); };
+  $('againBtn').onclick = function () { renderCard(); startRecording(); };
+  $('toProgressBtn').onclick = function () { showView('progress'); window.scrollTo(0, 0); };
+  $('recBtn').onclick = function () { recording ? stopRecording() : startRecording(); };
+  $('hideToggle').checked = state.settings.hide;
+  $('hideToggle').onchange = function () { state.settings.hide = this.checked; saveState(); if (recording) { $('cardBody').classList.toggle('blur', this.checked); $('hiddenNote').hidden = !this.checked; } };
+  $('drillToggle').checked = state.settings.drill;
+  function setDrill(on) {
+    state.settings.drill = on; saveState(); $('drillToggle').checked = on;
+    if (on && isWeak(cards[idx]) === false) { var w = weakIds(); if (w.length) idx = cards.findIndex(function (c) { return c.id === w[0]; }); }
+    renderCard();
+    if (on) toast(weakIds().length ? 'Drilling ' + weakIds().length + ' cards below target' : 'No weak cards — drill mode has nothing to show');
+  }
+  $('drillToggle').onchange = function () { setDrill(this.checked); };
+  $('drillBtn').onclick = function () { setDrill(!state.settings.drill); showView('cards'); window.scrollTo(0, 0); };
+  function renderModeToggle() {
+    document.querySelectorAll('#modeToggle button').forEach(function (b) { b.classList.toggle('active', b.dataset.mode === state.settings.mode); });
+  }
+  document.querySelectorAll('#modeToggle button').forEach(function (b) {
+    b.onclick = function () {
+      state.settings.mode = b.dataset.mode; saveState(); renderModeToggle(); renderCard();
+      toast(modeIdeas() ? 'Grading by ideas: key words of each sentence, any order' : 'Grading by exact words');
+    };
+  });
+  renderModeToggle();
+  $('tabIdeas').onclick = function () { showDetail('ideas'); };
+  $('tabWords').onclick = function () { showDetail('words'); };
+  $('targetSel').value = String(state.settings.target);
+  $('targetSel').onchange = function () { state.settings.target = parseInt(this.value, 10); saveState(); renderCard(); };
+  $('resetBtn').onclick = function () {
+    if (confirm('Erase all scores and attempts for every card? This cannot be undone.')) { state.attempts = {}; saveState(); renderProgress(); renderMap(); renderLegend(); toast('Progress reset'); }
+  };
+  $('fallbackGrade').onclick = function () { var t = $('fallbackText').value.trim(); if (!t) return; $('fallbackPanel').hidden = true; startedAt = 0; grade(t, 0); $('fallbackText').value = ''; };
+  function togglePeek() {
+    if (!recording || !state.settings.hide) return;
+    peeking = !peeking; $('cardBody').classList.toggle('blur', !peeking); $('hiddenNote').hidden = peeking;
+  }
+  $('card').onclick = function () { togglePeek(); };
+  document.addEventListener('keydown', function (e) {
+    if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(neighbor(1)); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(neighbor(-1)); }
+    else if (e.key === ' ') { e.preventDefault(); if ($('viewCards').hidden) return; recording ? stopRecording() : startRecording(); }
+    else if (e.key === 'h' || e.key === 'H') {
+      if (recording) togglePeek();
+      else { state.settings.hide = !state.settings.hide; $('hideToggle').checked = state.settings.hide; saveState(); toast(state.settings.hide ? 'Text will hide while recording' : 'Text stays visible while recording'); }
+    }
+    else if (e.key === 'Escape') { if (recording || finalizing) { cancelRecording(); toast('Recording cancelled'); } }
+  });
+  window.addEventListener('pagehide', function () { if (recording) cancelRecording(); });
+  // Keep Space bound to record/stop even right after a button was clicked.
+  document.addEventListener('click', function (e) { var b = e.target && e.target.closest && e.target.closest('button'); if (b) b.blur(); });
+
+  if (!SR) { $('recLabel').textContent = 'Type & grade'; }
+  renderCard();
+
+  // exposed for testing
+  window.KeynotePractice = { prepareCard: prepareCard, prepareSpoken: prepareSpoken, align: align, basicTokens: basicTokens, scoreIdeas: scoreIdeas, autoBeats: autoBeats, stem: stem, splitSentences: splitSentences };
+})();
+
+</script>
+</body>
+</html>

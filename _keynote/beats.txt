@@ -1,0 +1,410 @@
+# Idea beats for Ideas grading mode, one block per card.
+#
+#   card <number> | <scene title shown on the card and in Progress>
+#   <plain-English idea> :: key ; key ; alternative one / alternative two ; ...
+#
+# One line per idea. Keys are separated by ";" and alternatives for the same key by "/".
+# Keys are matched against what the microphone heard after light normalization
+# (numbers as digits, plurals and tenses folded), in any order and any surrounding wording.
+# An idea counts as covered when at least half of its keys are heard, partly covered when
+# some are heard, missed when none are. The build verifies that every key exists in the
+# text of its own card, so a word-for-word recitation always covers every idea.
+# Run `node _keynote/build.js` after editing.
+
+card 1 | Room 525: the lecture hall, April 2014
+Late April 2014, I was 27, at the front of a lecture hall just down the street :: april ; 2014 ; 27 ; lecture hall ; down the street
+Room 525 in the brand new Min Kao building :: 525 ; min kao / min cow / minkao ; brand new
+Proctoring Dr. Mike Berry's spring CS 102 final, my last as a teaching assistant :: proctoring ; berry ; 102 ; last final ; teaching assistant / ta
+About 120 students, heads down, working through the written part of their final :: 120 ; heads down ; written ; students
+Their last gate before summer break; freedom boxed into the hall, yearning to be set loose :: last gate ; summer break ; freedom ; set loose
+Some students were deeply passionate, this was what they loved; others were checking a general-education box to graduate :: passionate ; loved ; general education ; box
+They figured CS would be easy or interesting enough compared to stats or calculus :: easy ; interesting ; stats ; calculus
+
+card 2 | Micah: from middle of the pack to lit on fire
+One of those students was Micah: just shy of 6 feet tall, dark haired :: micah ; 6 feet ; dark haired
+Generic college student from central casting, your average student :: generic ; central casting ; average student
+Mostly attended, middle-of-the-pack grades, usually turned in his homework :: attended ; middle of the pack ; grades ; homework
+Like so many colleagues and employees: show up, do the work, don't make waves :: colleagues ; employees ; show up ; do the work ; waves
+Micah never stood out, but he was a curious student :: stood out ; curious
+As the semester went on he got more and more energized; "mostly showed up" became "always showed up" :: semester ; energized ; mostly showed up ; always showed up
+Something was clicking; I can still see his smile when he figured out for loops by printing out each iteration's data :: clicking ; smile ; for loops ; printing ; iteration
+That was when Micah saw the compounding benefits of automation :: compounding ; benefits ; automation
+
+card 3 | Back in room 525: blue books and the bear hug
+So there I was, standing in room 525, at Dr. Berry's CS 102 final exam :: 525 ; berry ; 102 ; final exam
+Students finishing, turning in blue books; remember those? They're probably coming back :: blue books ; remember those ; coming back
+Micah puts his pencil down, packs up, walks to the front, and hands his blue book to me instead of the desk :: pencil ; packs up ; front ; desk ; hands it to me
+The biggest bear hug of my life; lifts me clean off the ground :: bear hug ; biggest ; lifts ; off the ground
+He puts me down, thanks me: he took the class just wanting a box checked :: puts me down ; thanks me ; box checked
+Somewhere in the semester he found a new passion for solving invisible math puzzles :: passion ; invisible math puzzles / invisible ; puzzles
+That's what industry CS feels like, plus a speeding Ferrari down a highway of burning cars and collapsing bridges; but I'm skipping ahead :: ferrari ; speeding ; burning cars ; collapsing bridges ; skipping ahead
+
+card 4 | Dr. Berry's words, and the door made visible
+Micah walked out; Dr. Berry turned to me: "I've never seen anything like that" :: walked out ; berry ; never seen anything like that
+"The way you share your curiosity and passion for computing, you've lit that kid on fire" :: curiosity ; passion ; computing ; lit that kid on fire
+Micah later told Dr. Berry he was switching his major to computer science and wanted to thank me for showing him his path :: switching his major ; computer science ; thank ; path
+And that is why I'm standing here today :: standing here today
+We live through millions of moments; most pass through us, some become memories, a small handful become part of the story we tell about who we are :: millions of moments ; pass through ; memories ; handful ; story
+Psychologists call them self-defining memories :: psychologists ; self-defining memories
+I thought I'd taught computer science; what I really did was open a door; Micah walked through it, but first somebody had to make the door visible :: teaching computer science ; open a door ; walked through ; visible
+
+card 5 | Good morning: puzzles, and a happy accident
+Good morning, welcome to the inaugural AI-NO-vation Summit; my name is Denise Gosnell :: good morning ; inaugural ; summit ; denise gosnell
+I love a good puzzle: invisible math puzzles, the business puzzle, the 2000-piece Appalachian Trail jigsaw :: puzzle ; business puzzle ; 2000 ; appalachian trail ; jigsaw
+Hours or days on end; puzzles never once felt like work; I'm fortunate, I love what I get to do :: hours ; days ; felt like work ; fortunate ; love what I get to do
+A happy accident, or an unhappy one at first that turned into a happy one :: happy accident ; unhappy
+I didn't plan on this field; the 2008 crash took the job market, and math sent me back to school :: plan ; 2008 ; crash ; job market ; back to school
+Dr. Langston and Dr. Cynthia Peterson opened the door to CS for a mathematician who didn't yet know she belonged :: langston ; peterson / cynthia ; opened the door ; mathematician ; belonged
+2009, a pool deck at a swim meet in Maryville, scribbling test cases for modeling RNA structures with neural networks :: 2009 ; pool deck ; swim meet ; maryville ; rna ; neural networks
+Today you'd call that AI for scientific discovery; back then, the best fun I'd ever had :: scientific discovery ; best fun
+I met Micah on my way to my PhD at UT's Center for Intelligent Systems and Machine Learning :: micah ; phd ; intelligent systems ; machine learning ; university of tennessee
+
+card 6 | Silicon Valley, the feedback loop, and the zig-zag career
+After my PhD, one destination: Silicon Valley, to learn and build from the best :: phd ; destination ; silicon valley ; learn and build ; best
+How the best builders turned code into products, and how products became things people could actually use :: builders ; code into products ; actually use
+How people's jobs and lives were impacted and enhanced by an idea and some code :: jobs ; lives ; impacted ; enhanced ; idea
+Fascinated by the intersection of technology and life, and the feedback loop between them :: fascinated ; intersection ; technology and life ; feedback loop
+Someone invents a tool, it changes how we work, which gives someone else an idea for a new tool, which also changes how we talk with friends :: invents ; how we work ; new tool ; unintended consequence ; friends
+A few more cycles and we've all got iPhones in our pockets :: cycles ; iphones ; pockets
+My career: more zig-zag than ladder; an old Nintendo level, platform to platform, up to beat the boss :: career ; zig zag ; ladder ; nintendo ; platform ; boss
+The boss fight might be Elon, or Donkey Kong, six of one; not there yet, still jumping :: elon ; donkey kong ; six of one ; still jumping
+Zig-zagging between deeply technical and deeply human work, writing code to leading teams :: technical ; human ; writing code ; leading teams
+
+card 7 | Open source, graph, IBM, AWS, and the patent
+In Silicon Valley I fell into the gravity well of open source :: silicon valley ; gravity well ; open source
+Open source is academia at its best: everyone's invited, everyone shares; the reward isn't hoarding, it's figuring it out first and telling everybody :: academia ; invited ; shares ; hoarding ; first ; told everybody
+Leader in open-source graph technology; bestselling book on it :: leader ; graph ; bestselling ; book
+Chief Data Officer of a Silicon Valley billion-dollar unicorn acquired by IBM :: chief data officer ; billion ; unicorn ; ibm
+Led about 100 builders at a nine-figure AWS business unit; secured a US patent :: 100 ; nine-figure ; aws ; patent
+The patent became a database engine, a memory layer for coordinating agents in enterprises worldwide :: database engine ; memory layer ; coordinating agents ; enterprises
+Agents without shared context: Amazon Prime guessing whose house is whose; neighbor's blood pressure meds, your karaoke machine, the cul-de-sac sorts it out before dinner :: amazon prime ; guesses ; blood pressure ; karaoke ; cul-de-sac ; dinner
+We solved that puzzle together at AWS; coordination and memory is wonky but super cool :: solved ; puzzle ; wonky ; super cool
+My #1 bestseller Tech Confidential has the full details :: number 1 ; tech confidential ; details
+
+card 8 | The duality of technology: fraud, PBMs, and broken silos
+Through my zig-zag career I've seen the duality of technology: it creates and it breaks, at the same time; I've lived both ends :: duality ; create ; break ; same time ; both ends
+After my PhD, at a healthcare startup, I helped expose a $20M Medicare fraud scheme by connecting data sets :: healthcare startup ; 20 million ; medicare ; fraud ; connecting data sets
+That startup automated claims processing and saved people real money :: claims processing ; saved ; real money
+It made drug prices transparent and exposed the PBMs' games, so a PBM sued us out of existence :: drug prices ; transparent ; pbms ; sued ; out of existence
+Despite the shutdown I kept connecting data with graph databases and analytics :: shut-down ; connecting data ; graph databases ; analytics
+Dozens of organizations: Netflix, Starbucks, Home Depot, FedEx, SnapChat, the Federal Government :: netflix ; starbucks ; home depot ; fedex ; snapchat ; federal government
+Breaking silos is itself a duality: it breaks somebody's comfortable model and replaces it with someone else's opportunity :: silos ; duality ; comfortable ; model ; opportunity
+You stop seeing innovation as one thing: a door for one person is a wall coming down for someone else :: innovation ; one thing ; door ; wall coming down
+The technology doesn't pick. People do. :: technology doesn't pick ; people do
+
+card 9 | Living in a duality: the swim, the whiteboard, kinesthetic
+I've always lived in a duality between what makes sense to me and what everybody else says is true :: duality ; makes sense ; everybody else ; true
+Not colorblindness where green looks orange, or my firm belief that Peyton Manning is the mayor of Knoxville :: colorblindness ; green ; orange ; peyton manning ; mayor ; knoxville
+My biggest moments of synthesis don't arrive at my desk or in a lecture; they arrive later, when I'm moving :: synthesis ; desk ; lecture ; moving
+Swimming laps at the Allen Jones aquatic center, the last piece of an algorithm clicked into place :: swimming laps ; allen jones ; aquatic center ; algorithm ; clicked
+Climbed out, towel, into the car soaking wet, straight home to the wall-sized whiteboard before it disappeared :: climbed out ; towel ; soaking wet ; whiteboard ; disappeared
+That's how my mind works: I understand by moving, talking, testing, making :: mind works ; moving ; talking ; testing ; making
+Researchers sort learning styles into four buckets: visual, auditory, reading and writing, kinesthetic :: four buckets ; visual ; auditory ; reading and writing ; kinesthetic
+I'm the kinesthetic type; things click for me when I'm moving :: kinesthetic type ; click ; moving
+
+card 10 | The biggest door, and the new doorways AI creates
+Traditional software development works for builders like me but isn't tailor-made for us; there is a door, not the biggest, but it's there :: traditional ; software development ; builders ; tailor-made ; door ; biggest
+Part of why I love open source: the freedom, no, the demand to build and experiment :: open source ; freedom ; demand ; build ; experiment
+Software development is really tailored for reading-and-writing learners; that's the biggest door :: reading and writing ; learners ; biggest door
+Even more for those who can articulate a solution in foreign languages: Python, Java, Javascript, Ruby, C, C++ :: articulate ; foreign languages ; python ; java ; javascript ; ruby ; c++
+If that's hard for you, you struggle; you were not in the club; you were standing outside the door :: struggle ; club ; outside the door
+Now I'm watching AI create new doorways for people who were stuck on the outside :: new doorways ; stuck ; outside
+Someone who can't think in programming languages can speak a problem in plain English, or French, Mandarin, Hungarian, and begin to build :: programming languages ; plain english ; french ; mandarin ; hungarian ; build
+Someone who struggles to write a memo can talk it through with Claude to find the shape of their argument :: memo ; talk it through ; claude ; shape ; argument
+Someone overwhelmed by a dozen responsibilities can create a system that gives them their day, and themselves, back :: overwhelmed ; dozen ; responsibilities ; system ; more of their day
+That is real; I see it happening in front of me; we all do :: real ; happening ; we all do
+
+card 11 | The Duality of AI: real fears, both sides, built on purpose
+Even with the positives, AI isn't immune from the duality of technology: disruption, displacement, fear are real too :: positives ; immune ; duality ; disruption ; displacement ; fear
+Not irrational to worry about job security, elderly parents and identity theft or deepfake scams, or children in a less stable world disrupted faster than a UT freshman changes majors :: irrational ; job security ; elderly parents ; identity theft ; deepfake ; children ; freshman ; majors
+Some of the most powerful people in AI use language that leaves an observer uneasy, for good reason; this is the Duality of AI :: powerful people ; language ; uneasy ; good reason ; duality of ai
+AI can give voice to the talked-over, and make it easier to counterfeit a voice and steal an identity :: voice ; talked over ; counterfeit ; steal ; identity
+AI can help a first-time builder create value, and let a small group of companies control the tools every builder depends on :: first-time builder ; valuable ; small group of companies ; control the tools ; depends
+AI can give us time back for family and friends, and tempt us to automate away the relationships that make the time worth having :: time back ; families ; friends ; automate away ; relationships ; worth having
+Both sides are real; neither is guaranteed :: both sides ; real ; neither ; guaranteed
+AI is not Field of Dreams: build it and the positive side won't magically come, much as I love James Earl Jones :: field of dreams ; build it ; magically ; james earl jones
+The positive side has to be built on purpose: leaders in technology, business, and society becoming door openers :: on purpose ; leadership ; technology ; business ; society ; door openers
+When we open the door and show people through, we get a new group of builders who can finally be seen and who build better human experiences :: open the door ; show people through ; builders ; seen ; human experiences
+
+card 12 | J, the LPGA pro who built the Folds of Honor app
+J, my chief of staff: former pro golfer, won on the LPGA tour, then an operations expert in tech :: j / jay ; chief of staff ; pro golfer ; lpga ; operations
+I showed her plain-language app design in Lovable; she's built a whole series of apps since :: plain language ; lovable / loveable ; series of apps
+Her proudest one solved a problem that had her buried: a Folds of Honor charity golf event run out of her inbox :: proud ; buried ; folds of honor ; charity ; inbox
+Sourcing and tracking donations over email; donors had no way to follow players golfing 185 holes in a single day :: donations ; email ; donors ; 185 ; holes ; single day
+To fund the education of kids of fallen military members :: education ; kids ; fallen ; military
+J built a Lovable app for donations and status updates in a few hours; then live scoring, then donor messages to players; all in a weekend :: lovable / loveable ; status updates ; few hours ; live scoring ; messages ; weekend
+What kept her up until 2am became a slick app: some sleep, and a better experience for donors to a good cause :: 2am ; slick ; sleep ; better experience ; good cause
+She was so excited it got over a thousand views on the day of the event :: excited ; thousand views ; day of the event
+I can't cite a clean year-over-year percentage; there's no baseline; that's the whole point: brand-new things, problems people were buried under :: percentage ; year over year ; baseline ; whole point ; brand-new ; buried
+J could do it because a door was finally open to her, and she walked through it to design and build software :: door ; walked through ; design and build ; software
+
+card 13 | Karen: 18 months with Salesforce, 90 days with open source
+Karen owns tech for a multi-billion-dollar company :: karen ; owns tech ; multi-billion ; company
+She'd spent millions from her own P&L with Salesforce to modernize and secure her data infrastructure; a year and a half later it still didn't work :: millions ; p&l ; salesforce ; modernize ; secure ; data infrastructure ; year and a half ; didn't work
+She walked into our first meeting like someone on a losing streak, bracing for one more :: first meeting ; losing streak ; bracing
+Buried under projects that didn't land, she'd started to believe the problem was her :: buried ; projects ; didn't land ; problem was her
+It wasn't. We didn't hire an army; open source, patterns, templates, AI, and we built :: hire an army ; open source ; patterns ; templates ; built
+Ninety days later she had what Salesforce couldn't deliver in eighteen months, at about 40% less :: ninety days ; salesforce ; eighteen months ; 40 percent
+What I remember is her text: "working with you was the best decision in my career" :: text ; best decision ; career
+That's not self-promotion; all I did was open the door :: self promotion ; open the door
+Those tools sat behind a vendor and a purchase order; Karen figured that door was closed to her :: vendor ; purchase order ; door ; closed
+It wasn't; open source had been open the whole time, everyone invited to the party; she stopped buying software and started building it :: open source ; whole time ; invited ; party ; stopped buying ; started building
+
+card 14 | Fortune 100, Dr. Berry's note, and three places
+Over a decade since Tennessee, my hands on code, ideas, and product direction across a big share of Fortune 100 tech stacks :: decade ; tennessee ; code ; product direction ; fortune 100 ; technology stacks
+I can't prove the exact number; a researcher friend in politics says it doesn't matter if it's true, as long as people perceive it :: prove ; exact number ; researcher ; politics ; perceive
+I won't say "more than 75 percent of the Fortune 100 use tech I helped build," but it's roughly around there :: 75 percent ; fortune 100 ; helped build ; roughly
+I left AWS in April 2025 to start my company: educate the curious about AI, connect people through technology :: aws ; april 2025 ; educate ; curious ; connect people
+Dr. Mike Berry sent a note: "I've been waiting for you to do this" :: berry ; note ; waiting for you
+This is what I want to talk about; glad to be standing here with you all today :: talk about ; glad ; here with me
+This is the group that can build the positive side of the duality and open doors for more people :: positive side ; duality ; open doors ; more people
+Three places where that choice, that opportunity, is already in front of us, so we can all be better door openers :: three places ; choice ; in front of us ; door openers
+
+card 15 | The JFK quote, Thog and Grog, history rhymes
+A quote I read recently that rings true to me :: quote ; recently ; rings true
+"Threshold of a new industrial revolution, the revolution of automation; bright with the hope of new prosperity for labor and new abundance for America" :: threshold ; industrial revolution ; automation ; prosperity ; labor ; abundance ; america
+"But also a revolution which carries the dark menace of industrial dislocation, increasing unemployment, and deepening poverty" :: dark menace ; dislocation ; unemployment ; poverty
+Anyone know who that was? Any guesses? That's John F. Kennedy; try to tell me it wasn't written for this moment :: guesses ; kennedy ; written for this moment
+What does it tell us that a quote from the early 60s applies today? Look hard enough, or ask AI, and you'd find one from the 1890s or 1920s :: early 60s ; 1890s ; 1920s ; ask ai
+Prehistoric times: Thog lamented the downfall of his sledge business when Grog invented the wheel :: prehistoric ; thog ; sledge ; grog ; wheel
+Mark Twain, probably apocryphal: history doesn't repeat, but it rhymes; AI is one of those rhymes of history :: mark twain ; apocryphal ; repeat ; rhymes
+
+card 16 | Change feels like loss, not progress
+We invent new things; they bring change; change is disruptive, with positive and negative effects; that's the inherent tension in change :: invent ; change ; disruptive ; positive ; negative ; inherent tension
+Humans don't like change: macro, we're adaptable as a species; micro, we like our things the way we like them :: humans ; macro ; adaptable ; species ; micro ; the way we like them
+I'm obsessed with creating memorable experiences, but a late Amazon Prime delivery of cupcake toppers sends me into a spiral :: memorable experiences ; amazon prime ; cupcake toppers ; birthday ; late ; spiral
+We understand intellectually that change is inevitable, but when it alters our routines, threatens what we built, or removes a path we counted on, it feels like loss, not progress :: intellectually ; inevitable ; routines ; threatens ; path ; count on ; progress ; loss
+Sometimes those paths took years, decades, or a whole lifetime; what do we do then? :: years ; decades ; lifetime ; what do we do then
+It's tempting for those excited about AI to dismiss resistance as ignorance: understand the tech better, disruption happened before, the long run creates prosperity :: tempting ; dismiss ; resistance ; ignorance ; understand the technology ; happened before ; long run ; prosperity
+That's true, but tell that to the person who lost their job :: tell that ; lost their job
+
+card 17 | The long run is an abstraction: where leadership comes in
+The long run is an abstraction; people live in the present, one job, one bill, one community, one decision at a time :: long run ; abstraction ; present ; one job ; one bill ; one community ; one decision
+That's where leadership comes in: people in this room with the power to resolve these tensions and open doors :: leadership ; this room ; power ; resolve ; tensions ; open doors
+Leaders can't make every consequence positive; we can't promise no job disappears, no community faces new costs, no powerful institution misuses AI :: every consequence ; promise ; disappear ; new costs ; powerful institution
+But we can influence how the change is experienced :: influence ; experienced
+Make the benefits more accessible; anticipate who carries the costs; help people move to the next opportunity; give more people a voice in the decisions shaping their lives :: benefits ; accessible ; anticipate ; costs ; opportunity ; voice ; decisions
+That is what it means to navigate the Duality of AI :: navigate ; duality of ai
+
+card 18 | Jobs: Thog's sledge shop and the switchboard operators
+First great tension, jobs: like every disruption, AI will eliminate jobs, as inevitable as the decline of Thog's sledge-making shop :: first great tension ; eliminate ; inevitable ; thog ; sledge
+Equally inevitable: the creation of new work; Grog needed wheel makers, cart builders, repairers, sellers, and people to figure out what else to move :: equally inevitable ; creation ; new work ; grog ; wheels ; cart ; repair ; sell ; moved
+Sometimes the skills transfer: a sledge maker can make a cart, maybe learn to make a wheel; but sometimes they don't transfer easily :: skills transfer ; sledge ; cart ; wheel ; transfer easily
+A robot automates an assembly-line job; it's "technically possible" the displaced worker retrains in robotics or software engineering :: robot ; assembly-line ; technically possible ; retrain ; robotics ; software engineering
+"Technically possible" is doing a lot of work there :: technically possible ; lot of work
+Previous waves of automation don't give us confidence that everyone who loses a job moves into a new one :: previous waves ; confidence ; loses a job ; new jobs
+In 1950, almost 1.5 million telephone switchboard operators, for the Bell system or in offices, hotels, and factories :: 1950 ; 1.5 million / half million ; telephone ; switchboard ; operators ; bell ; hotels
+By 1984 that fell to 40,000; today it's under 2,000 :: 1984 ; 40,000 ; today ; 2,000
+
+card 19 | New jobs, somewhere else, for someone else; a job is income and identity
+New jobs came: first engineers to design and build the automation; then maintenance, linemen, electrical and mechanical repair; then it's computerized, a whole new category :: design and build ; automation ; engineering ; maintain ; linemen ; electrical ; mechanical ; computerized ; category
+New jobs may require different skills, be located somewhere else, arrive years after the old job disappears, and go to entirely different people :: different skills ; somewhere else ; years after ; different people
+That's the part we lose when we talk only in aggregate :: lose ; aggregate
+The quote misattributed to Stalin, whom I'd rather not be quoting: a single death is a tragedy, a million deaths is a statistic :: misattributed ; stalin ; single death ; tragedy ; million deaths ; statistic
+Economists may say the economy gained more jobs than it lost, while the individual worker, her family, and her community are left worse off :: economists ; gained ; lost ; individual worker ; family ; community ; worse off
+Economists treat jobs as a statistic; for an individual they're mortgages, college tuitions, food on the table, and identity, dignity, community, a sense of value :: statistic ; mortgages ; tuitions ; food on the table ; identity ; dignity ; sense of value
+A job is income, but also identity, dignity, expertise, community, and the belief that if you work hard there will be a place for you :: income ; identity ; expertise ; work hard ; place for you
+
+card 20 | The first rung: entry-level work and Gen Z
+What happens when the disruption begins earlier in a career than we expect? :: disruption ; early ; career ; expect
+AI already does entry-level work: initial research, first drafts, basic analysis, routine coding, administrative coordination :: entry-level ; initial research ; first drafts ; basic analysis ; routine coding ; administrative coordination
+Not glamorous, but that's often how people learn :: glamorous ; how people learn
+The first rung: watch experienced colleagues, make manageable mistakes, develop judgment, earn more consequential work :: first rung ; experienced colleagues ; manageable mistakes ; judgment ; consequential
+If AI removes the first rung, how does the next generation reach the second? :: removes the first rung ; next generation ; second
+We told young people to get an education for the jobs of the future; they did; today 42% of recent grads are underemployed and another 6% can't find work; Gen Z today :: education ; jobs of the future ; 42 percent ; underemployed ; degrees ; 6 percent ; gen z
+It's deeper than lack of opportunity: study hard, earn the credential, develop the skills, and still find the bargain changed while you were preparing to enter it :: deeper ; study hard ; credential ; bargain ; changed
+That's a recipe for someone losing faith in the system; and why not? :: recipe ; faith ; system ; why not
+
+card 21 | Answer with honesty; the other side of the duality: Joyce
+Don't answer that anxiety with a lecture about productivity; answer it with honesty :: anxiety ; lecture ; productivity ; honesty
+Some jobs will disappear, some career paths narrow, some hard-earned skills become less valuable :: disappear ; narrow ; hard-earned ; less valuable
+The least financial cushion, weakest professional networks, least access to AI: the hardest time adapting :: financial cushion ; professional networks ; access to ai ; adapting
+That's one side of the duality; but not the only side :: one side ; duality ; only side
+Even as AI closes off some work, it dramatically lowers the threshold for creating other work :: closing off ; dramatically ; lowering the threshold ; creating others
+My dear friend Joyce, a Pilates instructor with her own studio; talented, disciplined, exceptionally capable; she helped people like me with severe disabling injuries find mobility again :: joyce ; pilates ; studio ; talented ; disabling injuries ; mobility
+But she never thought of herself as a software developer :: software developer ; never thought
+In one hour I showed her how she could use AI to create an email agent :: one hour ; email agent
+I didn't build anything or hand her a finished answer; I helped her see that a door she assumed was closed was now open :: did not build / didn't build ; finished answer ; door ; assumed ; closed ; open
+
+card 22 | Joyce's scheduling app: one sentence in English
+Joyce went from a one-woman shop with one-on-one lessons to a full gym: a room of clients, multiple teachers, complicated schedules :: one-woman ; one-on-one ; full gym ; clients ; teachers ; schedules
+The hour we spent together was on a Claude agent to help with her email :: hour ; claude agent ; email
+Two weeks later her scheduling app let me type "book me in the Tuesday 8am class for the next ten weeks," and it just happened :: two weeks ; scheduling app ; tuesday ; 8am ; ten weeks ; just happened
+No hundred clicks; one sentence in English; she'd gone from an email agent to connecting Claude and MCP servers into her business's actual stack :: hundred clicks ; one sentence ; english ; mcp ; actual stack
+I never asked her to build that; I only showed her how :: never asked ; showed her how
+Now I save my time and show up differently at her studio; other clients talk about how much the new feature helps them too :: save my time ; show up differently ; studio ; clients ; new feature
+Something useful that had never existed, built by someone who never thought the word "builder" applied to her; that is also real :: useful ; never existed ; builder ; applied ; also real
+AI expands what people are capable of: someone who understands a problem but lacks technical vocabulary, formal credentials, or a large budget can begin creating a solution :: expand ; capable ; understands a problem ; technical vocabulary ; credentials ; budget ; solution
+
+card 23 | Not magic opportunity dust: the leadership responsibility
+People won't automatically discover that potential just because the technology exists :: automatically ; discover ; potential ; technology exists
+AI is not magic opportunity dust to scatter across an organization :: magic opportunity dust ; scatter ; organization
+Joyce didn't need me to build her app; she needed someone to show her that she could, to open the door; that's the leadership responsibility inside this tension :: joyce ; build her app ; show her ; open the door ; leadership responsibility
+Who in your organization could do more meaningful work if these new capabilities were made accessible to them? :: organization ; meaningful work ; capabilities ; accessible
+Who has insight but not the title, understands the problem but lacks the vocabulary, has never been invited to see themselves as a builder? :: insight ; title ; vocabulary ; invited ; builder
+And who is standing in front of a closing door with no clear path to the next one? :: closing door ; clear path ; next one
+Opening doors means doing both: genuine access to the new tools, and help navigating the disruption those tools create :: doing both ; genuine access ; new tools ; navigate ; disruption
+Access without transition is abandonment; protection without access is exclusion :: transition ; abandonment ; protection ; exclusion
+
+card 24 | Data centers: who benefits and who pays
+The second great tension, data centers: who benefits, and who pays :: second great tension ; data centers ; benefits ; pays
+AI can create extraordinary value: businesses grow, entrepreneurs compete, research accelerates, public services improve, new investment reaches communities that stand to benefit :: extraordinary value ; businesses grow ; entrepreneurs ; scientific research ; public services ; investment ; communities
+But economic growth does not automagically equate to community prosperity :: economic growth ; automagically ; community prosperity
+A company gets more productive while employing fewer people locally; small businesses gain capabilities yet compete against companies with vastly more data and computing power :: productive ; fewer people ; locally ; small businesses ; capabilities ; competing ; computing power
+AI's physical infrastructure brings investment while demanding land, electricity, water, and creating noise; that's the data center debate raging today :: physical infrastructure ; land ; electricity ; water ; noise ; data center debate
+Real benefits and real costs; that is the tension; it demands we acknowledge the responsibility that comes with the benefits :: real benefits ; real costs ; tension ; responsibility
+Not mutually exclusive: a community can gain investment and still feel strained, data centers aren't a cost-free boon, workers can feel less secure, opportunity can be invisible to the people nearby :: mutually exclusive ; strained ; cost-free ; boon ; less secure ; visible ; nearby
+That's the tension; be honest: will AI help communities build durable prosperity, or will its benefits pass through them or pass them by while they absorb the disruption? :: honest ; durable prosperity ; pass through ; pass them by ; absorb ; disruption
+
+card 25 | Fundamental business questions: Henry Ford and local pathways
+Not anti-business or anti-technology; fundamental business questions: what will it require, what value will it create, who can participate? :: anti-business ; anti-technology ; fundamental ; require ; value ; participate
+Henry Ford paid good wages because selling more cars meant more people with the wherewithal to buy them :: henry ford ; wage ; cars ; wherewithal ; buy
+This tension demands we acknowledge the responsibility that comes with the benefits; responsible leaders want AI investment to leave communities stronger; a virtuous cycle for the business :: responsibility ; benefits ; responsible ; stronger ; virtuous cycle
+Pathways into new kinds of work rather than importing talent; help local businesses adopt AI rather than only the largest capturing the productivity gains :: pathways ; importing talent ; local businesses ; adopt ; largest companies ; productivity gains
+Partner with schools, universities, and workforce programs so capabilities created locally remain local :: schools ; universities ; workforce programs ; remain local
+And yes, pay attention to infrastructure :: infrastructure ; attention
+For many people the data center is the first part of the AI economy they can actually see; the model is abstract, the algorithm invisible, the building at the edge of town is concrete :: data center ; first part ; ai economy ; abstract ; invisible ; edge of town ; concrete
+
+card 26 | What a data center brings and costs; build to earn trust
+A data center can expand the tax base, support construction, strengthen infrastructure, and connect a region to one of the most important transformations of our time :: tax base ; construction ; infrastructure ; region ; transformations
+It can also draw enormous electricity, occupy land, use water, create noise, and require significant public investment :: electricity ; occupy land ; water ; noise ; public investment
+Residents reasonably ask whether long-term benefits match the commitments asked of their community; not rejecting progress, asking what progress will mean for them :: residents ; long-term ; commitments ; rejecting progress ; mean for them
+The answer isn't to stop building; build in a way that earns and sustains community support and trust :: stop building ; earns ; sustains ; support ; trust
+Listen before the major decisions are made; be candid about costs as well as benefits; invest in the infrastructure a project requires rather than quietly shifting burdens onto everyone else :: listening ; major decisions ; candid ; costs ; investing ; quietly shifting ; burdens
+And it means asking what else we can build :: what else ; build
+
+card 27 | Katie Schuman's neuromorphic chips, and the tray I dropped
+Dr. Katie Schuman and I did our PhD research at UT at the same time; I left for Silicon Valley; she stayed and became a leading neuromorphic-computing researcher :: schuman / schumann / shuman ; phd ; silicon valley ; stayed ; neuromorphic / neuro morphic ; researchers
+Neuromorphic chips are designed more like a brain than a conventional processor :: chips ; brain ; conventional processor
+The essential point is power: certain learning tasks use a fraction of the energy of standard approaches :: power ; learning tasks ; fraction ; energy ; standard approaches
+In her lab, summer students showed chips learning pole-balancing using under 10% of the energy of today's GPUs; a different computing future on a sliver of the power, right here in Tennessee :: lab ; summer ; students ; pole-balancing ; 10 percent ; gpus / gpu ; sliver ; tennessee
+Then they handed me a tray of the early chips, and I dropped them :: tray ; early chips ; dropped
+My stomach fell through the floor; I thought I'd dropped millions of dollars of research :: stomach ; floor ; millions of dollars ; research
+The students: "Don't worry, those are from years ago, we're generations past those, we wouldn't hand you one of the new ones" :: don't worry ; years ago ; generations ; new ones
+Better and worse at exactly the same time; but those chips represented something important :: better ; worse ; same time ; represented ; important
+
+card 28 | Demands shaped by decisions; connect innovation and community
+We talk about the demands of AI as the unavoidable price of progress; they are not :: demands ; unavoidable ; price of progress ; they are not
+They are shaped by decisions: what we fund, what we build, which technical approaches we pursue, whose needs we consider :: shaped by decisions ; fund ; build ; technical approaches ; whose needs
+Invest in efficient architectures, support local research, build smaller specialized models, prepare local workers and businesses to participate, ensure infrastructure strengthens the systems communities rely on after construction :: efficient architectures ; local research ; smaller ; specialized models ; local workers ; participate ; strengthens ; construction
+The leadership responsibility isn't to choose between innovation and community; it is to connect them :: leadership responsibility ; innovation ; community ; connect them
+The strongest AI investments won't simply be located in a community; they'll expand what it's capable of :: strongest ; located ; expand ; capable
+Opportunities that last beyond the construction project or corporate announcement: local businesses compete, workers gain valuable skills, people see a place for themselves in the future :: last beyond ; construction project ; corporate announcement ; compete ; valuable skills ; place for themselves
+Not charity: stewardship, good business, opening doors for communities; how economic growth becomes durable community prosperity :: charity ; stewardship ; good business ; opening doors ; durable ; prosperity
+
+card 29 | Control: open versus closed, the narrow and the wide question
+The third great tension: control, what software engineers call open versus closed source :: third great tension ; control ; open versus closed
+Who gets to build with AI, inspect it, question it, adapt it, decide how it's used, and who retains agency over their lives? :: build ; inspect ; question ; adapt ; agency
+The narrow version: will AI democratize software development so far more people can build tools and solve problems? :: narrow ; democratize ; software development ; more people ; solve problems
+Or a handful of companies controlling it, everyone else renting access on terms they didn't set, forfeiting their data, privacy, and personal thoughts? :: handful of companies ; renting access ; terms ; forfeit ; privacy ; personal thoughts
+The Zuckerberg quote: a handful of companies running closed models will control the APIs and tell you what you can build :: handful of companies ; closed models ; control of the apis ; what you can build
+The wider version: will AI give individuals more control over their time, knowledge, work, choices, their own lives? :: wider ; individuals ; control ; time ; knowledge ; choices ; own lives
+Or give institutions more power to monitor people, predict them, influence them, and make decisions about them? :: institutions ; monitor ; predict ; influence ; decisions
+
+card 30 | Surveillance capitalism, Black Mirror, and intelligence on a meter
+Surveillance capitalism: institutions don't simply observe; they collect the traces of our lives, infer who we are, predict what we'll do next, and shape the choices in front of us :: surveillance capitalism ; observe ; traces ; infer ; predict ; shape the choices
+AI makes that far more powerful: conclusions from information we never knew we gave; our preferences, vulnerabilities, relationships, health, emotional states, likely behavior :: far more powerful ; conclusions ; preferences ; vulnerabilities ; relationships ; health ; emotional ; behavior
+It determines what information we see, how it's framed, which opportunities are presented and which are quietly withheld :: what information we see ; framed ; opportunities ; withheld
+Increasingly it makes the decision or takes the action on our behalf, giving us the illusion of control; Black Mirror, but very real :: make the decision ; take the action ; illusion of control ; black mirror ; very real
+The Altman quote: intelligence as a utility, like electricity or water, bought from us on a meter :: altman ; utility ; electricity ; water ; meter
+I'm not an alarmist, but that kind of quote should give sane people pause :: alarmist ; sane ; pause
+The wrong move is a pause on AI; pause instead to think about our approach: is it opening doors or closing them? :: pause on ai ; approach ; opening doors ; closing
+
+card 31 | Open source explained; closed is not bad (Apple's walled garden)
+The part where I get to talk about what really excites me: open source :: excited ; open source
+The architecture of a technology helps determine the distribution of power around it; a big part of my career has been open source :: architecture ; distribution of power ; career ; open source
+Open source doesn't mean everything is free, or that anyone can wander in, change the code, and instantly push it to everyone who depends on it :: free ; wander in ; change the code ; push ; depends
+It means the code can be examined, tested, challenged, improved, adapted; people understand their foundations, find weaknesses, question assumptions, modify tools, create what the center never anticipated :: examined ; tested ; challenged ; improved ; adapted ; foundations ; weaknesses ; assumptions ; modify ; anticipated
+On the flip side, closed is not a synonym for bad :: flip side ; closed ; synonym ; bad
+Closed systems offer integration, consistency, technical support, simplicity, clearer lines of accountability :: integration ; consistency ; technical support ; simplicity ; accountability
+Apple users know: Apple controls the entire experience, and that's often precisely why it works so well; a beautiful walled garden, if you're into that sorta thing :: apple ; entire experience ; works so well ; walled garden ; sorta thing
+
+card 32 | When the closed system mediates our world: concentration is not neutral
+The risk calculus changes when the closed system isn't just operating our phone or laptop but mediating how we understand the world and make decisions in it :: risk calculus ; phone ; laptop ; mediating ; understand the world ; decisions
+AI influences what information we receive, which sources we trust, how choices are framed, what actions are taken on our behalf :: information ; sources ; trust ; framed ; actions
+When systems that influential can't be examined, challenged, modified, or left, it's no longer openness versus convenience; we're deciding how much control over our lives to place in systems someone else controls :: examined ; challenged ; modified ; left ; openness ; convenience ; control over our lives ; someone else
+On a good day that maximizes their extraction from our lives and bank accounts; on a bad day, potentially much worse :: good day ; extractive ; bank accounts ; bad day ; much worse
+The intentions of the people in control are almost beside the point: thoughtful, responsible, sincerely in the public interest; I can find such quotes from Zuckerberg, Altman, even Elon :: intentions ; beside the point ; thoughtful ; responsible ; public interest ; zuckerberg ; altman ; elon
+Ceding that much control to so few creates a vulnerability: dependence on their judgment, restraint, competence, and alignment with our interests :: cede ; vulnerability ; dependent ; judgment ; restraint ; competence ; alignment
+Dependent on business models we didn't choose, rules we didn't write, systems we can't inspect or leave; the vulnerability exists even if no one intends to exploit it :: business models ; rules ; inspect ; leave ; exploit
+That is why concentration is not neutral :: concentration ; neutral
+
+card 33 | AI as intermediary: Google on steroids, and the empowering side
+If AI were just a tool at the edge of our lives it wouldn't matter; but it's becoming an intermediary, not just between us and information like Google, but between us and how information is leveraged :: edge of our lives ; wouldn't matter ; intermediary ; information ; google ; leveraged
+Google got in trouble in the EU for what was effectively a monopoly on the distribution of information; this is that, on steroids :: eu ; monopoly ; distribution ; steroids
+We ask AI what is true and what matters; to summarize, evaluate, recommend, organize, draft; how much of this keynote did I write versus OpenAI's data centers? :: what is true ; matters ; summarize ; evaluate ; recommend ; draft ; keynote ; openai / open ai
+And increasingly we ask AI to act on our behalf :: act on our behalf
+That can be extraordinarily empowering; remember J's charity golf app built on Loveable? :: empowering ; charity golf / jay ; loveable / lovable
+Access to knowledge that once required years of specialized education: interrogate a subject, compare claims, find gaps in an argument, reason from multiple perspectives :: knowledge ; specialized education ; interrogate ; compare ; gaps ; perspectives
+Create software, analyze data, understand a medical document, prepare for an important conversation, navigate an institution that felt inaccessible :: create software ; analyze data ; medical document ; conversation ; institution ; inaccessible
+Used well, AI increases our capacity to think and act: more command over our time, more confidence in our choices, more ability to solve what's in front of us :: capacity ; think and act ; command ; confidence ; solve
+
+card 34 | Outsourcing the struggle: convenience conceals a transfer of control
+But the same technology can weaken the very capabilities it appears to expand :: weaken ; capabilities ; expand
+If we ask AI what to think before we've tried to think, we outsource more than a task: the struggle through which judgment develops :: what to think ; outsourcing ; struggle ; judgment
+Analytical cognition isn't just producing an answer: examining evidence, tolerating uncertainty, recognizing assumptions, changing our minds, understanding why we believe what we believe :: analytical cognition ; evidence ; uncertainty ; assumptions ; changing our minds ; believe
+AI can strengthen that by challenging and extending us, or short-circuit it with an answer that sounds complete before our own thinking has begun :: strengthen ; challenging ; extending ; short-circuit ; sounds complete ; begun
+Once again, convenience can conceal a transfer of control :: convenience ; conceal ; transfer of control
+If a system chooses which sources, arguments, options, and conclusions appear reasonable, it shapes our understanding of the world even when it feels like it's merely saving us time :: sources ; arguments ; options ; conclusions ; understanding ; save time
+Not a reason to reject AI, but to stay conscious of what we're delegating: help us reason or reason for us? expand our choices or narrow them? gaining control or growing dependent? this is the tension :: reject ; conscious ; delegating ; reason for us ; expand ; narrow ; dependent ; tension
+
+card 35 | Open source as one response; the 115-page terms and conditions
+Open source is one response to that tension, not the only one, but one I love and you touch daily, so I couldn't stand here and not plant that flag :: open source ; response ; love ; touch daily ; plant that flag
+Open source, open access, or a well-governed proprietary approach can all work, as long as they guarantee some fundamentals :: open access ; well-governed ; proprietary ; fundamentals
+Privacy, transparency, competition and interoperability, control over our own data and work; means to an end, and the end is agency :: privacy ; transparency ; competition ; interoperability ; our own data ; objective ; means ; agency
+Downloading an app: 115 pages of terms and conditions which you definitely read all of before clicking agree :: download ; 115 ; terms and conditions ; definitely read ; agree
+Raise your hand if you've ever called Google, Apple, or Meta to negotiate those terms; no one? :: raise your hand ; google ; apple ; meta ; negotiate ; no one
+A room of leaders who make decisions, negotiate contracts, and call the shots had no real agency: accept the terms or walk away from a nearly essential tool :: leaders ; contracts ; calling the shots ; real agency ; accept the terms ; walk away ; essential
+That is not meaningful choice; it is permission granted on someone else's terms :: meaningful choice ; permission ; someone else's terms
+
+card 36 | Agency: health care, bank loans, bbq, and the dozen people in the club
+App terms are a trivial example; but what if it were a health care decision, a bank loan, the price of a flight or a car, or which restaurant serves the best bbq? :: trivial ; health care ; bank loan ; flight ; car ; bbq
+Agency means people and institutions can participate in the future AI is creating, not merely accept the version handed to them :: agency ; participate ; future ; handed to them
+Can people understand the systems they depend on, question a consequential decision, protect their information, choose another provider, model, or path, and can new builders create something better? :: understand the systems ; question ; protect ; another provider ; another model ; new builders
+And can society change course when a system no longer serves us? :: society ; change course ; serves us
+That last question may matter most: the greatest risk of concentrated control isn't bad decisions; it's that their decisions become the boundaries everyone else must live, work, build, and think within :: most important ; concentrated control ; bad decisions ; boundaries ; live ; work ; build ; think
+Most leaders here won't determine the global architecture of AI; about a dozen people are in that club, and every one of us is on the outside looking in :: global architecture ; dozen ; club ; outside looking in
+But every leader here will make choices that can open doors for others, preserving agency or gradually closing it off :: every leader ; choices ; open doors ; preserve agency ; close it off
+
+card 37 | Your choices: employees, customers, Luddites, and who holds the key
+When you introduce an AI system: can your employees understand and question it? do customers retain meaningful control over their data? :: introduce ; employees ; understand ; question ; customers ; control over their data
+Can your organization change systems if the technology, terms, or leadership change? do people with new ideas have a genuine path to build upon what exists? :: change systems ; technology ; terms ; leadership ; new ideas ; genuine path ; build upon
+Will you use AI to strengthen the judgement of people around you, or to reduce the control they have over the judgements they get to make? that's the leadership responsibility in this duality :: strengthen ; judgement ; reduce the control ; leadership responsibility ; duality
+People with concerns about AI aren't Luddites, well, maybe some; most want to retain some control over their lives, some agency :: luddites ; maybe some ; retain some control ; agency
+It's not that they don't want AI to happen; they don't want AI to happen TO them :: don't want ai to happen ; happen to them
+The positive promise of AI isn't just doing more for us: enabling more of us to understand more, create more, solve more, and exercise greater control over our own lives :: positive promise ; more of us ; understand more ; create more ; solve more ; control over our own lives
+That requires preserving the conditions that make participation possible: choice, knowledge, accountability, and the freedom to build something different :: conditions ; participation ; choice ; knowledge ; accountability ; freedom ; different
+Openness here isn't every system open source or nothing protected; it's a future open to scrutiny, challenge, competition, and people who want to create a better alternative :: openness ; open source ; protected ; scrutiny ; challenge ; competition ; better alternative
+Closed systems may sometimes serve us well; a closed future will not; AI can open extraordinary doors; no company, institution, or individual should be the only one holding the key :: closed systems ; closed future ; extraordinary doors ; company ; institution ; individual ; holding the key
+
+card 38 | What lights me up: the Micahs of the world
+What is really lighting me up isn't the chips (I'd still drop those), the layoff numbers, the record new businesses, the jobs to be created, or the inventions AI will unlock :: lighting me up ; chips ; drop ; layoff ; new businesses ; jobs ; inventions ; unlock
+No. I do what I do for that kid who sees an open door, a door I helped open, and walks through :: kid ; open door ; helped open ; walks through
+The kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world; who discovers possibilities on the other side of a door he didn't know existed :: hugs ; off the ground ; new way ; see the world ; discovers ; possibilities ; other side ; existed
+For her it didn't exist, until it did; all she needed was someone to open the door and show her where it was :: until it did ; someone ; open the door ; show her where it was
+That's it, that's the whole thing: I do what I do for the Micahs of the world; I exist to light somebody else's fire and help keep it burning :: whole thing ; micahs ; light ; fire ; burning
+That is my philosophical North Star: what gives me energy and purpose; every duality we walked through comes back to that same purpose :: north star ; energy ; purpose ; dualities ; walked through
+
+card 39 | The three dualities, one choice
+The jobs duality: can people whose old paths are disappearing see a path into what comes next? does AI simply close the door, or does someone help them find the skills, tools, and opportunities beyond it? :: jobs duality ; old paths ; disappearing ; closes the door ; skills ; tools ; opportunities
+The community duality: does data center and AI investment leave communities stronger, or does growth arrive, consume resources, and move on? lasting capacity, local opportunity, participation in the prosperity :: community duality ; data center ; investment ; stronger ; consumes resources ; lasting capacity ; local opportunity ; participate ; prosperity
+The control duality: does the future remain open to scrutiny, challenge, new builders, and better alternatives? no company, institution, or individual the only one holding the key :: control duality ; scrutiny ; challenge ; new builders ; alternative ; holding the key
+Different in scale, but the same choice: will AI happen TO people, or will we help people have agency in what happens next? :: different in scale ; same choice ; happen to people ; agency ; what happens next
+
+card 40 | Fear narrows vision; see both sides at once; you decide
+The headlines want you afraid; not unfounded: change is hard, fast change is unsettling; fast change hitting individuals and society at once, a mile wide and a mile deep, is, in a word, terrifying :: headlines ; afraid ; unfounded ; fast change ; unsettling ; individuals and society ; mile wide ; mile deep ; terrifying
+Fear narrows our field of vision, seeks safety in certainty, pushes us to pick a side: acceleration or obstruction, optimism or pessimism, opportunity or danger :: narrowing ; field of vision ; safety in certainty ; pick a side ; acceleration ; obstruction ; optimism ; pessimism ; danger
+The Duality of AI demands something harder: see both sides at once; acknowledge the danger without surrendering the possibility; pursue the possibility without pretending the danger isn't real :: harder ; both sides at once ; acknowledge ; surrendering ; possibility ; pretending
+We don't have to choose between a future where AI succeeds and one where people do; not zero-sum; but the better future isn't automatic; it takes the people in this room, the leaders :: choose ; ai succeeds ; people do ; zero-sum ; automatically ; this room ; leaders
+You're already making the choices that determine how AI is experienced: a worker gets a tool or a pink slip; someone at a closing door gets a supported path or not :: already making ; experienced ; tool ; pink slip ; closing door ; supported path
+Whether an investment merely occupies a community or becomes part of its future; whether systems give people capability and agency or quietly remove their ability to understand, question, and choose :: investment ; occupies ; community ; future ; capability ; agency ; quietly remove ; understand ; question ; choose
+You won't control every force, but you can control whether the choices within your reach open doors or close them :: every force ; within your reach ; open doors ; close them
+
+card 41 | The challenge: find your Micah, and hold the door open
+My challenge: don't let a month go by when you can't say "I opened a door for someone"; every month, find your Micah :: challenge ; month ; opened a door ; find your micah
+The person with the problem but not the title; the idea but not the technical vocabulary; whose old path is disappearing; who doesn't look, think, learn, or arrive by the path you did :: problem ; title ; idea ; technical vocabulary ; old path ; disappearing ; look like you ; arrive
+You don't have to determine their future or carry them through the door; just open it and make it visible; give them the tools, help them reach the threshold, then let them surprise you :: determine ; carry ; open the door ; visible ; tools ; threshold ; surprise
+We'll all move through this AI moment differently: you, me, J, everyone in this room; but none of us is moving through it alone :: ai moment ; differently ; j / jay ; everyone in this room ; alone
+Our choices shape the paths available to other people; every door we open expands what someone else can imagine, attempt, and become :: choices ; paths ; door ; imagine ; attempt ; become
+AI will open extraordinary doors, and close some too; the technology alone won't decide which side of the duality defines this era; we will :: extraordinary doors ; close some ; technology alone ; duality ; era ; we will
+So keep it human, and hold the door open :: keep it human ; hold the door open
