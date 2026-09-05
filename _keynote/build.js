@@ -85,18 +85,21 @@ const SECTION_META = [
 if (SECTION_META.length !== sections.length) { console.error(`expected ${SECTION_META.length} sections, found ${sections.length}`); process.exit(1); }
 sections.forEach((s, i) => Object.assign(s, SECTION_META[i]));
 
-// Optional hand-written idea beats (see beats.txt for the format).
+// Hand-written idea beats and scene titles (see beats.txt for the format).
+const T = require('./textmatch.js');
 const beatsPath = path.join(__dirname, 'beats.txt');
 if (fs.existsSync(beatsPath)) {
   let current = null;
   fs.readFileSync(beatsPath, 'utf8').split('\n').forEach((line, ln) => {
     const l = line.trim();
     if (!l || l.startsWith('#')) return;
-    const m = /^card\s+(\d+)$/i.exec(l);
+    const m = /^card\s+(\d+)\s*(?:\|\s*(.*))?$/i.exec(l);
     if (m) {
       current = cards.find(c => c.id === parseInt(m[1], 10));
       if (!current) { console.error(`beats.txt line ${ln + 1}: no card ${m[1]}`); process.exit(1); }
+      if (current.beats) { console.error(`beats.txt line ${ln + 1}: card ${m[1]} listed twice`); process.exit(1); }
       current.beats = [];
+      if (m[2]) current.title = m[2].trim();
       return;
     }
     if (!current) { console.error(`beats.txt line ${ln + 1}: beat before any "card N" header`); process.exit(1); }
@@ -106,8 +109,21 @@ if (fs.existsSync(beatsPath)) {
     if (!keys.length) { console.error(`beats.txt line ${ln + 1}: no keys`); process.exit(1); }
     current.beats.push({ label: label.trim(), keys });
   });
-  const custom = cards.filter(c => c.beats).length;
-  if (custom) console.log(`${custom} card(s) with hand-written beats`);
+  // Verification: every key group of every beat must be found in its own card's spoken text,
+  // so a word-for-word recitation covers every idea and no beat points at the wrong card.
+  let problems = 0;
+  cards.forEach(c => {
+    if (!c.beats) return;
+    const bag = T.spokenBag(c.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' '));
+    c.beats.forEach(b => b.keys.forEach(alts => {
+      if (!alts.some(alt => T.phraseIn(bag, alt))) { problems++; console.error(`card ${c.id}: key "${alts.join(' / ')}" (idea: ${b.label}) not found in card text`); }
+    }));
+  });
+  if (problems) { console.error(`${problems} beat key(s) do not match their card`); process.exit(1); }
+  const withBeats = cards.filter(c => c.beats);
+  const without = cards.filter(c => !c.beats).map(c => c.id);
+  console.log(`${withBeats.length} card(s) with hand-written beats, ${withBeats.reduce((n, c) => n + c.beats.length, 0)} beats total; all keys verified against their cards`);
+  if (without.length) console.log(`cards using automatic sentence beats: ${without.join(', ')}`);
 }
 
 const data = { sections, cards };
@@ -117,8 +133,9 @@ if (fs.existsSync(tplPath)) {
   const tpl = fs.readFileSync(tplPath, 'utf8');
   if (!tpl.includes('__KEYNOTE_DATA__')) { console.error('template missing __KEYNOTE_DATA__'); process.exit(1); }
   const appJs = fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
-  if (!tpl.includes('__APP_JS__')) { console.error('template missing __APP_JS__'); process.exit(1); }
-  const html = tpl.replace('__KEYNOTE_DATA__', () => json).replace('__APP_JS__', () => appJs);
+  const tmJs = fs.readFileSync(path.join(__dirname, 'textmatch.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
+  if (!tpl.includes('__APP_JS__') || !tpl.includes('__TEXTMATCH_JS__')) { console.error('template missing script placeholders'); process.exit(1); }
+  const html = tpl.replace('__KEYNOTE_DATA__', () => json).replace('__TEXTMATCH_JS__', () => tmJs).replace('__APP_JS__', () => appJs);
   fs.writeFileSync(outPath, html);
   console.log('wrote', path.relative(root, outPath));
 }

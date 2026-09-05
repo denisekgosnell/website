@@ -28,7 +28,15 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1
 button{font:inherit;color:inherit;cursor:pointer}
 [hidden]{display:none !important}
 
-.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
+.sticky{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 4px 14px rgba(40,30,10,.06)}
+.topbar{display:flex;align-items:center;gap:14px;padding:10px 16px 6px}
+.controlbar{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:2px 16px 10px}
+.controlbar .prev{justify-self:start} .controlbar .next{justify-self:end}
+.cb-mid{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.cb-status{font-size:12px;color:var(--ink3);text-align:center;max-width:460px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:1.2em;font-variant-numeric:tabular-nums}
+.cb-status .live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--rec);margin-right:5px;animation:blink 1s infinite;vertical-align:0}
+.scene{margin:8px 22px 0;font-size:13px;font-weight:600;letter-spacing:.2px;color:var(--c)}
+.scene::before{content:'Scene · ';color:var(--ink3);font-weight:500}
 .brand{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.2px;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .brand small{display:block;font-family:var(--sans);font-weight:400;font-size:11px;color:var(--ink3);letter-spacing:.4px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis}
 .tabs{flex:none}
@@ -36,7 +44,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .tabs button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-size:14px;color:var(--ink2)}
 .tabs button.active{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .deckstat{font-size:13px;color:var(--ink2);white-space:nowrap}
-@media (max-width:640px){ .deckstat{display:none} .brand small{display:none} .topbar{gap:8px} .brand{font-size:16px} }
+@media (max-width:640px){ .deckstat{display:none} .brand small{display:none} .topbar{gap:8px;padding:8px 12px 4px} .brand{font-size:15px} }
 
 .wrap{max-width:900px;margin:0 auto;padding:14px 16px 60px}
 
@@ -76,19 +84,19 @@ button{font:inherit;color:inherit;cursor:pointer}
 .w.sub{background:var(--badbg);color:var(--bad);text-decoration:underline dotted;cursor:help}
 .w.miss{background:var(--badbg);color:var(--bad);text-decoration:line-through}
 
-.controls{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:16px 0 8px}
 .btn{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 16px;font-size:15px;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06)}
 .btn:hover{filter:brightness(.97)}
 .btn:disabled{opacity:.45;cursor:default}
 .btn.prev{justify-self:start} .btn.next{justify-self:end}
-.btn.rec{background:var(--rec);color:#fff;border-color:transparent;padding:14px 28px;font-size:17px;border-radius:999px;min-width:190px;box-shadow:0 6px 18px rgba(220,38,38,.35)}
+.btn.rec{background:var(--rec);color:#fff;border-color:transparent;padding:11px 26px;font-size:16px;border-radius:999px;min-width:190px;box-shadow:0 6px 18px rgba(220,38,38,.35)}
 .btn.rec.on{background:var(--ink);color:var(--paper);box-shadow:none}
 .btn.rec .ico{display:inline-block;width:12px;height:12px;border-radius:50%;background:#fff;margin-right:9px;vertical-align:-1px}
 .btn.rec.on .ico{border-radius:2px;animation:blink 1s infinite;background:var(--rec)}
 @keyframes blink{50%{opacity:.25}}
 .btn.ghost{background:transparent;border-color:transparent;box-shadow:none;font-weight:500;color:var(--ink2)}
 .btn.small{padding:8px 12px;font-size:14px}
-@media (max-width:640px){ .controls{grid-template-columns:1fr 1fr} .btn.rec{grid-column:1/-1;order:-1;width:100%} .btn.prev,.btn.next{justify-self:stretch} }
+@media (max-width:640px){ .controlbar{gap:6px;padding:0 10px 8px} .controlbar .btn.prev,.controlbar .btn.next{padding:9px 10px;font-size:13px} .btn.rec{min-width:140px;padding:10px 16px;font-size:15px} .cb-status{max-width:170px;font-size:11px} .scene{margin:8px 16px 0} }
+.options{margin-top:14px}
 
 .options{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:14px;color:var(--ink2);margin-bottom:10px}
 .options label{display:inline-flex;align-items:center;gap:6px}
@@ -176,20 +184,32 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
 .beats li .gap b{color:var(--bad);font-weight:600}
 .beats li .said{font-family:var(--sans);font-size:12.5px;color:var(--ink3);grid-column:2}
 .beats .kw{color:var(--ink);font-weight:600}
+.beats .k{display:inline-block;border-radius:5px;padding:0 6px;margin:2px 2px 0 0;font-size:12px;background:var(--paper);color:var(--ink2)}
+.beats .k.hit{color:var(--ok);text-decoration:none} .beats .k.miss{color:var(--bad);text-decoration:line-through}
 .explain{font-size:12.5px;color:var(--ink3);margin-top:10px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
 .toast.show{opacity:1}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">Keynote Note Cards<small>The Duality of AI · practice deck</small></div>
-  <nav class="tabs" role="tablist">
-    <button data-view="cards" class="active" aria-selected="true">Cards</button>
-    <button data-view="progress" aria-selected="false">Progress</button>
-  </nav>
-  <div class="deckstat" id="deckStat"></div>
-</header>
+<div class="sticky">
+  <header class="topbar">
+    <div class="brand">Keynote Note Cards<small>The Duality of AI · practice deck</small></div>
+    <nav class="tabs" role="tablist">
+      <button data-view="cards" class="active" aria-selected="true">Cards</button>
+      <button data-view="progress" aria-selected="false">Progress</button>
+    </nav>
+    <div class="deckstat" id="deckStat"></div>
+  </header>
+  <div class="controlbar" id="controlbar">
+    <button class="btn prev" id="prevBtn">← Prev</button>
+    <div class="cb-mid">
+      <button class="btn rec" id="recBtn"><span class="ico"></span><span id="recLabel">Record</span></button>
+      <div class="cb-status" id="cbStatus"></div>
+    </div>
+    <button class="btn next" id="nextBtn">Next →</button>
+  </div>
+</div>
 
 <div class="wrap">
   <div class="section-map" id="sectionMap" aria-label="All cards, colored by section"></div>
@@ -203,16 +223,12 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
         <span class="best" id="cardBest"></span>
         <span class="pos" id="cardPos"></span>
       </header>
+      <div class="scene" id="cardScene" hidden></div>
       <h2 class="card-title" id="cardTitle" hidden></h2>
       <div class="card-body" id="cardBody"></div>
       <div class="hidden-note" id="hiddenNote" hidden><span>Text hidden — recite from memory. Press <b>H</b> or tap the card to peek.</span></div>
     </article>
 
-    <div class="controls">
-      <button class="btn prev" id="prevBtn">← Prev</button>
-      <button class="btn rec" id="recBtn"><span class="ico"></span><span id="recLabel">Record</span></button>
-      <button class="btn next" id="nextBtn">Next →</button>
-    </div>
     <div class="options">
       <span style="display:inline-flex;align-items:center;gap:8px">Grade by <span class="mode" id="modeToggle"><button data-mode="ideas">Ideas</button><button data-mode="words">Exact words</button></span></span>
       <label><input type="checkbox" id="hideToggle"> Hide text while recording</label>
@@ -238,7 +254,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
       <div class="rtabs"><button id="tabIdeas">Ideas covered</button><button id="tabWords">Word by word</button></div>
       <div id="ideasDetail">
         <ul class="beats" id="beats"></ul>
-        <div class="explain">Ideas mode checks that each sentence's key words were said somewhere in your take, in any order. Bold words are the ones it listens for; wording around them can differ.</div>
+        <div class="explain">Ideas mode checks each idea's key words anywhere in your take, in any order, so your wording can differ. An idea counts as covered when at least half of the words it listens for are heard. Edit the ideas in <code>_keynote/beats.txt</code>.</div>
       </div>
       <div id="wordsDetail">
         <div class="stats" id="scoreStats" style="margin-top:12px"></div>
@@ -279,6 +295,9 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
 <div class="toast" id="toast"></div>
 
 <script>window.KEYNOTE = __KEYNOTE_DATA__;</script>
+<script>
+__TEXTMATCH_JS__
+</script>
 <script>
 __APP_JS__
 </script>
