@@ -10,7 +10,7 @@
   var SCALES = { hundred: 100, thousand: 1000, million: 1000000, billion: 1000000000 };
   var ALIASES = {
     jay: 'j', barbecue: 'bbq', barbeque: 'bbq', doctor: 'dr', mister: 'mr', okay: 'ok',
-    mica: 'micah', mika: 'micah', mikah: 'micah', myka: 'micah', micha: 'micah',
+    mica: 'micah', mika: 'micah', mikah: 'micah', myka: 'micah', micha: 'micah', barry: 'berry', berrys: 'berrys',
     twenties: '20s', thirties: '30s', forties: '40s', fifties: '50s', sixties: '60s', seventies: '70s', eighties: '80s', nineties: '90s',
     fourty: 'forty'
   };
@@ -145,10 +145,11 @@
   }
   function undouble(x) { return /([^aeiou])\1$/.test(x) && !/(ll|ss|ff|zz)$/.test(x) ? x.slice(0, -1) : x; }
 
-  // Exact stem match, or a one-letter slip between two stems of 5+ letters sharing a first letter.
+  // Exact stem match, or a one-letter slip between two stems of 6+ letters sharing a first letter
+  // (five-letter words stay exact: think/thank, worse/words, house/horse are different words).
   function stemsMatch(a, b) {
     if (a === b) return true;
-    if (a.length < 5 || b.length < 5 || isDigits(a) || isDigits(b) || a[0] !== b[0]) return false;
+    if (a.length < 6 || b.length < 6 || isDigits(a) || isDigits(b) || a[0] !== b[0]) return false;
     return lev(a, b) <= 1;
   }
   function spokenBag(text) {

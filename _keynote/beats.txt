@@ -42,7 +42,7 @@ That's what industry CS feels like, plus a speeding Ferrari down a highway of bu
 card 4 | Dr. Berry's words, and the door made visible
 Micah walked out; Dr. Berry turned to me: "I've never seen anything like that" :: walked out ; berry ; never seen anything like that
 "The way you share your curiosity and passion for computing, you've lit that kid on fire" :: curiosity ; passion ; computing ; lit that kid on fire
-Micah later told Dr. Berry he was switching his major to computer science and wanted to thank me for showing him his path :: switching his major ; computer science ; thank ; path
+Micah later told Dr. Berry he was switching his major to computer science and wanted to thank me for showing him his path :: switching his major / switched his major / changed his major ; major ; thank me / thanked me ; showing him his path / his path
 And that is why I'm standing here today :: standing here today
 We live through millions of moments; most pass through us, some become memories, a small handful become part of the story we tell about who we are :: millions of moments ; pass through ; memories ; handful ; story
 Psychologists call them self-defining memories :: psychologists ; self-defining memories
