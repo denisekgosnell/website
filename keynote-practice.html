@@ -157,6 +157,26 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
 .weak .sc.low{color:var(--bad)} .weak .sc.mid{color:var(--close)} .weak .sc.none{color:var(--ink3);font-weight:500}
 .empty{color:var(--ink2);font-size:14px;background:var(--paper);border:1px dashed var(--line);border-radius:10px;padding:14px}
 .danger{color:var(--bad)}
+.mode{display:inline-flex;background:var(--bg2);border-radius:999px;padding:2px}
+.mode button{border:0;background:transparent;border-radius:999px;padding:4px 12px;font-size:13px;color:var(--ink2)}
+.mode button.active{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12);font-weight:600}
+.alt{display:inline-block;font-size:13px;color:var(--ink2);background:var(--bg2);border-radius:999px;padding:3px 10px;margin-top:8px}
+.alt b{color:var(--ink)}
+.rtabs{display:flex;gap:6px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.rtabs button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink2)}
+.rtabs button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.graded{border-top:0;padding-top:0;margin-top:12px}
+.beats{list-style:none;margin:12px 0 0;padding:0}
+.beats li{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:8px 10px;border-radius:10px;margin-bottom:6px;font-family:var(--serif);font-size:17px;line-height:1.45}
+.beats li .mark{font-family:var(--sans);font-weight:700;text-align:center;line-height:1.5}
+.beats li.hit{background:var(--okbg)} .beats li.hit .mark{color:var(--ok)}
+.beats li.part{background:var(--closebg)} .beats li.part .mark{color:var(--close)}
+.beats li.miss{background:var(--badbg)} .beats li.miss .mark{color:var(--bad)}
+.beats li .gap{grid-column:2;font-family:var(--sans);font-size:12.5px;color:var(--ink2);margin-top:2px}
+.beats li .gap b{color:var(--bad);font-weight:600}
+.beats li .said{font-family:var(--sans);font-size:12.5px;color:var(--ink3);grid-column:2}
+.beats .kw{color:var(--ink);font-weight:600}
+.explain{font-size:12.5px;color:var(--ink3);margin-top:10px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
 .toast.show{opacity:1}
 </style>
@@ -194,6 +214,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
       <button class="btn next" id="nextBtn">Next →</button>
     </div>
     <div class="options">
+      <span style="display:inline-flex;align-items:center;gap:8px">Grade by <span class="mode" id="modeToggle"><button data-mode="ideas">Ideas</button><button data-mode="words">Exact words</button></span></span>
       <label><input type="checkbox" id="hideToggle"> Hide text while recording</label>
       <label><input type="checkbox" id="drillToggle"> Drill weak cards only</label>
       <label>Target <select id="targetSel"><option value="80">80%</option><option value="90">90%</option><option value="95">95%</option><option value="100">100%</option></select></label>
@@ -211,11 +232,19 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
         <div>
           <h3 id="scoreTitle"></h3>
           <div class="sub" id="scoreSub"></div>
-          <div class="stats" id="scoreStats"></div>
+          <div class="alt" id="altScore"></div>
         </div>
       </div>
-      <div class="graded" id="graded"></div>
-      <div class="extras" id="extras" hidden></div>
+      <div class="rtabs"><button id="tabIdeas">Ideas covered</button><button id="tabWords">Word by word</button></div>
+      <div id="ideasDetail">
+        <ul class="beats" id="beats"></ul>
+        <div class="explain">Ideas mode checks that each sentence's key words were said somewhere in your take, in any order. Bold words are the ones it listens for; wording around them can differ.</div>
+      </div>
+      <div id="wordsDetail">
+        <div class="stats" id="scoreStats" style="margin-top:12px"></div>
+        <div class="graded" id="graded"></div>
+        <div class="extras" id="extras" hidden></div>
+      </div>
       <details class="transcript"><summary>What the microphone heard</summary><div id="transcript"></div></details>
       <div class="actions">
         <button class="btn small" id="againBtn">↻ Try again</button>
@@ -235,6 +264,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
   </main>
 
   <main id="viewProgress" hidden>
+    <p id="modeNote" style="margin:0 0 10px;font-size:13px;color:var(--ink2)"></p>
     <div class="summary" id="summary"></div>
     <div id="sectionRows"></div>
     <h2 class="h">Keep repeating these</h2>
@@ -262,10 +292,11 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     try {
       var s = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
       s.attempts = s.attempts || {};
-      s.settings = Object.assign({ hide: false, drill: false, target: 90 }, s.settings || {});
+      s.settings = Object.assign({ hide: false, drill: false, target: 90, mode: 'ideas' }, s.settings || {});
+      if (s.settings.mode !== 'words' && s.settings.mode !== 'ideas') s.settings.mode = 'ideas';
       s.pos = Math.min(Math.max(s.pos | 0, 0), cards.length - 1);
       return s;
-    } catch (e) { return { attempts: {}, settings: { hide: false, drill: false, target: 90 }, pos: 0 }; }
+    } catch (e) { return { attempts: {}, settings: { hide: false, drill: false, target: 90, mode: 'ideas' }, pos: 0 }; }
   }
   function saveState() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
   var state = loadState();
@@ -277,6 +308,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
   var SCALES = { hundred: 100, thousand: 1000, million: 1000000, billion: 1000000000 };
   var ALIASES = {
     jay: 'j', barbecue: 'bbq', barbeque: 'bbq', doctor: 'dr', mister: 'mr', okay: 'ok',
+    mica: 'micah', mika: 'micah', mikah: 'micah', myka: 'micah', micha: 'micah',
     twenties: '20s', thirties: '30s', forties: '40s', fifties: '50s', sixties: '60s', seventies: '70s', eighties: '80s', nineties: '90s',
     fourty: 'forty', javascript: 'javascript', 'java script': 'javascript'
   };
@@ -393,6 +425,130 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     return mergeNumbers(toks).map(function (x) { return x.t; });
   }
 
+  // ---------- ideas mode: sentence beats + key-word coverage ----------
+  var STOP = {};
+  ('a an the and or but so if then than that this these those there here it its i me my we our us you your he him his she her they them their ' +
+   'is am are was were be been being do does did done have has had having will would can could should may might must shall ' +
+   'of in on at to for from by with about into onto over under up down out off as into through between after before again ' +
+   'not no nor yes very really just also too even still only ever never always often sometimes somewhere else ' +
+   'what which who whom whose when where why how all any both each few more most much some such own same other another ' +
+   'because while until since though although whether like kind kinda sort get got gets getting go goes going went gone ' +
+   'one thing things something someone somebody anything everything everyone everybody nothing nobody way ways well let lets ' +
+   'now today back right little lot lots part parts bit make makes made making take takes took taking put say says said saying ' +
+   'know knew think thought see saw seen come came coming want wanted look looked looking around there theyre were dont im ive youre ' +
+   'thats its whats isnt wasnt arent werent didnt doesnt cant couldnt wont wouldnt shouldnt hasnt havent hadnt aint').split(/\s+/).forEach(function (w) { STOP[w] = 1; });
+
+  function stem(w) {
+    if (isDigits(w) || w.length < 4) return w;
+    var x = w;
+    if (x.length > 4 && /ies$/.test(x)) x = x.slice(0, -3) + 'y';
+    else if (x.length > 5 && /ing$/.test(x)) x = undouble(x.slice(0, -3));
+    else if (x.length > 4 && /ed$/.test(x)) x = undouble(x.slice(0, -2));
+    else if (x.length > 5 && /ly$/.test(x)) x = x.slice(0, -2);
+    else if (x.length > 3 && /s$/.test(x) && !/(ss|us|is)$/.test(x)) x = x.slice(0, -1);
+    if (x.length > 4 && /e$/.test(x)) x = x.slice(0, -1);
+    return x;
+  }
+  function undouble(x) { return /([^aeiou])\1$/.test(x) && !/(ll|ss|ff|zz)$/.test(x) ? x.slice(0, -1) : x; }
+
+  var ABBREV = /^(dr|mr|mrs|ms|st|vs|jr|sr|[a-z])$/i;
+  function splitSentences(paragraph) {
+    var words = paragraph.replace(/\[[^\]]*\]/g, ' ').split(/\s+/).filter(Boolean);
+    var out = [], buf = [];
+    words.forEach(function (w, i) {
+      buf.push(w);
+      var core = w.replace(/[“”"’')\]]+$/, '');
+      if (/[.?!]$/.test(core)) {
+        var bare = core.replace(/[.?!]+$/, '').replace(/^[“"‘'(]+/, '');
+        var next = words[i + 1];
+        var abbrev = ABBREV.test(bare) && next && /^[A-Z0-9]/.test(next);
+        if (!abbrev) { out.push(buf.join(' ')); buf = []; }
+      }
+    });
+    if (buf.length) out.push(buf.join(' '));
+    return out;
+  }
+  // Content words of a sentence: normalized, numbers merged, stopwords dropped, stemmed. Keeps the display word.
+  function contentWords(sentence) {
+    var toks = mergeNumbers(sentence.split(/\s+/).filter(Boolean).map(function (w, i) {
+      return basicTokens(w).map(function (t) { return { t: t, src: [i] }; });
+    }).reduce(function (acc, arr) { return acc.concat(arr); }, []));
+    var disp = sentence.split(/\s+/).filter(Boolean);
+    var perDisp = {}; toks.forEach(function (tok) { tok.src.forEach(function (i) { perDisp[i] = (perDisp[i] || 0) + 1; }); });
+    var seen = {}, out = [];
+    toks.forEach(function (tok) {
+      if (STOP[tok.t] || tok.t.length < 2) return;
+      var st = stem(tok.t);
+      if (seen[st]) return; seen[st] = 1;
+      var clean = function (i) { return disp[i].replace(/^[“"‘'(]+|[“”"’'),.;:?!]+$/g, ''); };
+      // A number phrase spans several display words; a dash-joined display word yields several tokens.
+      var word = tok.src.length > 1 ? tok.src.map(clean).join(' ') : (perDisp[tok.src[0]] > 1 ? tok.t : clean(tok.src[0]));
+      out.push({ stem: st, word: word, src: tok.src });
+    });
+    return out;
+  }
+  // Auto beats: one per sentence; sentences with fewer than 3 content words are merged with a neighbor.
+  function autoBeats(card) {
+    if (card.beats && card.beats.length) return card.beats.map(function (b) { return { label: b.label, keys: b.keys, custom: true }; });
+    var sents = [];
+    card.paragraphs.forEach(function (p) { splitSentences(p).forEach(function (t) { sents.push({ text: t, words: contentWords(t) }); }); });
+    var merged = [];
+    sents.forEach(function (sn) {
+      var prev = merged[merged.length - 1];
+      if (prev && prev.words.length < 3) { prev.text += ' ' + sn.text; prev.words = contentWords(prev.text); }
+      else merged.push({ text: sn.text, words: sn.words });
+    });
+    if (merged.length > 1 && merged[merged.length - 1].words.length < 3) {
+      var last = merged.pop(); var p2 = merged[merged.length - 1];
+      p2.text += ' ' + last.text; p2.words = contentWords(p2.text);
+    }
+    return merged.map(function (m) { return { label: m.text, words: m.words }; });
+  }
+  function spokenBag(text) {
+    var toks = prepareSpoken(text).map(stem);
+    var set = {}; toks.forEach(function (t) { set[t] = 1; });
+    return { list: toks, set: set };
+  }
+  // Exact stem match, or a one-letter slip between two stems of 5+ letters sharing a first letter.
+  function bagHas(bag, st) {
+    if (bag.set[st]) return true;
+    if (st.length < 5 || isDigits(st)) return false;
+    for (var i = 0; i < bag.list.length; i++) {
+      var t = bag.list[i];
+      if (t.length >= 5 && t[0] === st[0] && !isDigits(t) && lev(st, t) <= 1) return true;
+    }
+    return false;
+  }
+  // Custom beat key: alternatives are phrases; a phrase matches if its stems appear in order, contiguously.
+  function phraseIn(bag, phrase) {
+    var ph = prepareSpoken(phrase).map(stem);
+    if (!ph.length) return false;
+    outer: for (var i = 0; i + ph.length <= bag.list.length; i++) {
+      for (var k = 0; k < ph.length; k++) if (wordsEqual(ph[k], bag.list[i + k]) < 0) continue outer;
+      return true;
+    }
+    return false;
+  }
+  function scoreIdeas(card, spokenText) {
+    var beats = autoBeats(card), bag = spokenBag(spokenText);
+    var total = 0;
+    var rows = beats.map(function (b) {
+      var hit = [], missed = [], ratio;
+      if (b.custom) {
+        b.keys.forEach(function (alts) { (alts.some(function (p) { return phraseIn(bag, p); }) ? hit : missed).push(alts[0]); });
+        ratio = b.keys.length ? hit.length / b.keys.length : 1;
+      } else {
+        b.words.forEach(function (w) { (bagHas(bag, w.stem) ? hit : missed).push(w.word); });
+        ratio = b.words.length ? hit.length / b.words.length : 1;
+      }
+      var status = ratio >= 0.5 ? 'hit' : (hit.length && ratio >= 0.25) ? 'part' : 'miss';
+      total += status === 'hit' ? 1 : status === 'part' ? 0.5 : 0;
+      return { label: b.label, status: status, hit: hit, missed: missed, custom: !!b.custom, words: b.words };
+    });
+    var score = rows.length ? Math.round(100 * total / rows.length) : 100;
+    return { rows: rows, score: score, covered: rows.filter(function (r) { return r.status === 'hit'; }).length, partial: rows.filter(function (r) { return r.status === 'part'; }).length, n: rows.length };
+  }
+
   // ---------- alignment / scoring ----------
   function lev(a, b) {
     var m = a.length, n = b.length, prev = [], cur = [], i, j;
@@ -460,7 +616,10 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     return 'Rough draft';
   }
   function attempt(id) { return state.attempts[id]; }
-  function isWeak(card) { var a = attempt(card.id); return !a || a.best < state.settings.target; }
+  function modeIdeas() { return state.settings.mode === 'ideas'; }
+  function bestOf(a) { if (!a) return undefined; return modeIdeas() ? a.bestIdeas : a.best; }
+  function isWeak(card) { var b = bestOf(attempt(card.id)); return b === undefined || b < state.settings.target; }
+  function modeName() { return modeIdeas() ? 'ideas' : 'exact words'; }
   function weakIds() { return cards.filter(isWeak).map(function (c) { return c.id; }); }
   function cue(card) {
     var words = card.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' ').split(/\s+/).filter(Boolean);
@@ -487,16 +646,16 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
   function renderMap() {
     var el = $('sectionMap'); el.innerHTML = '';
     cards.forEach(function (c, i) {
-      var a = attempt(c.id);
+      var a = attempt(c.id), bs = bestOf(a);
       var b = document.createElement('button');
-      b.className = 'seg' + (i === idx ? ' current' : '') + (a ? (a.best >= state.settings.target ? ' mastered' : ' tried') : '');
+      b.className = 'seg' + (i === idx ? ' current' : '') + (bs !== undefined ? (bs >= state.settings.target ? ' mastered' : ' tried') : '');
       b.style.setProperty('--seg', sections[c.section].color);
-      b.title = 'Card ' + c.id + (a ? ' · best ' + a.best + '%' : ' · not yet attempted');
+      b.title = 'Card ' + c.id + (bs !== undefined ? ' · best ' + bs + '% (' + modeName() + ')' : ' · not yet attempted');
       b.onclick = function () { go(i); };
       el.appendChild(b);
     });
     var mastered = cards.length - weakIds().length;
-    $('deckStat').textContent = mastered + ' of ' + cards.length + ' cards at target';
+    $('deckStat').textContent = mastered + ' of ' + cards.length + ' cards at target · ' + modeName();
   }
   function renderCardBody(card, graded) {
     var prep = prepareCard(card);
@@ -533,9 +692,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     var inSec = cards.filter(function (c) { return c.section === card.section; });
     var posInSec = inSec.indexOf(card) + 1;
     $('cardPos').textContent = 'Card ' + card.id + ' of ' + cards.length + ' · ' + posInSec + '/' + inSec.length + ' in section · ' + card.words + ' words';
-    var a = attempt(card.id), best = $('cardBest');
-    best.className = 'best' + (a ? ' ' + tier(a.best) : '');
-    best.textContent = a ? 'Best ' + a.best + '% · ' + a.count + (a.count === 1 ? ' try' : ' tries') : 'Not attempted';
+    renderBest(card);
     var title = $('cardTitle');
     if (posInSec === 1) { title.textContent = sec.title; title.hidden = false; } else { title.hidden = true; }
     $('cardBody').innerHTML = renderCardBody(card, null);
@@ -546,6 +703,16 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     state.pos = idx; saveState();
     renderLegend(); renderMap();
     document.title = 'Card ' + card.id + ' · Keynote Note Cards';
+  }
+  function renderBest(card) {
+    var a = attempt(card.id), best = $('cardBest'), bs = bestOf(a);
+    best.className = 'best' + (bs !== undefined ? ' ' + tier(bs) : '');
+    if (!a) { best.textContent = 'Not attempted'; return; }
+    var parts = [];
+    if (a.bestIdeas !== undefined) parts.push('ideas ' + a.bestIdeas + '%');
+    parts.push('words ' + a.best + '%');
+    if (modeIdeas() && a.bestIdeas === undefined) parts.unshift('ideas —');
+    best.textContent = 'Best: ' + parts.join(' · ') + ' · ' + a.count + (a.count === 1 ? ' try' : ' tries');
   }
   function neighbor(dir) {
     if (!state.settings.drill) { var j = idx + dir; return j >= 0 && j < cards.length ? j : null; }
@@ -636,20 +803,33 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     var ref = prep.tokens.map(function (t) { return t.t; });
     var hyp = prepareSpoken(spokenText);
     var res = align(ref, hyp);
+    var ideas = scoreIdeas(card, spokenText);
 
     var a = state.attempts[card.id] || { best: 0, last: 0, count: 0 };
     a.count++; a.last = res.score; a.best = Math.max(a.best, res.score); a.at = Date.now();
+    a.lastIdeas = ideas.score; a.bestIdeas = Math.max(a.bestIdeas === undefined ? 0 : a.bestIdeas, ideas.score);
     state.attempts[card.id] = a; saveState();
+    var primary = modeIdeas() ? ideas.score : res.score, T = state.settings.target;
 
     $('livePanel').hidden = true; $('cardBody').classList.remove('blur'); $('hiddenNote').hidden = true;
     $('cardBody').innerHTML = renderCardBody(card, res);
-    var ring = $('ring'); ring.style.setProperty('--p', res.score);
-    ring.style.setProperty('--rc', res.score >= state.settings.target ? 'var(--ok)' : res.score >= state.settings.target - 15 ? 'var(--close)' : 'var(--bad)');
-    $('scoreNum').textContent = res.score;
-    $('scoreTitle').textContent = gradeLabel(res.score) + (res.score >= state.settings.target ? ' ✓' : '');
+    var ring = $('ring'); ring.style.setProperty('--p', primary);
+    ring.style.setProperty('--rc', primary >= T ? 'var(--ok)' : primary >= T - 15 ? 'var(--close)' : 'var(--bad)');
+    $('scoreNum').textContent = primary;
     var wpm = elapsedMs && elapsedMs > 3000 ? Math.round(res.spoken / (elapsedMs / 60000)) : 0;
-    $('scoreSub').textContent = (res.score >= state.settings.target ? 'At or above your ' + state.settings.target + '% target. ' : 'Target is ' + state.settings.target + '%. ') +
-      'Best on this card: ' + a.best + '% after ' + a.count + (a.count === 1 ? ' try.' : ' tries.') + (wpm ? ' Pace: ' + wpm + ' words/min.' : '');
+    if (modeIdeas()) {
+      $('scoreTitle').textContent = ideas.covered + ' of ' + ideas.n + ' ideas covered' + (ideas.partial ? ', ' + ideas.partial + ' partly' : '') + (primary >= T ? ' ✓' : '');
+      $('scoreSub').textContent = (primary >= T ? 'At or above your ' + T + '% target. ' : 'Target is ' + T + '%. ') +
+        'Best ideas score on this card: ' + a.bestIdeas + '% after ' + a.count + (a.count === 1 ? ' try.' : ' tries.') + (wpm ? ' Pace: ' + wpm + ' words/min.' : '');
+      $('altScore').innerHTML = 'Exact words: <b>' + res.score + '%</b> · ' + gradeLabel(res.score);
+    } else {
+      $('scoreTitle').textContent = gradeLabel(res.score) + (primary >= T ? ' ✓' : '');
+      $('scoreSub').textContent = (primary >= T ? 'At or above your ' + T + '% target. ' : 'Target is ' + T + '%. ') +
+        'Best on this card: ' + a.best + '% after ' + a.count + (a.count === 1 ? ' try.' : ' tries.') + (wpm ? ' Pace: ' + wpm + ' words/min.' : '');
+      $('altScore').innerHTML = 'Ideas: <b>' + ideas.score + '%</b> · ' + ideas.covered + ' of ' + ideas.n + ' covered';
+    }
+    renderBeats(ideas);
+    showDetail(modeIdeas() ? 'ideas' : 'words');
     var c = res.counts;
     $('scoreStats').innerHTML =
       '<span><b>' + res.n + '</b> words on card</span>' +
@@ -670,10 +850,32 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     renderCard_afterGrade(card, res);
     $('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+  function renderBeats(ideas) {
+    var ul = $('beats'); ul.innerHTML = '';
+    ideas.rows.forEach(function (r) {
+      var li = document.createElement('li'); li.className = r.status;
+      var label;
+      if (r.custom) label = esc(r.label);
+      else {
+        // bold the key words inside the sentence
+        var keyWords = {}; r.words.forEach(function (w) { keyWords[w.word.toLowerCase()] = 1; });
+        label = r.label.split(/(\s+)/).map(function (piece) {
+          var bare = piece.replace(/^[“"‘'(]+|[“”"’'),.;:?!]+$/g, '');
+          return keyWords[bare.toLowerCase()] ? esc(piece).replace(esc(bare), '<span class="kw">' + esc(bare) + '</span>') : esc(piece);
+        }).join('');
+      }
+      var mark = r.status === 'hit' ? '✓' : r.status === 'part' ? '~' : '✗';
+      var html = '<span class="mark">' + mark + '</span><span>' + label + '</span>';
+      if (r.status !== 'hit' && r.missed.length) html += '<span class="gap">Not heard: <b>' + r.missed.map(esc).join('</b>, <b>') + '</b></span>';
+      li.innerHTML = html; ul.appendChild(li);
+    });
+  }
+  function showDetail(which) {
+    $('ideasDetail').hidden = which !== 'ideas'; $('wordsDetail').hidden = which !== 'words';
+    $('tabIdeas').classList.toggle('active', which === 'ideas'); $('tabWords').classList.toggle('active', which === 'words');
+  }
   function renderCard_afterGrade(card, res) {
-    var a = attempt(card.id), best = $('cardBest');
-    best.className = 'best ' + tier(a.best);
-    best.textContent = 'Best ' + a.best + '% · ' + a.count + (a.count === 1 ? ' try' : ' tries');
+    renderBest(card);
     renderLegend(); renderMap();
     if (idx === cards.length - 1 || (state.settings.drill && neighbor(1) === null)) {
       setTimeout(function () { toast('End of the deck — check Progress to see what to repeat.'); }, 600);
@@ -683,11 +885,13 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
   // ---------- progress view ----------
   function renderProgress() {
     var T = state.settings.target;
-    var attempted = cards.filter(function (c) { return attempt(c.id); });
+    var sc = function (c) { var b = bestOf(attempt(c.id)); return b === undefined ? 0 : b; };
+    var attempted = cards.filter(function (c) { return bestOf(attempt(c.id)) !== undefined; });
     var mastered = cards.filter(function (c) { return !isWeak(c); });
-    var avgAtt = attempted.length ? Math.round(attempted.reduce(function (s, c) { return s + attempt(c.id).best; }, 0) / attempted.length) : 0;
-    var deck = Math.round(cards.reduce(function (s, c) { return s + (attempt(c.id) ? attempt(c.id).best : 0); }, 0) / cards.length);
-    var tries = attempted.reduce(function (s, c) { return s + attempt(c.id).count; }, 0);
+    var avgAtt = attempted.length ? Math.round(attempted.reduce(function (s, c) { return s + sc(c); }, 0) / attempted.length) : 0;
+    var deck = Math.round(cards.reduce(function (s, c) { return s + sc(c); }, 0) / cards.length);
+    var tries = cards.reduce(function (s, c) { return s + (attempt(c.id) ? attempt(c.id).count : 0); }, 0);
+    $('modeNote').innerHTML = 'Grading by <b>' + modeName() + '</b>. ' + (modeIdeas() ? 'Scores below measure whether each sentence\u2019s key ideas were said, in any wording.' : 'Scores below measure word-for-word accuracy.') + ' Switch modes on the Cards tab.';
     $('summary').innerHTML =
       '<div class="tile"><div class="v">' + deck + '%</div><div class="l">Deck score (unattempted = 0)</div></div>' +
       '<div class="tile"><div class="v">' + mastered.length + '<span style="font-size:16px;color:var(--ink3)">/' + cards.length + '</span></div><div class="l">Cards at ' + T + '% target</div></div>' +
@@ -699,9 +903,9 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     var verdicts = [];
     sections.forEach(function (s, si) {
       var cs = cards.filter(function (c) { return c.section === si; });
-      var att = cs.filter(function (c) { return attempt(c.id); });
+      var att = cs.filter(function (c) { return bestOf(attempt(c.id)) !== undefined; });
       var done = cs.filter(function (c) { return !isWeak(c); }).length;
-      var avg = Math.round(cs.reduce(function (sum, c) { return sum + (attempt(c.id) ? attempt(c.id).best : 0); }, 0) / cs.length);
+      var avg = Math.round(cs.reduce(function (sum, c) { return sum + sc(c); }, 0) / cs.length);
       var t = avg >= T ? 'good' : avg >= T - 15 ? 'mid' : 'low';
       var verdict;
       if (!att.length) verdict = 'Not started yet.';
@@ -715,10 +919,10 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
         '<div class="bar"><i style="width:' + avg + '%"></i></div><div class="minis"></div><div class="verdict">' + verdict + '</div>';
       var minis = row.querySelector('.minis');
       cs.forEach(function (c) {
-        var a = attempt(c.id);
+        var b = bestOf(attempt(c.id));
         var m = document.createElement('button');
-        m.className = 'mini' + (a ? ' ' + tier(a.best) : '');
-        m.innerHTML = '<b>' + (a ? a.best + '%' : '—') + '</b>#' + c.id;
+        m.className = 'mini' + (b !== undefined ? ' ' + tier(b) : '');
+        m.innerHTML = '<b>' + (b !== undefined ? b + '%' : '—') + '</b>#' + c.id;
         m.title = cue(c); m.onclick = function () { go(cards.indexOf(c)); };
         minis.appendChild(m);
       });
@@ -726,20 +930,20 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     });
 
     var weak = cards.filter(isWeak).sort(function (a, b) {
-      var aa = attempt(a.id), bb = attempt(b.id);
-      if (aa && bb) return aa.best - bb.best || a.id - b.id;
-      if (aa) return -1; if (bb) return 1; return a.id - b.id;
+      var aa = bestOf(attempt(a.id)), bb = bestOf(attempt(b.id));
+      if (aa !== undefined && bb !== undefined) return aa - bb || a.id - b.id;
+      if (aa !== undefined) return -1; if (bb !== undefined) return 1; return a.id - b.id;
     });
     var list = $('weakList'); list.innerHTML = '';
     if (!weak.length) {
       list.innerHTML = '<li class="empty" style="cursor:default">Every card is at or above your ' + T + '% target. Raise the target or keep polishing.</li>';
     } else {
       weak.forEach(function (c) {
-        var a = attempt(c.id);
+        var b = bestOf(attempt(c.id));
         var li = document.createElement('li');
         li.style.setProperty('--c', sections[c.section].color);
         li.innerHTML = '<span class="dot"></span><span class="num">#' + c.id + '</span><span class="cue">' + esc(cue(c)) + '</span>' +
-          '<span class="sc ' + (a ? tier(a.best) : 'none') + '">' + (a ? a.best + '%' : 'new') + '</span>';
+          '<span class="sc ' + (b !== undefined ? tier(b) : 'none') + '">' + (b !== undefined ? b + '%' : 'new') + '</span>';
         li.onclick = function () { go(cards.indexOf(c)); };
         list.appendChild(li);
       });
@@ -771,6 +975,18 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
   }
   $('drillToggle').onchange = function () { setDrill(this.checked); };
   $('drillBtn').onclick = function () { setDrill(!state.settings.drill); showView('cards'); window.scrollTo(0, 0); };
+  function renderModeToggle() {
+    document.querySelectorAll('#modeToggle button').forEach(function (b) { b.classList.toggle('active', b.dataset.mode === state.settings.mode); });
+  }
+  document.querySelectorAll('#modeToggle button').forEach(function (b) {
+    b.onclick = function () {
+      state.settings.mode = b.dataset.mode; saveState(); renderModeToggle(); renderCard();
+      toast(modeIdeas() ? 'Grading by ideas: key words of each sentence, any order' : 'Grading by exact words');
+    };
+  });
+  renderModeToggle();
+  $('tabIdeas').onclick = function () { showDetail('ideas'); };
+  $('tabWords').onclick = function () { showDetail('words'); };
   $('targetSel').value = String(state.settings.target);
   $('targetSel').onchange = function () { state.settings.target = parseInt(this.value, 10); saveState(); renderCard(); };
   $('resetBtn').onclick = function () {
@@ -801,7 +1017,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
   renderCard();
 
   // exposed for testing
-  window.KeynotePractice = { prepareCard: prepareCard, prepareSpoken: prepareSpoken, align: align, basicTokens: basicTokens };
+  window.KeynotePractice = { prepareCard: prepareCard, prepareSpoken: prepareSpoken, align: align, basicTokens: basicTokens, scoreIdeas: scoreIdeas, autoBeats: autoBeats, stem: stem, splitSentences: splitSentences };
 })();
 
 </script>

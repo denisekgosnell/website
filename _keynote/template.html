@@ -157,6 +157,26 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
 .weak .sc.low{color:var(--bad)} .weak .sc.mid{color:var(--close)} .weak .sc.none{color:var(--ink3);font-weight:500}
 .empty{color:var(--ink2);font-size:14px;background:var(--paper);border:1px dashed var(--line);border-radius:10px;padding:14px}
 .danger{color:var(--bad)}
+.mode{display:inline-flex;background:var(--bg2);border-radius:999px;padding:2px}
+.mode button{border:0;background:transparent;border-radius:999px;padding:4px 12px;font-size:13px;color:var(--ink2)}
+.mode button.active{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12);font-weight:600}
+.alt{display:inline-block;font-size:13px;color:var(--ink2);background:var(--bg2);border-radius:999px;padding:3px 10px;margin-top:8px}
+.alt b{color:var(--ink)}
+.rtabs{display:flex;gap:6px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.rtabs button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink2)}
+.rtabs button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.graded{border-top:0;padding-top:0;margin-top:12px}
+.beats{list-style:none;margin:12px 0 0;padding:0}
+.beats li{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:8px 10px;border-radius:10px;margin-bottom:6px;font-family:var(--serif);font-size:17px;line-height:1.45}
+.beats li .mark{font-family:var(--sans);font-weight:700;text-align:center;line-height:1.5}
+.beats li.hit{background:var(--okbg)} .beats li.hit .mark{color:var(--ok)}
+.beats li.part{background:var(--closebg)} .beats li.part .mark{color:var(--close)}
+.beats li.miss{background:var(--badbg)} .beats li.miss .mark{color:var(--bad)}
+.beats li .gap{grid-column:2;font-family:var(--sans);font-size:12.5px;color:var(--ink2);margin-top:2px}
+.beats li .gap b{color:var(--bad);font-weight:600}
+.beats li .said{font-family:var(--sans);font-size:12.5px;color:var(--ink3);grid-column:2}
+.beats .kw{color:var(--ink);font-weight:600}
+.explain{font-size:12.5px;color:var(--ink3);margin-top:10px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
 .toast.show{opacity:1}
 </style>
@@ -194,6 +214,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
       <button class="btn next" id="nextBtn">Next →</button>
     </div>
     <div class="options">
+      <span style="display:inline-flex;align-items:center;gap:8px">Grade by <span class="mode" id="modeToggle"><button data-mode="ideas">Ideas</button><button data-mode="words">Exact words</button></span></span>
       <label><input type="checkbox" id="hideToggle"> Hide text while recording</label>
       <label><input type="checkbox" id="drillToggle"> Drill weak cards only</label>
       <label>Target <select id="targetSel"><option value="80">80%</option><option value="90">90%</option><option value="95">95%</option><option value="100">100%</option></select></label>
@@ -211,11 +232,19 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
         <div>
           <h3 id="scoreTitle"></h3>
           <div class="sub" id="scoreSub"></div>
-          <div class="stats" id="scoreStats"></div>
+          <div class="alt" id="altScore"></div>
         </div>
       </div>
-      <div class="graded" id="graded"></div>
-      <div class="extras" id="extras" hidden></div>
+      <div class="rtabs"><button id="tabIdeas">Ideas covered</button><button id="tabWords">Word by word</button></div>
+      <div id="ideasDetail">
+        <ul class="beats" id="beats"></ul>
+        <div class="explain">Ideas mode checks that each sentence's key words were said somewhere in your take, in any order. Bold words are the ones it listens for; wording around them can differ.</div>
+      </div>
+      <div id="wordsDetail">
+        <div class="stats" id="scoreStats" style="margin-top:12px"></div>
+        <div class="graded" id="graded"></div>
+        <div class="extras" id="extras" hidden></div>
+      </div>
       <details class="transcript"><summary>What the microphone heard</summary><div id="transcript"></div></details>
       <div class="actions">
         <button class="btn small" id="againBtn">↻ Try again</button>
@@ -235,6 +264,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
   </main>
 
   <main id="viewProgress" hidden>
+    <p id="modeNote" style="margin:0 0 10px;font-size:13px;color:var(--ink2)"></p>
     <div class="summary" id="summary"></div>
     <div id="sectionRows"></div>
     <h2 class="h">Keep repeating these</h2>

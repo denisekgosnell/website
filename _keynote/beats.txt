@@ -1,0 +1,15 @@
+# Optional hand-written "idea beats" for Ideas grading mode.
+#
+# By default every card is graded by its sentences: a sentence counts as
+# covered when at least half of its key words are heard, in any order.
+# To grade a card by your own list of ideas instead, add a block here:
+#
+#   card 5
+#   Students are turning in their blue books :: blue books ; turning in / handing in / finishing
+#   Micah hands me his book and gives me a bear hug :: hug ; hands it to me / hands me ; off the ground / lifts
+#
+# One line per idea: a plain-English label, then "::", then the key phrases
+# separated by ";". Alternatives for the same key are separated by "/".
+# An idea counts as covered when at least half of its keys are heard.
+# Cards not listed here keep the automatic sentence-based beats.
+# Run `node _keynote/build.js` after editing.

@@ -85,6 +85,31 @@ const SECTION_META = [
 if (SECTION_META.length !== sections.length) { console.error(`expected ${SECTION_META.length} sections, found ${sections.length}`); process.exit(1); }
 sections.forEach((s, i) => Object.assign(s, SECTION_META[i]));
 
+// Optional hand-written idea beats (see beats.txt for the format).
+const beatsPath = path.join(__dirname, 'beats.txt');
+if (fs.existsSync(beatsPath)) {
+  let current = null;
+  fs.readFileSync(beatsPath, 'utf8').split('\n').forEach((line, ln) => {
+    const l = line.trim();
+    if (!l || l.startsWith('#')) return;
+    const m = /^card\s+(\d+)$/i.exec(l);
+    if (m) {
+      current = cards.find(c => c.id === parseInt(m[1], 10));
+      if (!current) { console.error(`beats.txt line ${ln + 1}: no card ${m[1]}`); process.exit(1); }
+      current.beats = [];
+      return;
+    }
+    if (!current) { console.error(`beats.txt line ${ln + 1}: beat before any "card N" header`); process.exit(1); }
+    const [label, keyPart] = l.split('::');
+    if (!keyPart) { console.error(`beats.txt line ${ln + 1}: expected "label :: keys"`); process.exit(1); }
+    const keys = keyPart.split(';').map(k => k.split('/').map(x => x.trim()).filter(Boolean)).filter(k => k.length);
+    if (!keys.length) { console.error(`beats.txt line ${ln + 1}: no keys`); process.exit(1); }
+    current.beats.push({ label: label.trim(), keys });
+  });
+  const custom = cards.filter(c => c.beats).length;
+  if (custom) console.log(`${custom} card(s) with hand-written beats`);
+}
+
 const data = { sections, cards };
 const json = JSON.stringify(data).replace(/<\//g, '<\\/');
 
