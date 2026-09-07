@@ -22,7 +22,6 @@ I love a good puzzle. Whether it’s the “invisible math puzzles” that Micah
 I’m fortunate in that way. I love what I get to do.
 And like many things in life, I got here because of a happy accident…or rather an unhappy one at first that turned into a happy one.
 I didn't plan on this field. When the 2008 crash took the job market with it, math sent me back to school, and two people at Tennessee, Dr. Langston and Dr. Cynthia Peterson, opened the door to computer science for a mathematician who didn't yet know she belonged there.
-By 2009 I was on a pool deck at a swim meet in Maryville. While I waited for my next athlete to take the blocks, I was scribbling test cases for modeling RNA structures with neural networks. Today you'd call that using AI for scientific discovery. Back then I just called it the best fun I'd ever had.
 I met Micah on my way to earning my PhD in computer science from the Center for Intelligent Systems and Machine Learning at the University of Tennessee.
 ===
 After finishing my PhD, there was only one destination for me: Silicon Valley. I wanted to learn and build from the best. I wanted to learn how the best builders in the world turned code into products. But I also wanted to see how those products became things people could actually use. How people’s jobs or lives were impacted and enhanced by things that started out as an idea and some code.
@@ -31,25 +30,25 @@ My career has been a little like this. More zig-zag than ladder. It’s more lik
 My zig zag jumps have gone back and forth between deeply technical work and deeply human work. From writing code to leading teams.
 ===
 While in Silicon Valley, I quickly fell into the gravity well of open source. Think of open source like academia at its best. Everyone's invited, everyone shares, and the reward isn't hoarding what you know. It's being the one who figured it out first and told everybody.
-I became a leader in open-source graph technology and authored a bestselling book on the topic.
-I was Chief Data Officer for a Silicon Valley billion dollar unicorn that got acquired by IBM.
-I led a team of about 100 amazing builders at a nine-figure business unit at AWS and secured a US patent for data infrastructure I developed. That patent turned into a new database engine that has become a memory layer for coordinating agents in enterprises all over the world. Agents without coordination and shared context are like a neighborhood where Amazon Prime just guesses whose house is whose. You get your neighbor's blood pressure meds, they get your karaoke machine, and somehow the whole cul-de-sac has to sort it out before dinner. At AWS, My team and I solved that puzzle together. Coordinating systems and memory is wonky, but super cool.
-My latest #1 bestselling book Tech Confidential gives you the full details behind it all.
+* I became a leader in open-source graph technology and authored a bestselling book on the topic.
+* I was Chief Data Officer for a Silicon Valley billion dollar unicorn that got acquired by IBM.
+* I led a team of about 100 amazing builders at a nine-figure business unit at AWS and secured a US patent for data infrastructure I developed. That patent turned into a new database engine that has become a memory layer for coordinating agents in enterprises all over the world. Agents without coordination and shared context are like a neighborhood where Amazon Prime just guesses whose house is whose. You get your neighbor's blood pressure meds, they get your karaoke machine, and somehow the whole cul-de-sac has to sort it out before dinner. At AWS, My team and I solved that puzzle together. Coordinating systems and memory is wonky, but super cool.
+* My latest #1 bestselling book Tech Confidential gives you the full details behind it all.
 ===
 Through every bit of my zig-zag career, I’ve witnessed and experienced the duality of technology. The ability of it to create things and to break things. At the same time. I've lived both ends of this.
-Right after my PhD here at Tennessee, at a healthcare startup, I helped to expose a $20M medicare fraud scheme simply by connecting data sets together.
-That same start-up built automated healthcare claims processing and saved people real money. But it did it by making pharmaceutical drug prices transparent and exposed games the PBMs were running…  so you can guess what happened next: [pause] a PBM sued us out of existence.
-Throughout my careerDespite the early start-up shut-down, I continued my career in connecting data together with graph databases and analytics. I’ve helped dozens of organizations like connect enterprise data at Netflix, Starbucks, Home Depot, FedEx, SnapChat, and the Federal Government , and so many more. Every new way I found to connect data in ways that break silos. Of course, a broken silo itself is a duality—it breaks across enterprise silos broke somebody's closed, comfortable model of how the world was supposed to work and replaces it with an opportunity for someone else.
+* Right after my PhD here at Tennessee, at a healthcare startup, I helped to expose a $20M medicare fraud scheme simply by connecting data sets together.
+* That same start-up built automated healthcare claims processing and saved people real money. But it did it by making pharmaceutical drug prices transparent and exposed games the PBMs were running…  so you can guess what happened next: [pause] a PBM sued us out of existence.
+Throughout my career I’ve helped dozens of organizations like Netflix, Starbucks, Home Depot, FedEx, SnapChat, and the Federal Government connect data in ways that break silos. Of course, a broken silo itself is a duality—it breaks somebody's closed, comfortable model of how the world was supposed to work and replaces it with an opportunity for someone else.
 After enough times, you stop seeing innovation as one thing. What you build as a door for one person is a wall coming down for someone else.
 The technology doesn't pick. People do.
 ===
 So here's something else about me. I've always felt like I lived in a duality between what makes sense to me and what everybody else says is true. This isn’t like colorblindness where I think green looks orange. Or my firm belief that Peyton Manning is the actual mayor of Knoxville, period. It’s more that my biggest moments of synthesis often don’t arrive in the moment, while reading at my desk, or listening to a lecture back here in my grad days. Rather, they arrive later, when I’m moving.
 Once, while I was swimming laps at the Allen Jones aquatic center, the last piece of an algorithm I had been working on suddenly clicked into place in my brain. I immediately climbed out, wrapped myself in a towel, got into my car soaking wet, and drove straight home to the wall-sized whiteboard in my apartment so I could get it down before it disappeared.
 That is how my mind works. I understand by moving. Talking. Testing. Making. If you go down the research rabbit hole on this, professionals in this space sort people’s creating and learning styles into four buckets.
-Visual.
-Auditory.
-Reading and writing.
-Kinesthetic.
+1. Visual.
+2. Auditory.
+3. Reading and writing.
+4. Kinesthetic.
 I’m the kinesthetic type. Things click for me when I’m moving.
 ===
 Traditional software development works for builders, like me, but it’s not tailor-made for us. There is a door for us. It’s not the biggest door, but it’s there. It’s part of why I love open source—the freedom, no, the demand to build, to experiment.
@@ -98,7 +97,7 @@ That's John F. Kennedy. Read it again and try to tell me it wasn't written for t
 As Mark Twain said—probably apocryphal because most things attributed to him weren’t said by him—history doesn’t repeat, but it rhymes. And AI is one of those rhymes of history.
 ===
 We invent new things. Those new things bring change. Change is disruptive. That disruption has positive effects and negative effects. This is the inherent tension in change.
-But humans don’t like change. Macro, we are very adaptable as a species. Micro, we individuals like our things the way we like them. I have a passion (borderline obsession) with creating memorable experiences for other people. But when my Amazon prime delivery with cupcake toppers for a birthday party is late, I mentally spiral over my vision not being perfect.
+But humans don’t like change. Macro, we are very adaptable as a species. Micro, we individuals like our things the way we like them.
 We may understand intellectually that change is inevitable. But when it happens to us—when it alters our routines, threatens something we worked hard to build, or removes a path we thought we could count on—it does not feel like progress. It feels like loss. And sometimes, these paths we were counting on were built over years, decades, or even a whole lifetime. What do we do then?
 And that is important, because it is tempting for those of us who are excited about AI to dismiss resistance as ignorance. We tell people they need to understand the technology better. We tell them disruption has happened before. We tell them that, in the long run, innovation creates more prosperity.
 And that’s true, but tell that to the person who lost their job.
@@ -121,27 +120,21 @@ But sometimes, the skills do not transfer easily.
 When a robot automates an assembly-line job, it is technically possible that the displaced worker will retrain in advanced robotics or software engineering.
 But “technically possible” is doing a lot of work there.
 The evidence from previous waves of automation does not give us great confidence that everyone who loses a job will simply move into one of the new jobs being created. In 1950, almost 1.5 million people worked as telephone switchboard operators, either for the Bell system or in offices, hotels, and factories. By 1984 that number fell to 40,000. Today, it’s under 2,000.
-===
 These jobs disappeared as new ones were created—first people to design and build the automation systems, engineering jobs; then people to maintain that automation, like linemen and other electrical and mechanical repair jobs; then eventually it’s computerized, which is a whole new category of jobs, and so on. Those new jobs may require different skills. They may be located somewhere else. They may arrive years after the old job disappears. And they may go to entirely different people.
 That is the part we lose when we talk only in aggregate.
-There’s a quote that's misattributed to Stalin—which is great because I don’t really want to be up here quoting Josef Stalin—but the quote is apt. It goes something like: “A single death is a tragedy. A million deaths is a statistic.”
-Economists may eventually tell us that the economy gained more jobs than it lost. But for an That can be true while for an individual worker who lost their job, She, her family, and her community are left worse off.
-Economists treat say jobs as a statistic. But for an individual, they are mortgages, college tuitions, food on the table; and they are also identity, dignity, community, and a sense of value. y re not interchangeable units .A job is income.
-But it can also be identity, dignity, expertise, community, and the belief that if you work hard, there will be a place for you.
+Economists treat jobs as a statistic. But for an individual, they are mortgages, college tuitions, food on the table; and they are also identity, dignity, community, and a sense of value.
 ===
-And what happens when the disruption may begins early in a career? ier in a career than we expect.
+And what happens when the disruption begins early in a career?
 AI is already capable of performing some of the basic work traditionally assigned to entry-level employees: initial research, first drafts, basic analysis, routine coding, and administrative coordination.
 Those tasks may not be glamorous. But they are often how people learn.
 The first rung of a career is where someone watches more experienced colleagues, makes manageable mistakes, begins developing judgment, and earns the opportunity to take on more consequential work.
-If AI removes the first rung, how does the next generation reach the second? We told young people to get an education and prepare for the jobs of the future. They did. And today, 42% of recent college graduates are underemployed—working in jobs that don’t require degrees and another 6% are cannot find work at all.This is literally happening with Gen Z today [STAT ON UN/UNDEREMPLOYMENT]
+If AI removes the first rung, how does the next generation reach the second? We told young people to get an education and prepare for the jobs of the future. They did. And today, 42% of recent college graduates are underemployed—working in jobs that don’t require degrees and another 6% are cannot find work at all.
 And it’s not just the lack of opportunity. It’s deeper. A young person can do everything we told them to do—study hard, earn the credential, develop the right skills—and still discover that the bargain changed while they were preparing to enter it.
-That’s a recipe for someone losing faith in the system. And why not?
+That’s a recipe for someone losing faith in the system.
 ===
 We should not answer that anxiety with a lecture about productivity.
 We should answer it with honesty.
-Some jobs will disappear. Some career paths will narrow. Some hard-earned skills will become less valuable. And the people with the least financial cushion, the weakest professional networks, and the least access to AI will have the hardest time adapting.
-That is one side of the Duality.
-But it is not the only side.
+Some jobs will disappear. Some career paths will narrow. Some hard-earned skills will become less valuable. That is one side of the Duality. But it is not the only side.
 At the same time that AI is closing off some forms of work, it is dramatically lowering the threshold for creating others.
 My dear friend Joyce is a Pilates instructor. She runs her own studio. She is talented, disciplined, and exceptionally capable — she has helped people like me, with severe disabling injuries, find mobility again.
 But she never thought of herself as a software developer.
@@ -170,13 +163,11 @@ Opening doors means doing both: giving people genuine access to the new tools an
 Access without transition is abandonment.
 But protection without access is exclusion.
 ## The Second Great Tension: AI Can Create Shared Prosperity—or Become Extractive
-The second great tension, data centers, is about who benefits—and who pays.
+The second great tension is about who benefits—and who pays.
 AI has the potential to create extraordinary value. It can help businesses grow, enable entrepreneurs to compete, accelerate scientific research, improve public services, and bring entirely new investment or products to places and communities that stand to benefit.
 But economic growth does not automagically equate to community prosperity.
-A company can become more productive while employing fewer people locally. Small businesses can gain powerful new capabilities and simultaneously find themselves competing against companies with vastly greater access to data and computing power. And the physical infrastructure required to power AI can bring new investment while placing new demands on land, electricity, water, and noise pollutionpublic resources. This is the data center debate that is raging today.
-There Those are real benefits and real costs. That is the tension. ey are not mutually exclusive.
-But tAnd this tension demands we acknowledge the responsibility that comes with those benefits.
-These outcomes are not mutually exclusive.
+A company can become more productive while employing fewer people locally. Small businesses can gain powerful new capabilities and simultaneously find themselves competing against companies with vastly greater access to data and computing power. And the physical infrastructure required to power AI can bring new investment while placing new demands on land, electricity, water, and noise pollution. This is the data center debate that is raging today.
+There are real benefits and real costs. That is the tension. And this tension demands we acknowledge the responsibility that comes with those benefits.
 A community can gain investment and still feel strained by it—again, data centers are not simply a cost-free economic boon. A business can become more productive while its workers feel less secure. A new technology can create real opportunity without making that opportunity visible or accessible to the people who live nearby.
 That is the tension. And we need to be honest about it.
 Will AI help more communities build durable prosperity? Or will its greatest benefits pass through them—or pass them by—while they absorb much of the disruption?
@@ -219,7 +210,7 @@ That is not charity.
 It is stewardship. It is good business. It is opening doors for communities. And it is how economic growth becomes durable community prosperity.
 [~35 min]
 ## The Third Great Tension: AI Can Democratize Control—or Concentrate It
-And that brings us to the third great tension: control. We name this open versus closed source in software engineering communities.
+And that brings us to the third great tension: control.
 Who gets to build with AI? Who gets to inspect it, question it, adapt it, and decide how it is used? And who retains agency over the parts of their lives that AI increasingly touches?
 This tension can be narrow.
 Will AI democratize software development, allowing far more people to build tools and solve problems more easily and more effectively than before?

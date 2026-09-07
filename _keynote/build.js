@@ -61,7 +61,7 @@ if (reconstructed !== expected) {
 
 // Word counts (spoken words only: bracketed stage notes excluded)
 function spokenWords(p) {
-  return p.replace(/\[[^\]]*\]/g, ' ').split(/\s+/).filter(Boolean).length;
+  return p.replace(/^(\*|\d+\.)\s+/, '').replace(/\[[^\]]*\]/g, ' ').split(/\s+/).filter(Boolean).length;
 }
 cards.forEach((c, i) => {
   c.id = i + 1;
@@ -114,7 +114,7 @@ if (fs.existsSync(beatsPath)) {
   let problems = 0;
   cards.forEach(c => {
     if (!c.beats) return;
-    const bag = T.spokenBag(c.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' '));
+    const bag = T.spokenBag(c.paragraphs.map(p => p.replace(/^(\*|\d+\.)\s+/, '')).join(' ').replace(/\[[^\]]*\]/g, ' '));
     c.beats.forEach(b => b.keys.forEach(alts => {
       if (!alts.some(alt => T.phraseIn(bag, alt))) { problems++; console.error(`card ${c.id}: key "${alts.join(' / ')}" (idea: ${b.label}) not found in card text`); }
     }));
