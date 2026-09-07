@@ -220,11 +220,6 @@ Or will the essential technology be controlled by a handful of companies, with e
 But the tension can also be much wider.
 Will AI give individuals more control over their time, knowledge, work, and choices? In short, will AI give people more control over their own lives?
 Or will it give institutions more power to monitor people, predict them, influence them, and make decisions about them?
-===
-You have all likely heard the term “surveillance capitalism.” In that world—for which the technology already exists—the institutions in power do not simply observe what we do. They collect the traces of our lives, use them to infer who we are, predict what we might do next, and shape the choices placed in front of us.
-AI makes that system far more powerful.
-It can draw conclusions from information we never realized we had provided. It can infer our preferences, vulnerabilities, relationships, health concerns, emotional states, and likely behavior. It can determine what information we see, how that information is framed, which opportunities are presented to us, and which are quietly withheld.
-And increasingly, it can do more than influence a decision. It can make the decision—or take the action—on our behalf. And it can do so giving us the illusion of control. This is some Black Mirror shit, but it’s very real.
 [ALTMAN QUOTE]
 “Altman: "We see a future where intelligence is a utility, like electricity or water, and people buy it from us on a meter."
 Believe me, I’m not an alarmist, but this kind of quote should give most sane people pause.
@@ -236,11 +231,7 @@ Open source does not mean that everything must be free. And it does not mean tha
 What it does mean is that the underlying code can be examined, tested, challenged, improved, and adapted. More people can understand the foundations on which they depend. They can identify weaknesses, question assumptions, modify a tool for their own needs, and create things the people at the center never anticipated.
 On the flip side, closed is not a synonym for “bad.”
 Closed systems can offer real benefits: integration, consistency, technical support, simplicity, and clearer lines of accountability. Anyone who is an Apple user knows what I’m talking about. Apple controls the entire experience, and much of the time, that is precisely why the experience works so well. It’s a beautiful walled garden on the inside. If you’re into that sorta thing.
-===
 The risk calculus changes, however, when the closed system is not simply operating our phone or laptop, but increasingly mediating how we understand the world and make decisions within it.
-AI can influence what information we receive, which sources we trust, how choices are framed, and what actions are taken on our behalf. When systems with that much influence cannot be meaningfully examined, challenged, modified, or left, we are no longer making a simple trade-off between openness and convenience. We are deciding how much control over our lives we are willing to place inside systems controlled by someone else. On a good day, that is simply maximizing their extractive capabilities over our lives—and bank accounts. On a bad day…it’s potentially much worse.
-But the intentions of the people holding that control are almost beside the point. They may be thoughtful. They may be responsible. They may sincerely believe they are acting in the public interest. I can find quotes from Zuckerberg, Altman, even Elon saying as much. But when we cede that much control to so few people, we create a vulnerability. We become dependent on their continued judgment, their continued restraint, their continued competence, and their continued alignment with our interests.
-We become dependent on business models we did not choose, rules we did not write, and systems we may not be able to inspect or leave. The vulnerability exists even if no one intends to exploit it.
 That is why concentration is not neutral.
 ===
 And if AI were just another tool sitting at the edge of our lives, it wouldn’t matter. But increasingly, AI is becoming an intermediary—not just between us and information, like Google. But between us and how that information is leveraged at the individual and societal levels. Google often got in trouble in the EU for what was effectively a monopoly on the distribution of (and therefore access to) information.
@@ -284,9 +275,6 @@ But every leader in this room will make choices that can open doors for others. 
 When you introduce an AI system, will your employees be able to understand and question it? Will your customers retain meaningful control over their data? Will your organization remain free to change systems if the technology, the terms, or the leadership changes? Will people with new ideas have a genuine path to build upon what exists?
 And will you use AI to strengthen the judgement of the people around you or simply to reduce the control they have over the judgements they get to make?
 That is the leadership responsibility inside this duality.
-I don’t think people with concerns about AI are Luddites. Well, maybe some. But the overwhelming majority fall in the camp of people who want to retain some control over their lives, some agency. It’s not necessarily that they don’t want AI to happen, it’s that they don’t want AI to happen TO them.
-The positive promise of AI is not simply that it will do more for us. It is that it can enable more of us to do things we could not do before, to understand more, create more, solve more, and exercise greater control over our own lives.
-But realizing that promise requires us to preserve the conditions that make participation possible: choice, knowledge, accountability, and the freedom to build something different.
 That is what openness means in this context. Not that every system must be open source or that nothing should be protected, but that our future must remain open to scrutiny, open to challenge, open to competition, and open to people who want to create a better alternative.
 Closed systems may sometimes serve us well. A closed future will not.
 AI can open extraordinary doors.
