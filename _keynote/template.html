@@ -71,6 +71,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .card-body{padding:16px 22px 22px;font-family:var(--serif);font-size:20px;line-height:1.6;transition:filter .2s}
 .card-body p{margin:0 0 .85em}
 .card-body p:last-child{margin-bottom:0}
+.card-body p.li,.graded p.li{position:relative;padding-left:1.5em;margin-bottom:.45em}
+.card-body p.li::before,.graded p.li::before{content:'•';position:absolute;left:.35em;color:var(--c);font-weight:700}
+.card-body p.li.num::before,.graded p.li.num::before{content:attr(data-n) '.';left:.1em;font-family:var(--sans);font-size:.85em;top:.15em}
 .card-body .note{font-family:var(--sans);font-size:13px;font-style:italic;color:var(--ink3);background:var(--bg2);padding:1px 8px;border-radius:6px;vertical-align:middle}
 .card-body.blur{filter:blur(9px);user-select:none;pointer-events:none}
 .hidden-note{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;font-size:15px;color:var(--ink2);pointer-events:none}

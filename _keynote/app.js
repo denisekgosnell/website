@@ -24,10 +24,14 @@
   var idx = state.pos;
 
   // Reference card -> display segments + normalized tokens (each token remembers its display word indexes)
+  var LIST_RE = /^(\*|\d+\.)\s+/;
   function prepareCard(card) {
-    var display = []; // {text, note, para, sp}
-    var tokens = [];
+    var display = []; // {text, note, para}
+    var tokens = [], kinds = [];
     card.paragraphs.forEach(function (p, pi) {
+      var lm = LIST_RE.exec(p);
+      kinds.push(lm ? (lm[1] === '*' ? { bullet: true } : { num: lm[1].slice(0, -1) }) : null);
+      if (lm) p = p.slice(lm[0].length);
       var parts = p.split(/(\[[^\]]*\])/);
       parts.forEach(function (part) {
         if (!part) return;
@@ -40,7 +44,7 @@
         });
       });
     });
-    return { display: display, tokens: mergeNumbers(tokens) };
+    return { display: display, tokens: mergeNumbers(tokens), kinds: kinds };
   }
   // ---------- ideas mode: sentence beats + key-word coverage ----------
   var ABBREV = /^(dr|mr|mrs|ms|st|vs|jr|sr|[a-z])$/i;
@@ -83,7 +87,7 @@
   function autoBeats(card) {
     if (card.beats && card.beats.length) return card.beats.map(function (b) { return { label: b.label, keys: b.keys, custom: true }; });
     var sents = [];
-    card.paragraphs.forEach(function (p) { splitSentences(p).forEach(function (t) { sents.push({ text: t, words: contentWords(t) }); }); });
+    card.paragraphs.forEach(function (p) { splitSentences(p.replace(LIST_RE, '')).forEach(function (t) { sents.push({ text: t, words: contentWords(t) }); }); });
     var merged = [];
     sents.forEach(function (sn) {
       var prev = merged[merged.length - 1];
@@ -180,7 +184,7 @@
   function weakIds() { return cards.filter(isWeak).map(function (c) { return c.id; }); }
   function cue(card) {
     if (card.title) return card.title;
-    var words = card.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' ').split(/\s+/).filter(Boolean);
+    var words = card.paragraphs.map(function (p) { return p.replace(LIST_RE, ''); }).join(' ').replace(/\[[^\]]*\]/g, ' ').split(/\s+/).filter(Boolean);
     return words.slice(0, 11).join(' ') + (words.length > 11 ? ' …' : '');
   }
   var toastT;
@@ -240,7 +244,11 @@
       var title = ws.st === 'sub' ? ' title="heard: ' + esc(ws.heard.join(' ')) + '"' : ws.st === 'miss' ? ' title="not heard"' : ws.st === 'close' ? ' title="close enough"' : '';
       paras[d.para].push('<span class="w ' + ws.st + '"' + title + '>' + esc(d.text) + '</span>');
     });
-    return paras.map(function (p) { return '<p>' + p.join(' ') + '</p>'; }).join('');
+    return paras.map(function (p, pi) {
+      var k = prep.kinds[pi];
+      var attrs = k ? (k.bullet ? ' class="li"' : ' class="li num" data-n="' + esc(k.num) + '"') : '';
+      return '<p' + attrs + '>' + p.join(' ') + '</p>';
+    }).join('');
   }
   function updateStatus() {
     var card = cards[idx], sec = sections[card.section];
