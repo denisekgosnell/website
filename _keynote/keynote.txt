@@ -25,19 +25,11 @@ I didn't plan on this field. When the 2008 crash took the job market with it, ma
 I met Micah on my way to earning my PhD in computer science from the Center for Intelligent Systems and Machine Learning at the University of Tennessee.
 ===
 After finishing my PhD, there was only one destination for me: Silicon Valley. I wanted to learn and build from the best. I wanted to learn how the best builders in the world turned code into products. But I also wanted to see how those products became things people could actually use. How people’s jobs or lives were impacted and enhanced by things that started out as an idea and some code.
-I’ve always been fascinated by the intersection of technology and life, how one impacts the other and creates a feedback loop. Someone invents a tool, it changes how we work, which gives someone else an idea for a new tool to create, which works great and also has the unintended consequence of changing how we communicate with our friends…and a few more cycles of this feedback loop, and pretty soon we’ve all got iPhones in our pockets.
-My career since has been a little like this. More zig-zag than ladder. My zig zag jumps have gone back and forth between deeply technical work and deeply human work. From writing code to leading teams. It’s more like one of those levels in an old Nintendo game, where you have to jump back and forth from platform to platform in order to go up and beat the boss. I think the boss fight might be against Elon. Or Donkey Kong. Six of one. But I’m not there yet. I’m still jumping.
-===
 While in Silicon Valley, I quickly fell into the gravity well of open source. Think of open source like academia at its best. Everyone's invited, everyone shares, and the reward isn't hoarding what you know. It's being the one who figured it out first and told everybody.
-* I became a leader in open-source graph technology and authored a bestselling book on the topic.
-* I was Chief Data Officer for a Silicon Valley billion dollar unicorn that got acquired by IBM.
-* I led a team of about 100 amazing builders at a nine-figure business unit at AWS and secured a US patent for data infrastructure I developed. That patent turned into a new database engine that has become a memory layer for coordinating agents in enterprises all over the world. Agents without coordination and shared context are like a neighborhood where Amazon Prime just guesses whose house is whose. You get your neighbor's blood pressure meds, they get your karaoke machine, and somehow the whole cul-de-sac has to sort it out before dinner. At AWS, My team and I solved that puzzle together. Coordinating systems and memory is wonky, but super cool.
-* My latest #1 bestselling book Tech Confidential gives you the full details behind it all.
+I became a leader in open-source graph technology and helped dozens of organizations like Netflix, Starbucks, Home Depot, FedEx, SnapChat, and the Federal Government connect data in ways that break silos. Of course, a broken silo itself is a duality—it breaks somebody's closed, comfortable model of how the world was supposed to work and replaces it with an opportunity for someone else.
 ===
-Through every bit of my zig-zag career, I’ve witnessed and experienced the duality of technology. The ability of it to create things and to break things. At the same time. I've lived both ends of this.
-* Right after my PhD here at Tennessee, at a healthcare startup, I helped to expose a $20M medicare fraud scheme simply by connecting data sets together.
-* That same start-up built automated healthcare claims processing and saved people real money. But it did it by making pharmaceutical drug prices transparent and exposed games the PBMs were running…  so you can guess what happened next: [pause] a PBM sued us out of existence.
-Throughout my career I’ve helped dozens of organizations like Netflix, Starbucks, Home Depot, FedEx, SnapChat, and the Federal Government connect data in ways that break silos. Of course, a broken silo itself is a duality—it breaks somebody's closed, comfortable model of how the world was supposed to work and replaces it with an opportunity for someone else.
+Like that time - Right after my PhD here at Tennessee, at a healthcare startup, I helped to expose a $20M medicare fraud scheme simply by connecting data sets together.
+That same start-up built automated healthcare claims processing and saved people real money. But it did it by making pharmaceutical drug prices transparent and exposed games the PBMs were running…  so you can guess what happened next: [pause] a PBM sued us out of existence.
 After enough times, you stop seeing innovation as one thing. What you build as a door for one person is a wall coming down for someone else.
 The technology doesn't pick. People do.
 ===
@@ -218,7 +210,6 @@ This tension can be narrow.
 Will AI democratize software development, allowing far more people to build tools and solve problems more easily and more effectively than before?
 Or will the essential technology be controlled by a handful of companies, with everyone else renting access on terms they did not set, having to forfeit their data, their privacy, their deeply personal thoughts?
 [ZUCK QUOTE]
-“You’re going to get a handful of companies that run these closed models that are going to be in control of the APIs and therefore able to tell you what you can build.”
 But the tension can also be much wider.
 Will AI give individuals more control over their time, knowledge, work, and choices? In short, will AI give people more control over their own lives?
 Or will it give institutions more power to monitor people, predict them, influence them, and make decisions about them?
