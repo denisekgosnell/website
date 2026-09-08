@@ -15,7 +15,7 @@ Micah walked out of the room, and Dr. Berry turned to me and said, "I've never s
 And that is why I'm standing here today.
 We live through millions of moments. Most pass through us. Some become memories. A small handful become something more. They become a part of the story we tell about who we are. Psychologists call them self-defining memories—moments that stick with us and define what we believe about ourselves.
 I thought I had spent the semester teaching computer science. What I had really done was open a door. Micah was the one who walked through it. But first, somebody had to make the door visible.
-[~3 min]
+[~3.5 min]
 ## Part 2. Who I am / Introduction of the “Duality of AI”
 Good morning and Welcome to the inaugural AI-NO-vation Summit. My name is Denise Gosnell.
 I love a good puzzle. Whether it’s the “invisible math puzzles” that Micah discovered he loved, or the practical business puzzle, or the 2000 piece jigsaw puzzle of the Appalachian Trail…I can lose myself in them for hours or days on end. Puzzles have never once felt like work.
@@ -26,8 +26,7 @@ I met Micah on my way to earning my PhD in computer science from the Center for 
 ===
 After finishing my PhD, there was only one destination for me: Silicon Valley. I wanted to learn and build from the best. I wanted to learn how the best builders in the world turned code into products. But I also wanted to see how those products became things people could actually use. How people’s jobs or lives were impacted and enhanced by things that started out as an idea and some code.
 I’ve always been fascinated by the intersection of technology and life, how one impacts the other and creates a feedback loop. Someone invents a tool, it changes how we work, which gives someone else an idea for a new tool to create, which works great and also has the unintended consequence of changing how we communicate with our friends…and a few more cycles of this feedback loop, and pretty soon we’ve all got iPhones in our pockets.
-My career has been a little like this. More zig-zag than ladder. It’s more like one of those levels in an old Nintendo game, where you have to jump back and forth from platform to platform in order to go up and beat the boss. I think the boss fight might be against Elon. Or Donkey Kong. Six of one. But I’m not there yet. I’m still jumping.
-My zig zag jumps have gone back and forth between deeply technical work and deeply human work. From writing code to leading teams.
+My career since has been a little like this. More zig-zag than ladder. My zig zag jumps have gone back and forth between deeply technical work and deeply human work. From writing code to leading teams. It’s more like one of those levels in an old Nintendo game, where you have to jump back and forth from platform to platform in order to go up and beat the boss. I think the boss fight might be against Elon. Or Donkey Kong. Six of one. But I’m not there yet. I’m still jumping.
 ===
 While in Silicon Valley, I quickly fell into the gravity well of open source. Think of open source like academia at its best. Everyone's invited, everyone shares, and the reward isn't hoarding what you know. It's being the one who figured it out first and told everybody.
 * I became a leader in open-source graph technology and authored a bestselling book on the topic.
@@ -87,7 +86,7 @@ Over more than a decade since I left Tennessee, my hands have been on code, and 
 And when I decided to leave AWS, and start my own company in April 2025, with a mission to educate the curious about AI and to connect people through technology, Dr. Mike Berry sent me a note. It said, "I've been waiting for you to do this."
 And so this is what I want to talk about. This is why I am glad to be standing here and for you all to be here with me today.
 This is the group of people who can help build the positive side of the duality. This is the group of people who can help open doors for more people.
-I want to show you three places where that choice, that opportunity is already in front of us, so we can all be better door openers.
+I want to show you three places where that choice, that opportunity is already in front of us. At each one, I am going to hand you a question to carry out of this room so we can all be better door openers
 [~17 min]
 ## Part 3. Duality and the Tensions We Must Resolve
 Let me show you a quote that I read recently that rings true to me:
@@ -108,6 +107,7 @@ The leaders in this room cannot make every consequence of AI positive. We cannot
 But we can influence how the change is experienced.
 We can make the benefits more accessible. We can anticipate who is likely to carry the costs. We can help people move from one opportunity to the next. We can give more people a voice in the decisions that will shape their lives.
 That is what it means to navigate the Duality of AI.
+[21 MIN]
 ## The First Great Tension: AI Will Eliminate Jobs—and Create New Ones
 Let’s take the first great tension: jobs.
 As with every major technological disruption, AI will eliminate jobs.
@@ -128,7 +128,7 @@ And what happens when the disruption begins early in a career?
 AI is already capable of performing some of the basic work traditionally assigned to entry-level employees: initial research, first drafts, basic analysis, routine coding, and administrative coordination.
 Those tasks may not be glamorous. But they are often how people learn.
 The first rung of a career is where someone watches more experienced colleagues, makes manageable mistakes, begins developing judgment, and earns the opportunity to take on more consequential work.
-If AI removes the first rung, how does the next generation reach the second? We told young people to get an education and prepare for the jobs of the future. They did. And today, 42% of recent college graduates are underemployed—working in jobs that don’t require degrees and another 6% are cannot find work at all.
+If AI removes the first rung, how does the next generation reach the second? We told young people to get an education and prepare for the jobs of the future. They did. And today, 42% of recent college graduates are underemployed—working in jobs that don’t require degrees and another 6% cannot find work at all.
 And it’s not just the lack of opportunity. It’s deeper. A young person can do everything we told them to do—study hard, earn the credential, develop the right skills—and still discover that the bargain changed while they were preparing to enter it.
 That’s a recipe for someone losing faith in the system.
 ===
@@ -160,8 +160,9 @@ Who in your organization could do more meaningful work if someone made these new
 Who has insight but not the title? Who understands the problem but lacks the technical vocabulary? Who has never been invited to see themselves as a builder?
 And at the same time, who is standing in front of a closing door with no clear path to the next one?
 Opening doors means doing both: giving people genuine access to the new tools and helping people navigate the disruption those tools create.
-Access without transition is abandonment.
-But protection without access is exclusion.
+So here is the first question I want you to carry out of this room. Who gets the tools, and who gets a path when their old one closes?
+Because access without transition is abandonment, and protection without access is exclusion.
+[28]
 ## The Second Great Tension: AI Can Create Shared Prosperity—or Become Extractive
 The second great tension is about who benefits—and who pays.
 AI has the potential to create extraordinary value. It can help businesses grow, enable entrepreneurs to compete, accelerate scientific research, improve public services, and bring entirely new investment or products to places and communities that stand to benefit.
@@ -204,6 +205,7 @@ They are shaped by decisions: what we fund, what we build, which technical appro
 We can invest in more efficient architectures. We can support local research. We can build smaller and more specialized models. We can prepare local workers and businesses to participate. We can ensure that new infrastructure strengthens the systems communities will continue relying on long after construction is complete.
 The leadership responsibility inside this tension is not to choose between innovation and community.
 It is to connect them.
+Which gives us the second question to carry. Who benefits, and who pays? Ask it of every building, every contract, and every announcement.
 The strongest AI investments will not simply be located in a community. They will expand what that community is capable of doing.
 They will create opportunities that last beyond the initial construction project or corporate announcement. They will help more local businesses compete, more workers develop valuable skills, and more people see a place for themselves in the future being built around them.
 That is not charity.
@@ -222,15 +224,16 @@ Will AI give individuals more control over their time, knowledge, work, and choi
 Or will it give institutions more power to monitor people, predict them, influence them, and make decisions about them?
 [ALTMAN QUOTE]
 “Altman: "We see a future where intelligence is a utility, like electricity or water, and people buy it from us on a meter."
-Believe me, I’m not an alarmist, but this kind of quote should give most sane people pause.
-And again, I think the wrong action is to put a pause on AI, per se. Rather, we should pause to think about our approach to AI. Is it opening doors or closing them?
+Believe me, I’m not an alarmist, but this kind of quote should give most sane people pause. Pause to think about our approach to AI.
+Is it opening doors or closing them?
 ===
 Here’s the part where I get to talk about what really gets me excited: Open Source.
 The architecture of a technology helps determine the distribution of power around it. I have spent a significant part of my career in open source technology.
 Open source does not mean that everything must be free. And it does not mean that anyone can wander in, change the code, and instantly push that change out to everyone who depends on it.
 What it does mean is that the underlying code can be examined, tested, challenged, improved, and adapted. More people can understand the foundations on which they depend. They can identify weaknesses, question assumptions, modify a tool for their own needs, and create things the people at the center never anticipated.
 On the flip side, closed is not a synonym for “bad.”
-Closed systems can offer real benefits: integration, consistency, technical support, simplicity, and clearer lines of accountability. Anyone who is an Apple user knows what I’m talking about. Apple controls the entire experience, and much of the time, that is precisely why the experience works so well. It’s a beautiful walled garden on the inside. If you’re into that sorta thing.
+Closed systems can offer real benefits: integration, consistency, technical support, simplicity, and clearer lines of accountability.
+Anyone who is an Apple user knows what I’m talking about. Apple controls the entire experience, and much of the time, that is precisely why the experience works so well. It’s a beautiful walled garden on the inside. If you’re into that sorta thing.
 The risk calculus changes, however, when the closed system is not simply operating our phone or laptop, but increasingly mediating how we understand the world and make decisions within it.
 That is why concentration is not neutral.
 ===
@@ -275,15 +278,16 @@ But every leader in this room will make choices that can open doors for others. 
 When you introduce an AI system, will your employees be able to understand and question it? Will your customers retain meaningful control over their data? Will your organization remain free to change systems if the technology, the terms, or the leadership changes? Will people with new ideas have a genuine path to build upon what exists?
 And will you use AI to strengthen the judgement of the people around you or simply to reduce the control they have over the judgements they get to make?
 That is the leadership responsibility inside this duality.
+And it gives you the third question. Who can understand and question this, and who can leave?
 That is what openness means in this context. Not that every system must be open source or that nothing should be protected, but that our future must remain open to scrutiny, open to challenge, open to competition, and open to people who want to create a better alternative.
 Closed systems may sometimes serve us well. A closed future will not.
 AI can open extraordinary doors.
 Our responsibility is to ensure that no company, institution, or individual becomes the only one holding the key.
-[~47 min]
+[~50 min]
 ## Part 4. Conclusion: Be a Door-Opener
 So let me tell you what is really lighting me up. Because it isn’t the chips. I’d still drop those anyway. It isn’t the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created. It isn’t even the inventions and new possibilities AI will unlock.
 No.
-I do what I do for that kid who sees an open door—a door I helped open—and walks through. That kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world. That kid who discovers an entire set of possibilities on the other side of a door he did not realize existed before.
+I do what I do for that kid who sees an open door—a door I helped open—and walks through. That kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world. That kid who discovers an entire set of possibilities on the other side of a door She did not realize existed before.
 Because for her, it didn’t. Until it did. And all she needed was for someone to open the door and show her where it was.
 That’s it. That’s the whole thing. I do what I do for the Micahs of the world. I would go so far as to say I exist to light somebody else’s fire—and to help keep it burning.
 That is my philosophical North Star. It is what gives me energy. It is what gives me purpose. And every one of the dualities we just walked through comes back to that same purpose.
@@ -296,10 +300,12 @@ These dualities are different in scale, but each presents us with the same choic
 The headlines want you to be afraid. And that fear is not unfounded. Change is hard. Fast change is unsettling. Fast change that affects individuals and society simultaneously, a mile wide and a mile deep, that is—if you genuinely pause and think what that means—in a word, terrifying.
 But fear has a way of narrowing our field of vision. It makes us look for safety in certainty. It pushes us to pick a side: acceleration or obstruction, optimism or pessimism, opportunity or danger.
 The Duality of AI demands something harder from us. It asks us to see both sides at once. To acknowledge the danger without surrendering the possibility. To pursue the possibility without pretending the danger is not real.
+===
 We do not have to choose between a future in which AI succeeds and one in which people do. It does not have to be zero-sum. But the better future does not happen automatically. It will take the people in this room—the leaders of businesses, institutions, and communities—to make it happen.
 Because you are already making the choices that will determine how AI is experienced. You decide whether a worker receives a tool or a pink slip and whether someone standing in front of a closing door has a supported path toward the next one.
 You decide whether an investment merely occupies a community or becomes part of that community’s future. You decide whether the systems you adopt give people greater capability and agency or quietly remove their ability to understand, question, and choose.
 You will not control every force shaping the future of AI. But you can control whether the choices within your reach open doors or close them.
+So here is a simple test you can carry out of this room to help you navigate those choices. Call it the Door Test. Before your next AI decision, whether it is a vendor contract, a data center, or a reorg, ask one question: does this open a door for people, or does it just happen to them? Then check it three ways. Who gets the tools, and who gets a path when their old one closes? Who benefits, and who pays? Who can understand and question this, and who can leave? If you can answer all three, you are opening doors. If you cannot answer one of them, you have found the door that is quietly closing on someone.
 ===
 So that is my challenge to you.
 Do not let a month go by when you cannot say, “I opened a door for someone.” Every month, find your Micah.
@@ -314,3 +320,4 @@ The technology alone will not decide which side of that Duality defines this era
 We will.
 So keep it human.
 And hold the door open.
+[~56 min]

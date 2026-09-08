@@ -155,7 +155,7 @@ I left AWS in April 2025 to start my company: educate the curious about AI, conn
 Dr. Mike Berry sent a note: "I've been waiting for you to do this" :: berry ; note ; waiting for you
 This is what I want to talk about; glad to be standing here with you all today :: talk about ; glad ; here with me
 This is the group that can build the positive side of the duality and open doors for more people :: positive side ; duality ; open doors ; more people
-Three places where that choice, that opportunity, is already in front of us, so we can all be better door openers :: three places ; choice ; in front of us ; door openers
+Three places where that choice, that opportunity, is already in front of us; at each one I'll hand you a question to carry out of this room, so we can all be better door openers :: three places ; in front of us ; each one ; hand you a question ; carry out of this room ; door openers
 
 card 15 | The JFK quote, Thog and Grog, history rhymes
 A quote I read recently that rings true to me :: quote ; recently ; rings true
@@ -234,7 +234,8 @@ Who in your organization could do more meaningful work if these new capabilities
 Who has insight but not the title, understands the problem but lacks the vocabulary, has never been invited to see themselves as a builder? :: insight ; title ; vocabulary ; invited ; builder
 And who is standing in front of a closing door with no clear path to the next one? :: closing door ; clear path ; next one
 Opening doors means doing both: genuine access to the new tools, and help navigating the disruption those tools create :: doing both ; genuine access ; new tools ; navigate ; disruption
-Access without transition is abandonment; protection without access is exclusion :: transition ; abandonment ; protection ; exclusion
+The first question to carry out of this room: who gets the tools, and who gets a path when their old one closes? :: first question ; carry out of this room ; who gets the tools ; path ; old one closes
+Because access without transition is abandonment, and protection without access is exclusion :: transition ; abandonment ; protection ; exclusion
 
 card 23 | Data centers: who benefits and who pays
 The second great tension: who benefits, and who pays :: second great tension ; benefits ; pays
@@ -278,6 +279,7 @@ We talk about the demands of AI as the unavoidable price of progress; they are n
 They are shaped by decisions: what we fund, what we build, which technical approaches we pursue, whose needs we consider :: shaped by decisions ; fund ; build ; technical approaches ; whose needs
 Invest in efficient architectures, support local research, build smaller specialized models, prepare local workers and businesses to participate, ensure infrastructure strengthens the systems communities rely on after construction :: efficient architectures ; local research ; smaller ; specialized models ; local workers ; participate ; strengthens ; construction
 The leadership responsibility isn't to choose between innovation and community; it is to connect them :: leadership responsibility ; innovation ; community ; connect them
+The second question to carry: who benefits, and who pays? Ask it of every building, every contract, and every announcement :: second question ; who benefits ; who pays ; every building ; contract ; announcement
 The strongest AI investments won't simply be located in a community; they'll expand what it's capable of :: strongest ; located ; expand ; capable
 Opportunities that last beyond the construction project or corporate announcement: local businesses compete, workers gain valuable skills, people see a place for themselves in the future :: last beyond ; construction project ; corporate announcement ; compete ; valuable skills ; place for themselves
 Not charity: stewardship, good business, opening doors for communities; how economic growth becomes durable community prosperity :: charity ; stewardship ; good business ; opening doors ; durable ; prosperity
@@ -291,8 +293,8 @@ The Zuckerberg quote: a handful of companies running closed models will control 
 The wider version: will AI give individuals more control over their time, knowledge, work, choices, their own lives? :: wider ; individuals ; control ; time ; knowledge ; choices ; own lives
 Or give institutions more power to monitor people, predict them, influence them, and make decisions about them? :: institutions ; monitor ; predict ; influence ; decisions
 The Altman quote: intelligence as a utility, like electricity or water, bought from us on a meter :: altman ; utility ; electricity ; water ; meter
-I'm not an alarmist, but that kind of quote should give sane people pause :: alarmist ; sane ; pause
-The wrong move is a pause on AI; pause instead to think about our approach: is it opening doors or closing them? :: pause on ai ; approach ; opening doors ; closing
+I'm not an alarmist, but that kind of quote should give sane people pause; pause to think about our approach to AI :: alarmist ; sane ; pause ; approach
+Is it opening doors or closing them? :: opening doors ; closing
 
 card 29 | Open source explained; closed is not bad; concentration is not neutral
 The part where I get to talk about what really excites me: open source :: excited ; open source
@@ -346,6 +348,7 @@ card 34 | Your choices: employees, customers, and who holds the key
 When you introduce an AI system: can your employees understand and question it? do customers retain meaningful control over their data? :: introduce ; employees ; understand ; question ; customers ; control over their data
 Can your organization change systems if the technology, terms, or leadership change? do people with new ideas have a genuine path to build upon what exists? :: change systems ; technology ; terms ; leadership ; new ideas ; genuine path ; build upon
 Will you use AI to strengthen the judgement of people around you, or to reduce the control they have over the judgements they get to make? that's the leadership responsibility in this duality :: strengthen ; judgement ; reduce the control ; leadership responsibility ; duality
+The third question: who can understand and question this, and who can leave? :: third question ; understand and question ; who can leave
 Openness here isn't every system open source or nothing protected; it's a future open to scrutiny, challenge, competition, and people who want to create a better alternative :: openness ; open source ; protected ; scrutiny ; challenge ; competition ; better alternative
 Closed systems may sometimes serve us well; a closed future will not; AI can open extraordinary doors; no company, institution, or individual should be the only one holding the key :: closed systems ; closed future ; extraordinary doors ; company ; institution ; individual ; holding the key
 
@@ -363,16 +366,22 @@ The community duality: does data center and AI investment leave communities stro
 The control duality: does the future remain open to scrutiny, challenge, new builders, and better alternatives? no company, institution, or individual the only one holding the key :: control duality ; scrutiny ; challenge ; new builders ; alternative ; holding the key
 Different in scale, but the same choice: will AI happen TO people, or will we help people have agency in what happens next? :: different in scale ; same choice ; happen to people ; agency ; what happens next
 
-card 37 | Fear narrows vision; see both sides at once; you decide
+card 37 | Fear narrows vision; see both sides at once
 The headlines want you afraid; not unfounded: change is hard, fast change is unsettling; fast change hitting individuals and society at once, a mile wide and a mile deep, is, in a word, terrifying :: headlines ; afraid ; unfounded ; fast change ; unsettling ; individuals and society ; mile wide ; mile deep ; terrifying
 Fear narrows our field of vision, seeks safety in certainty, pushes us to pick a side: acceleration or obstruction, optimism or pessimism, opportunity or danger :: narrowing ; field of vision ; safety in certainty ; pick a side ; acceleration ; obstruction ; optimism ; pessimism ; danger
 The Duality of AI demands something harder: see both sides at once; acknowledge the danger without surrendering the possibility; pursue the possibility without pretending the danger isn't real :: harder ; both sides at once ; acknowledge ; surrendering ; possibility ; pretending
+
+card 38 | You decide: the Door Test
 We don't have to choose between a future where AI succeeds and one where people do; not zero-sum; but the better future isn't automatic; it takes the people in this room, the leaders :: choose ; ai succeeds ; people do ; zero-sum ; automatically ; this room ; leaders
 You're already making the choices that determine how AI is experienced: a worker gets a tool or a pink slip; someone at a closing door gets a supported path or not :: already making ; experienced ; tool ; pink slip ; closing door ; supported path
 Whether an investment merely occupies a community or becomes part of its future; whether systems give people capability and agency or quietly remove their ability to understand, question, and choose :: investment ; occupies ; community ; future ; capability ; agency ; quietly remove ; understand ; question ; choose
 You won't control every force, but you can control whether the choices within your reach open doors or close them :: every force ; within your reach ; open doors ; close them
+A simple test to carry out of this room to help navigate those choices: the Door Test :: simple test ; carry out of this room ; navigate those choices ; door test
+Before your next AI decision, a vendor contract, a data center, a reorg, ask one question: does this open a door for people, or does it just happen to them? :: next ai decision ; vendor contract ; data center ; reorg ; open a door for people ; happen to them
+Then check it three ways: who gets the tools and who gets a path; who benefits and who pays; who can understand and question this, and who can leave :: three ways ; who gets the tools ; path ; who benefits ; who pays ; understand and question ; who can leave
+Answer all three and you are opening doors; miss one and you have found the door quietly closing on someone :: all three ; opening doors ; cannot answer ; quietly closing
 
-card 38 | The challenge: find your Micah, and hold the door open
+card 39 | The challenge: find your Micah, and hold the door open
 My challenge: don't let a month go by when you can't say "I opened a door for someone"; every month, find your Micah :: challenge ; month ; opened a door ; find your micah
 The person with the problem but not the title; the idea but not the technical vocabulary; whose old path is disappearing; who doesn't look, think, learn, or arrive by the path you did :: problem ; title ; idea ; technical vocabulary ; old path ; disappearing ; look like you ; arrive
 You don't have to determine their future or carry them through the door; just open it and make it visible; give them the tools, help them reach the threshold, then let them surprise you :: determine ; carry ; open the door ; visible ; tools ; threshold ; surprise
