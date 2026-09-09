@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Voice-following teleprompter for the Duality of AI keynote. Live mode follows your words through the whole talk; Practice mode scores any section on the flow of its ideas.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark">
+<title>Hold the Door Prompter</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #0b0d12;
+    --panel: #12151d;
+    --raised: #1a1e29;
+    --line: #232837;
+    --ink: #d9dde8;
+    --ink-past: #4b5264;
+    --ink-cue: #6b7a99;
+    --amber: #ffc857;
+    --amber-deep: #f2a93b;
+    --record: #e2503c;
+    --ok: #5ec48a;
+    --body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+    --size: 30px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: var(--body); overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+  [hidden] { display: none !important; }
+  #app { height: 100vh; height: 100dvh; width: 100%; min-width: 0; overflow: hidden; display: grid; grid-template-rows: auto auto 1fr; }
+
+  /* Top bar */
+  header {
+    min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+    padding-top: max(10px, env(safe-area-inset-top));
+  }
+  button {
+    font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line);
+    border-radius: 999px; padding: 9px 13px; cursor: pointer; font-size: 15px; line-height: 1;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; white-space: nowrap;
+  }
+  button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  button:active { background: var(--raised); }
+  #rec {
+    display: inline-flex; align-items: center; gap: 9px; font-weight: 700;
+    border-color: var(--record); color: var(--record); padding: 10px 16px;
+  }
+  #rec .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--record); }
+  #rec.on { background: var(--record); color: #fff; }
+  #rec.on .dot { background: #fff; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .45; transform: scale(.7);} }
+  .spacer { flex: 1; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; padding: 9px 12px; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button.active { background: var(--amber); color: #1a1405; font-weight: 700; }
+  #pick {
+    flex: 1 1 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: left;
+    border-color: var(--amber-deep); color: var(--amber);
+  }
+  #pick::before { content: "▾ "; color: var(--amber-deep); }
+  #hide.active { background: var(--raised); border-color: var(--amber-deep); color: var(--amber); }
+
+  #status {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-cue); line-height: 1.3;
+    padding: 7px 14px 9px; background: var(--panel); border-bottom: 1px solid var(--line);
+    display: flex; gap: 14px; align-items: baseline; white-space: nowrap; overflow: hidden;
+  }
+  #status .live { color: var(--ok); }
+  #status .warn { color: var(--amber-deep); }
+  #heard { flex: 1; overflow: hidden; text-overflow: ellipsis; color: var(--ink); opacity: .7; }
+  #pct { font-variant-numeric: tabular-nums; }
+
+  /* Script body */
+  main#scroller { overflow-y: auto; overflow-x: hidden; position: relative; -webkit-overflow-scrolling: touch; }
+  #text {
+    position: relative; padding: 26vh 20px 60vh; max-width: 42em; margin: 0 auto;
+    font-size: var(--size); line-height: 1.5; font-weight: 400;
+  }
+  #text .p { margin: 0 0 .8em; }
+  #text .cue {
+    font-family: var(--mono); font-size: .48em; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-cue); margin: 1.6em 0 .9em; line-height: 1.4;
+  }
+  #text .cue.part { color: var(--amber-deep); border-top: 1px solid var(--line); padding-top: 1.2em; margin-top: 2.4em; }
+  #text .cue.card { font-size: .42em; color: var(--ink-cue); margin: 1.4em 0 .8em; text-transform: none; letter-spacing: .02em; }
+  #text .cue.inline { display: inline; margin: 0; padding: .1em .45em; border: 1px solid var(--line); border-radius: 6px; text-transform: none; letter-spacing: 0; }
+  #text.focus .card:not(.in), #text.focus .cue.part:not(.in) { display: none; }
+  .w {
+    display: inline-block; cursor: pointer; border-radius: .18em; padding: 0 .04em;
+    transition: color .25s ease, transform .25s ease, text-shadow .25s ease, filter .3s ease;
+    transform-origin: center bottom;
+  }
+  .w.past { color: var(--ink-past); }
+  .w.up { color: var(--amber); font-weight: 700; }
+  .w.hot { color: #fff; transform: scale(1.06); text-shadow: 0 0 16px rgba(255,200,87,.6); }
+  #text.blur .w { filter: blur(7px); }
+  #text.blur .w.hot { filter: blur(4px); }
+  #text.blur .cue { filter: none; }
+
+  /* Sheets: picker and results */
+  .sheet {
+    position: fixed; inset: 0; background: rgba(6,8,12,.78); display: grid; align-items: end; z-index: 20;
+  }
+  .sheet .panel {
+    background: var(--panel); border-top: 1px solid var(--line); border-radius: 18px 18px 0 0;
+    max-height: 88vh; max-height: 88dvh; display: flex; flex-direction: column;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .sheet .head {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px 10px; border-bottom: 1px solid var(--line);
+  }
+  .sheet .head h2 { margin: 0; font-size: 17px; font-weight: 700; flex: 1; }
+  .sheet .body { overflow-y: auto; padding: 8px 12px 12px; -webkit-overflow-scrolling: touch; }
+  .sheet .foot { display: flex; gap: 8px; padding: 10px 12px 0; flex-wrap: wrap; }
+  .sheet .foot button { flex: 1; padding: 12px 14px; }
+  .sheet .foot button.primary { background: var(--amber); color: #1a1405; border-color: var(--amber); font-weight: 700; }
+  .x { width: 36px; height: 36px; padding: 0; border-radius: 50%; font-size: 18px; line-height: 1; }
+
+  .sec { margin: 8px 0 14px; }
+  .sec-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;
+    padding: 10px 10px 10px 12px; border-left: 4px solid var(--c, var(--amber)); border-radius: 8px;
+    background: var(--raised); margin-bottom: 4px;
+  }
+  .sec-row .short { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--c, var(--amber)); }
+  .sec-row .name { font-size: 15px; line-height: 1.3; margin-top: 2px; }
+  .sec-row button { font-size: 13px; padding: 8px 11px; }
+  .card-row {
+    display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center;
+    width: 100%; text-align: left; border: 0; border-radius: 8px; padding: 9px 10px 9px 12px; font-size: 15px; line-height: 1.3;
+    color: var(--ink); white-space: normal;
+  }
+  .card-row:hover, .card-row:focus-visible { background: var(--raised); }
+  .card-row .n { font-family: var(--mono); font-size: 12px; color: var(--ink-cue); }
+  .chip { font-family: var(--mono); font-size: 11px; padding: 3px 8px; border-radius: 999px; background: var(--raised); color: var(--ink-cue); }
+  .chip.good { color: var(--ok); } .chip.mid { color: var(--amber); } .chip.low { color: var(--record); }
+
+  .score { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 8px 4px 14px; }
+  .score .big {
+    font-size: 54px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+  }
+  .score .big small { font-size: 22px; font-weight: 400; color: var(--ink-cue); }
+  .score.good .big { color: var(--ok); } .score.mid .big { color: var(--amber); } .score.low .big { color: var(--record); }
+  .score .t { font-size: 16px; font-weight: 700; }
+  .score .s { font-size: 13px; color: var(--ink-cue); margin-top: 3px; line-height: 1.4; }
+  .group { margin: 6px 0 14px; }
+  .group h3 { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-cue); margin: 0 0 6px 4px; }
+  .beats { list-style: none; margin: 0; padding: 0; }
+  .beats li {
+    display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 8px 10px; border-radius: 10px; margin-bottom: 5px;
+    font-size: 15px; line-height: 1.4; background: var(--raised);
+  }
+  .beats li .mark { font-weight: 700; text-align: center; }
+  .beats li.hit { border-left: 3px solid var(--ok); } .beats li.hit .mark { color: var(--ok); }
+  .beats li.part { border-left: 3px solid var(--amber); } .beats li.part .mark { color: var(--amber); }
+  .beats li.miss { border-left: 3px solid var(--record); } .beats li.miss .mark { color: var(--record); }
+  .beats li.miss .label, .beats li.part .label { color: var(--ink); }
+  .beats li.hit .label { color: var(--ink-past); }
+  .beats .keys { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .beats .k { font-family: var(--mono); font-size: 11px; padding: 2px 7px; border-radius: 6px; background: var(--panel); color: var(--ink-cue); }
+  .beats .k.hit { color: var(--ok); } .beats .k.miss { color: var(--record); text-decoration: line-through; }
+
+  #nosupport {
+    position: fixed; inset: 0; background: rgba(11,13,18,.94); display: grid; place-items: center; padding: 30px; text-align: center;
+    font-size: 18px; line-height: 1.5; z-index: 30;
+  }
+  #nosupport code { font-family: var(--mono); color: var(--amber); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .w { transition: none; }
+    #rec.on .dot { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <button id="rec" aria-pressed="false"><span class="dot"></span><span id="reclabel">Record</span></button>
+    <span class="seg" role="group" aria-label="Mode">
+      <button id="modeLive" class="active">Live</button>
+      <button id="modePractice">Practice</button>
+    </span>
+    <button id="pick" hidden>Choose a section</button>
+    <button id="hide" hidden aria-pressed="false">Hide words</button>
+    <button id="back" title="Back one sentence">◂ Sentence</button>
+    <span class="spacer"></span>
+    <span class="seg">
+      <button id="smaller" aria-label="Smaller text">A−</button>
+      <button id="bigger" aria-label="Larger text">A+</button>
+    </span>
+    <button id="restart">Restart</button>
+  </header>
+  <div id="status">
+    <span id="mic">mic off</span>
+    <span id="heard"></span>
+    <span id="pct">0%</span>
+  </div>
+  <main id="scroller"><div id="text"></div></main>
+</div>
+
+<div id="picker" class="sheet" hidden>
+  <div class="panel">
+    <div class="head"><h2>Practice a section</h2><button class="x" id="pickerClose" aria-label="Close">×</button></div>
+    <div class="body" id="pickerBody"></div>
+  </div>
+</div>
+
+<div id="results" class="sheet" hidden>
+  <div class="panel">
+    <div class="head"><h2 id="resTitle">Practice score</h2><button class="x" id="resClose" aria-label="Close">×</button></div>
+    <div class="body">
+      <div class="score" id="scoreBox">
+        <div class="big"><span id="scoreNum">0</span><small>%</small></div>
+        <div><div class="t" id="scoreT"></div><div class="s" id="scoreS"></div></div>
+      </div>
+      <div id="groups"></div>
+    </div>
+    <div class="foot">
+      <button id="again" class="primary">Try again</button>
+      <button id="nextSel">Next</button>
+    </div>
+  </div>
+</div>
+
+<div id="nosupport" hidden>
+  <div>
+    <p><strong>This browser can't listen.</strong></p>
+    <p>Speech recognition works in <code>Chrome</code>, <code>Edge</code>, or <code>Safari</code> on iPhone and Mac. Open this link in one of those. You can still tap any word to move the prompter by hand.</p>
+    <p><button id="dismiss">Continue without listening</button></p>
+  </div>
+</div>
+
+<script>__TEXTMATCH_JS__</script>
+<script>
+(function () {
+  'use strict';
+  var DATA = __KEYNOTE_DATA__;
+  var T = window.KeynoteText;
+  var $ = function (id) { return document.getElementById(id); };
+  var textEl = $('text'), scroller = $('scroller');
+  var recBtn = $('rec'), recLabel = $('reclabel'), micEl = $('mic'), heardEl = $('heard'), pctEl = $('pct');
+
+  /* ---------- Build the script from the keynote data ---------- */
+  var tokens = [];   // { norm, el, end }
+  var cardEls = {};  // card id -> wrapper div
+  var partEls = [];  // section header cues, by section index
+  function normalize(w) {
+    return w.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]/g, '');
+  }
+  function addWords(container, chunk) {
+    var span = document.createElement('span');
+    span.className = 'w';
+    span.textContent = chunk;
+    var parts = chunk.split(/[—–\-…]+|\.\.\./);
+    var first = tokens.length;
+    parts.forEach(function (p) {
+      var n = normalize(p);
+      if (n) tokens.push({ norm: n, el: span, end: false });
+    });
+    if (tokens.length > first) {
+      if (/[.?!…]["”’)]*$/.test(chunk)) tokens[tokens.length - 1].end = true;
+      span.dataset.i = first;
+    } else {
+      span.className = 'w past';
+    }
+    container.appendChild(span);
+    container.appendChild(document.createTextNode(' '));
+  }
+  function addParagraph(container, line) {
+    var t = line.trim();
+    if (!t) return;
+    if (/^\[.*\]$/.test(t)) {
+      var c = document.createElement('div');
+      c.className = 'cue';
+      c.textContent = t;
+      container.appendChild(c);
+      return;
+    }
+    var p = document.createElement('p');
+    p.className = 'p';
+    t.split(/(\[[^\]]*\])/).forEach(function (seg) {
+      if (!seg) return;
+      if (/^\[[^\]]*\]$/.test(seg)) {
+        var c = document.createElement('span');
+        c.className = 'cue inline';
+        c.textContent = seg;
+        p.appendChild(c);
+        p.appendChild(document.createTextNode(' '));
+      } else {
+        seg.trim().split(/\s+/).forEach(function (chunk) { if (chunk) addWords(p, chunk); });
+      }
+    });
+    container.appendChild(p);
+  }
+  DATA.sections.forEach(function (sec, si) {
+    var h = document.createElement('div');
+    h.className = 'cue part';
+    h.textContent = sec.title;
+    h.dataset.sec = si;
+    textEl.appendChild(h);
+    partEls.push(h);
+    sec.first = null; sec.last = null;
+    DATA.cards.filter(function (c) { return c.section === si; }).forEach(function (card) {
+      var wrap = document.createElement('div');
+      wrap.className = 'card';
+      wrap.dataset.card = card.id;
+      var label = document.createElement('div');
+      label.className = 'cue card';
+      label.textContent = card.id + ' · ' + (card.title || 'Card ' + card.id);
+      wrap.appendChild(label);
+      card.start = tokens.length;
+      card.paragraphs.forEach(function (p) { addParagraph(wrap, p); });
+      card.end = tokens.length;
+      textEl.appendChild(wrap);
+      cardEls[card.id] = wrap;
+      if (sec.first === null) sec.first = card.start;
+      sec.last = card.end;
+    });
+  });
+  var N = tokens.length;
+
+  /* ---------- Following: forward-only word matching ---------- */
+  var STOP = {};
+  'the a an and or but of to in on at for with is it was that this i you we they he she my our your his her its be are were as so not no do did have has had can will would if then than there here what who how me him them us by from'.split(' ').forEach(function (w) { STOP[w] = 1; });
+  function lev1(a, b) {
+    if (a.length === b.length) { var d = 0; for (var i = 0; i < a.length; i++) if (a[i] !== b[i] && ++d > 1) return false; return true; }
+    var s = a.length < b.length ? a : b, l = a.length < b.length ? b : a, x = 0, y = 0, k = 0;
+    while (x < s.length && y < l.length) { if (s[x] === l[y]) { x++; y++; } else { y++; if (++k > 1) return false; } }
+    return true;
+  }
+  function similar(a, b) {
+    if (a === b) return true;
+    if (a.length < 4 || b.length < 4) return false;
+    if (a.indexOf(b) === 0 || b.indexOf(a) === 0) return Math.abs(a.length - b.length) <= 2;
+    if (a.length >= 5 && b.length >= 5 && Math.abs(a.length - b.length) <= 1) return lev1(a, b);
+    return false;
+  }
+  // Walk heard words forward from `start`, never past `limit`. Returns the new cursor.
+  function advance(start, heard, limit) {
+    var cur = start;
+    for (var h = 0; h < heard.length; h++) {
+      var n = normalize(heard[h]);
+      if (!n) continue;
+      var win = STOP[n] ? 3 : 14;
+      var end = Math.min(limit, cur + win);
+      for (var i = cur; i < end; i++) {
+        if (similar(n, tokens[i].norm)) { cur = i + 1; break; }
+      }
+    }
+    return cur;
+  }
+
+  /* ---------- Rendering ---------- */
+  var cursor = 0, shownUp = [];
+  var UP = 8, HOT = 4; // words ahead that light up; the first HOT of them go white
+  function rangeStart() { return sel ? sel.start : 0; }
+  function rangeEnd() { return sel ? sel.end : N; }
+  function setCursor(c, opts) {
+    c = Math.max(rangeStart(), Math.min(rangeEnd(), c));
+    var old = cursor;
+    cursor = c;
+    if (c > old) { for (var i = old; i < c; i++) tokens[i].el.classList.add('past'); }
+    else if (c < old) { for (var j = c; j < old; j++) tokens[j].el.classList.remove('past'); }
+    if (c < N) tokens[c].el.classList.remove('past');
+    shownUp.forEach(function (el) { el.classList.remove('up', 'hot'); });
+    shownUp = [];
+    for (var k = 0; k < UP && c + k < rangeEnd(); k++) {
+      var el = tokens[c + k].el;
+      if (shownUp.indexOf(el) === -1) { el.classList.add('up'); if (k < HOT) el.classList.add('hot'); shownUp.push(el); }
+    }
+    var span = rangeEnd() - rangeStart();
+    pctEl.textContent = span ? Math.round(100 * (c - rangeStart()) / span) + '%' : '';
+    scrollToCursor(opts && opts.jump);
+    if (!sel) { try { localStorage.setItem('door-prompter-cursor', String(c)); } catch (e) {} }
+  }
+
+  // Smooth follow-scroll: keep the cursor word ~30% from the top of the reading area
+  var scrollTarget = null, scrolling = false;
+  function scrollToCursor(jump) {
+    var idx = Math.min(cursor, N - 1);
+    var el = tokens[idx].el;
+    scrollTarget = el.offsetTop - scroller.clientHeight * 0.3;
+    if (jump) { scroller.scrollTop = scrollTarget; return; }
+    if (!scrolling) { scrolling = true; requestAnimationFrame(step); }
+  }
+  function step() {
+    var d = scrollTarget - scroller.scrollTop;
+    if (Math.abs(d) < 1) { scroller.scrollTop = scrollTarget; scrolling = false; return; }
+    scroller.scrollTop += d * 0.18;
+    requestAnimationFrame(step);
+  }
+
+  // Tap a word to jump there (the recovery move when you're lost)
+  textEl.addEventListener('click', function (e) {
+    var w = e.target.closest('.w');
+    if (!w || w.dataset.i === undefined) return;
+    committed = +w.dataset.i;
+    setCursor(committed);
+  });
+
+  /* ---------- Modes and selection ---------- */
+  var sel = null; // null = live (whole talk); else { kind:'section'|'card', id, label, cards, start, end }
+  function selectionFor(kind, id) {
+    var cards, label;
+    if (kind === 'section') {
+      cards = DATA.cards.filter(function (c) { return c.section === id; });
+      label = DATA.sections[id].short + ' · whole section';
+    } else {
+      cards = DATA.cards.filter(function (c) { return c.id === id; });
+      label = DATA.sections[cards[0].section].short + ' · ' + id + ' · ' + (cards[0].title || 'Card ' + id);
+    }
+    return { kind: kind, id: id, label: label, cards: cards, start: cards[0].start, end: cards[cards.length - 1].end };
+  }
+  function applySelection(s) {
+    sel = s;
+    Object.keys(cardEls).forEach(function (id) { cardEls[id].classList.remove('in'); });
+    partEls.forEach(function (el) { el.classList.remove('in'); });
+    if (s) {
+      s.cards.forEach(function (c) { cardEls[c.id].classList.add('in'); });
+      partEls[s.cards[0].section].classList.add('in');
+      textEl.classList.add('focus');
+      $('pick').textContent = s.label;
+      for (var i = 0; i < N; i++) tokens[i].el.classList.remove('past');
+      committed = s.start;
+      cursor = s.start;
+      setCursor(s.start, { jump: true });
+    } else {
+      textEl.classList.remove('focus');
+      var saved = 0;
+      try { saved = Math.min(N - 1, +localStorage.getItem('door-prompter-cursor') || 0); } catch (e) {}
+      for (var j = 0; j < N; j++) tokens[j].el.classList.toggle('past', j < saved);
+      committed = saved;
+      cursor = saved;
+      setCursor(saved, { jump: true });
+    }
+    requestAnimationFrame(function () { scrollToCursor(true); });
+  }
+  function setMode(practice) {
+    if (listening) { listening = false; stopRec(); }
+    $('modeLive').classList.toggle('active', !practice);
+    $('modePractice').classList.toggle('active', practice);
+    $('pick').hidden = !practice;
+    $('hide').hidden = !practice;
+    if (!practice) {
+      textEl.classList.remove('blur');
+      $('hide').classList.remove('active');
+      applySelection(null);
+      try { localStorage.setItem('door-prompter-mode', 'live'); } catch (e) {}
+    } else {
+      try { localStorage.setItem('door-prompter-mode', 'practice'); } catch (e) {}
+      var last = null;
+      try { last = JSON.parse(localStorage.getItem('door-prompter-sel') || 'null'); } catch (e) {}
+      if (last && (last.kind === 'section' ? DATA.sections[last.id] : DATA.cards.some(function (c) { return c.id === last.id; }))) {
+        applySelection(selectionFor(last.kind, last.id));
+      } else {
+        applySelection(selectionFor('section', 0));
+        openPicker();
+      }
+    }
+  }
+  $('modeLive').addEventListener('click', function () { setMode(false); });
+  $('modePractice').addEventListener('click', function () { setMode(true); });
+  $('pick').addEventListener('click', openPicker);
+  $('hide').addEventListener('click', function () {
+    var on = textEl.classList.toggle('blur');
+    $('hide').classList.toggle('active', on);
+    $('hide').setAttribute('aria-pressed', on ? 'true' : 'false');
+    $('hide').textContent = on ? 'Show words' : 'Hide words';
+  });
+
+  /* ---------- Picker ---------- */
+  var best = {};
+  try { best = JSON.parse(localStorage.getItem('door-prompter-best') || '{}') || {}; } catch (e) {}
+  function bestKey(s) { return s.kind + ':' + s.id; }
+  function tier(score) { return score >= 90 ? 'good' : score >= 75 ? 'mid' : 'low'; }
+  function chip(key) {
+    var b = best[key];
+    return b === undefined ? '' : '<span class="chip ' + tier(b) + '">best ' + b + '%</span>';
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function renderPicker() {
+    var html = '';
+    DATA.sections.forEach(function (sec, si) {
+      html += '<div class="sec" style="--c:' + esc(sec.color) + '">';
+      html += '<div class="sec-row"><div><div class="short">' + esc(sec.short) + '</div><div class="name">' + esc(sec.title) + '</div></div>' +
+              '<div style="display:flex;gap:6px;align-items:center">' + chip('section:' + si) +
+              '<button data-kind="section" data-id="' + si + '">Whole section</button></div></div>';
+      DATA.cards.filter(function (c) { return c.section === si; }).forEach(function (c) {
+        html += '<button class="card-row" data-kind="card" data-id="' + c.id + '"><span class="n">' + c.id + '</span><span>' + esc(c.title || 'Card ' + c.id) + '</span>' + chip('card:' + c.id) + '</button>';
+      });
+      html += '</div>';
+    });
+    $('pickerBody').innerHTML = html;
+  }
+  function openPicker() {
+    renderPicker();
+    $('picker').hidden = false;
+    var cur = sel && $('pickerBody').querySelector('[data-kind="' + sel.kind + '"][data-id="' + sel.id + '"]');
+    if (cur) cur.scrollIntoView({ block: 'center' });
+  }
+  $('pickerBody').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-kind]');
+    if (!b) return;
+    var s = selectionFor(b.dataset.kind, +b.dataset.id);
+    try { localStorage.setItem('door-prompter-sel', JSON.stringify({ kind: s.kind, id: s.id })); } catch (err) {}
+    if (listening) { listening = false; stopRec(); }
+    applySelection(s);
+    $('picker').hidden = true;
+  });
+  $('pickerClose').addEventListener('click', function () { $('picker').hidden = true; });
+
+  /* ---------- Idea scoring (same rules as the note card page) ---------- */
+  var SENT_END = /[.?!]["”’)]*$/;
+  function fallbackBeats(card) {
+    // For a card without hand-written beats: one beat per sentence, keyed on its content words.
+    var text = card.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' ');
+    var words = text.split(/\s+/).filter(Boolean), sents = [], buf = [];
+    words.forEach(function (w) { buf.push(w); if (SENT_END.test(w) && !/^(Dr|Mr|Mrs|Ms|St|vs)\.$/.test(w)) { sents.push(buf.join(' ')); buf = []; } });
+    if (buf.length) sents.push(buf.join(' '));
+    return sents.map(function (s) {
+      var keys = [], seen = {};
+      T.basicTokens(s).forEach(function (t) { if (T.STOP[t] || t.length < 3 || seen[t]) return; seen[t] = 1; keys.push([t]); });
+      return { label: s, keys: keys };
+    }).filter(function (b) { return b.keys.length; });
+  }
+  function scoreSelection(s, spoken) {
+    var bag = T.spokenBag(spoken), total = 0, n = 0, covered = 0, partial = 0;
+    var groups = s.cards.map(function (card) {
+      var beats = (card.beats && card.beats.length) ? card.beats : fallbackBeats(card);
+      var rows = beats.map(function (b) {
+        var hit = [], missed = [];
+        b.keys.forEach(function (alts) { (alts.some(function (p) { return T.phraseIn(bag, p); }) ? hit : missed).push(alts[0]); });
+        var ratio = b.keys.length ? hit.length / b.keys.length : 1;
+        var status = ratio >= 0.5 ? 'hit' : (hit.length && ratio >= 0.25) ? 'part' : 'miss';
+        total += status === 'hit' ? 1 : status === 'part' ? 0.5 : 0;
+        n++;
+        if (status === 'hit') covered++; else if (status === 'part') partial++;
+        return { label: b.label, status: status, hit: hit, missed: missed };
+      });
+      return { card: card, rows: rows };
+    });
+    return { groups: groups, score: n ? Math.round(100 * total / n) : 100, n: n, covered: covered, partial: partial };
+  }
+  function showResults(res, spokenWords, seconds) {
+    var key = bestKey(sel);
+    var prev = best[key];
+    best[key] = Math.max(prev === undefined ? 0 : prev, res.score);
+    try { localStorage.setItem('door-prompter-best', JSON.stringify(best)); } catch (e) {}
+    $('resTitle').textContent = sel.label;
+    $('scoreNum').textContent = res.score;
+    $('scoreBox').className = 'score ' + tier(res.score);
+    $('scoreT').textContent = res.covered + ' of ' + res.n + ' ideas covered' + (res.partial ? ', ' + res.partial + ' partly' : '');
+    var wpm = seconds > 5 ? Math.round(60 * spokenWords / seconds) : 0;
+    $('scoreS').textContent = (res.score >= 90 ? 'You have the flow. ' : res.score >= 75 ? 'Close. Look at the ideas marked below. ' : 'Run it again with the missed ideas in mind. ') +
+      (prev !== undefined && res.score > prev ? 'New best, up from ' + prev + '%. ' : prev !== undefined ? 'Best so far: ' + best[key] + '%. ' : '') +
+      (wpm ? 'Pace: ' + wpm + ' words a minute.' : '');
+    var html = '';
+    res.groups.forEach(function (g) {
+      html += '<div class="group"><h3>' + g.card.id + ' · ' + esc(g.card.title || 'Card ' + g.card.id) + '</h3><ul class="beats">';
+      g.rows.forEach(function (r) {
+        var mark = r.status === 'hit' ? '✓' : r.status === 'part' ? '◐' : '✗';
+        html += '<li class="' + r.status + '"><span class="mark">' + mark + '</span><span class="label">' + esc(r.label) + '</span>';
+        if (r.status !== 'hit') {
+          html += '<span class="keys">' + r.hit.map(function (k) { return '<span class="k hit">' + esc(k) + '</span>'; }).join('') +
+                  r.missed.map(function (k) { return '<span class="k miss">' + esc(k) + '</span>'; }).join('') + '</span>';
+        }
+        html += '</li>';
+      });
+      html += '</ul></div>';
+    });
+    $('groups').innerHTML = html;
+    var nxt = nextSelection();
+    $('nextSel').hidden = !nxt;
+    if (nxt) $('nextSel').textContent = 'Next: ' + (nxt.kind === 'section' ? DATA.sections[nxt.id].short : nxt.id + ' · ' + (nxt.cards[0].title || 'Card ' + nxt.id));
+    $('results').hidden = false;
+    $('results').querySelector('.body').scrollTop = 0;
+  }
+  function nextSelection() {
+    if (!sel) return null;
+    if (sel.kind === 'section') return sel.id + 1 < DATA.sections.length ? selectionFor('section', sel.id + 1) : null;
+    var idx = DATA.cards.findIndex(function (c) { return c.id === sel.id; });
+    return idx >= 0 && idx + 1 < DATA.cards.length ? selectionFor('card', DATA.cards[idx + 1].id) : null;
+  }
+  $('resClose').addEventListener('click', function () { $('results').hidden = true; });
+  $('again').addEventListener('click', function () {
+    $('results').hidden = true;
+    applySelection(sel);
+    startListening();
+  });
+  $('nextSel').addEventListener('click', function () {
+    var nxt = nextSelection();
+    if (!nxt) return;
+    $('results').hidden = true;
+    try { localStorage.setItem('door-prompter-sel', JSON.stringify({ kind: nxt.kind, id: nxt.id })); } catch (e) {}
+    applySelection(nxt);
+  });
+
+  /* ---------- Speech recognition ---------- */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var rec = null, listening = false, committed = 0, finalCount = 0, wakeLock = null;
+  var finals = [], interimText = '', startedAt = 0;
+
+  function setMic(text, cls) { micEl.textContent = text; micEl.className = cls || ''; }
+
+  function startRec() {
+    rec = new SR();
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.lang = 'en-US';
+    rec.maxAlternatives = 1;
+    finalCount = 0;
+    rec.onstart = function () { setMic('listening', 'live'); };
+    rec.onresult = function (e) {
+      var interim = [], limit = rangeEnd();
+      for (var i = finalCount; i < e.results.length; i++) {
+        var r = e.results[i];
+        var txt = r[0].transcript.trim();
+        var words = txt.split(/\s+/);
+        if (r.isFinal) { committed = advance(committed, words, limit); finalCount = i + 1; if (txt) finals.push(txt); }
+        else { interim = interim.concat(words); }
+      }
+      interimText = interim.join(' ');
+      var shown = advance(committed, interim, limit);
+      var lastRes = e.results[e.results.length - 1];
+      var heard = lastRes ? lastRes[0].transcript.trim().split(/\s+/).slice(-6).join(' ') : '';
+      heardEl.textContent = heard;
+      if (shown !== cursor) setCursor(shown);
+      if (sel && cursor >= sel.end) setMic('end of section: tap Stop to score', 'warn');
+    };
+    rec.onerror = function (e) {
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        listening = false;
+        stopRec();
+        setMic('mic blocked: allow microphone access for this page', 'warn');
+      } else if (e.error !== 'no-speech' && e.error !== 'aborted') {
+        setMic('mic hiccup (' + e.error + '), retrying', 'warn');
+      }
+    };
+    rec.onend = function () {
+      if (interimText) { finals.push(interimText); interimText = ''; }
+      if (listening) { setTimeout(function () { if (listening) { try { startRec(); } catch (err) {} } }, 200); }
+      else setMic('mic off');
+    };
+    rec.start();
+  }
+  function stopRec() {
+    if (rec) { try { rec.onend = null; rec.stop(); } catch (e) {} rec = null; }
+    if (interimText) { finals.push(interimText); interimText = ''; }
+    recBtn.classList.remove('on');
+    recBtn.setAttribute('aria-pressed', 'false');
+    recLabel.textContent = sel ? 'Record' : 'Record';
+    setMic('mic off');
+    if (wakeLock) { try { wakeLock.release(); } catch (e) {} wakeLock = null; }
+  }
+  function requestWake() {
+    if (!('wakeLock' in navigator)) return;
+    navigator.wakeLock.request('screen').then(function (l) { wakeLock = l; }).catch(function () {});
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && listening) requestWake();
+  });
+  function startListening() {
+    if (!SR) { $('nosupport').hidden = false; return; }
+    listening = true;
+    committed = cursor;
+    finals = []; interimText = ''; startedAt = Date.now();
+    recBtn.classList.add('on');
+    recBtn.setAttribute('aria-pressed', 'true');
+    recLabel.textContent = sel ? 'Stop & score' : 'Listening';
+    setMic('starting mic…');
+    requestWake();
+    try { startRec(); } catch (e) { setMic('could not start mic', 'warn'); }
+  }
+  recBtn.addEventListener('click', function () {
+    if (listening) {
+      listening = false;
+      stopRec();
+      if (sel) {
+        var spoken = finals.join(' ');
+        var words = spoken.split(/\s+/).filter(Boolean).length;
+        if (!words) { setMic('nothing heard, so nothing to score', 'warn'); return; }
+        showResults(scoreSelection(sel, spoken), words, (Date.now() - startedAt) / 1000);
+      }
+      return;
+    }
+    startListening();
+  });
+
+  $('back').addEventListener('click', function () {
+    var i = cursor - 1;
+    while (i > rangeStart() && !tokens[i - 1].end) i--;       // start of current sentence
+    if (i === cursor || cursor - i < 2) { i--; while (i > rangeStart() && !tokens[i - 1].end) i--; } // or the previous one
+    committed = Math.max(rangeStart(), i);
+    setCursor(committed);
+  });
+  $('restart').addEventListener('click', function () {
+    if (sel) { applySelection(sel); return; }
+    if (cursor > 0 && !confirm('Go back to the top of the keynote?')) return;
+    committed = 0;
+    setCursor(0, { jump: true });
+  });
+
+  /* ---------- Text size ---------- */
+  var size = 30;
+  try { size = +localStorage.getItem('door-prompter-size') || 30; } catch (e) {}
+  function applySize() {
+    document.documentElement.style.setProperty('--size', size + 'px');
+    try { localStorage.setItem('door-prompter-size', String(size)); } catch (e) {}
+    requestAnimationFrame(function () { scrollToCursor(true); });
+  }
+  $('bigger').addEventListener('click', function () { size = Math.min(56, size + 3); applySize(); });
+  $('smaller').addEventListener('click', function () { size = Math.max(18, size - 3); applySize(); });
+  $('dismiss').addEventListener('click', function () { $('nosupport').hidden = true; });
+
+  /* ---------- Boot ---------- */
+  applySize();
+  var mode = 'live';
+  try { mode = localStorage.getItem('door-prompter-mode') || 'live'; } catch (e) {}
+  setMode(mode === 'practice');
+  if (!SR) setMic('this browser cannot listen; tap words to advance', 'warn');
+  window.addEventListener('resize', function () { scrollToCursor(true); });
+  window.DoorPrompter = { scoreSelection: scoreSelection, selectionFor: selectionFor, applySelection: applySelection, showResults: showResults, tokens: tokens };
+})();
+</script>
+</body>
+</html>

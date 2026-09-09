@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Builds keynote-practice.html from _keynote/keynote.txt + _keynote/template.html.
+// Builds keynote-practice.html (from template.html) and keynote-teleprompter.html (from teleprompter.html)
+// out of _keynote/keynote.txt, beats.txt, and textmatch.js.
 // Source format:
 //   "## Title"  -> starts a new section (and a new card)
 //   "==="       -> card break
@@ -11,6 +12,8 @@ const root = path.resolve(__dirname, '..');
 const srcPath = path.join(__dirname, 'keynote.txt');
 const tplPath = path.join(__dirname, 'template.html');
 const outPath = path.join(root, 'keynote-practice.html');
+const tpTplPath = path.join(__dirname, 'teleprompter.html');
+const tpOutPath = path.join(root, 'keynote-teleprompter.html');
 
 const raw = fs.readFileSync(srcPath, 'utf8');
 const lines = raw.split('\n');
@@ -138,6 +141,15 @@ if (fs.existsSync(tplPath)) {
   const html = tpl.replace('__KEYNOTE_DATA__', () => json).replace('__TEXTMATCH_JS__', () => tmJs).replace('__APP_JS__', () => appJs);
   fs.writeFileSync(outPath, html);
   console.log('wrote', path.relative(root, outPath));
+}
+
+// The teleprompter page shares the same data, matcher, and idea beats (Practice mode scores against them).
+if (fs.existsSync(tpTplPath)) {
+  const tpl = fs.readFileSync(tpTplPath, 'utf8');
+  if (!tpl.includes('__KEYNOTE_DATA__') || !tpl.includes('__TEXTMATCH_JS__')) { console.error('teleprompter template missing placeholders'); process.exit(1); }
+  const tmJs = fs.readFileSync(path.join(__dirname, 'textmatch.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
+  fs.writeFileSync(tpOutPath, tpl.replace('__KEYNOTE_DATA__', () => json).replace('__TEXTMATCH_JS__', () => tmJs));
+  console.log('wrote', path.relative(root, tpOutPath));
 }
 
 console.log(`${sections.length} sections, ${cards.length} cards, ${cards.reduce((n,c)=>n+c.words,0)} spoken words`);
