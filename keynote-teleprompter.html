@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="Voice-following teleprompter for the Duality of AI keynote. Live mode follows your words through the whole talk; Practice mode scores any section on the flow of its ideas.">
+<meta name="description" content="Voice-following teleprompter for the Duality of AI keynote. Live mode follows your words through the whole talk; Practice mode scores any stretch you run, starting from whatever sentence you tap.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="dark">
 <title>Hold the Door Prompter</title>
@@ -61,11 +61,6 @@
   .seg button { border: 0; border-radius: 0; padding: 9px 12px; }
   .seg button + button { border-left: 1px solid var(--line); }
   .seg button.active { background: var(--amber); color: #1a1405; font-weight: 700; }
-  #pick {
-    flex: 1 1 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: left;
-    border-color: var(--amber-deep); color: var(--amber);
-  }
-  #pick::before { content: "▾ "; color: var(--amber-deep); }
   #hide.active { background: var(--raised); border-color: var(--amber-deep); color: var(--amber); }
 
   #status {
@@ -95,7 +90,8 @@
   #text .cue.part { color: var(--amber-deep); border-top: 1px solid var(--line); padding-top: 1.2em; margin-top: 2.4em; }
   #text .cue.card { font-size: .42em; color: var(--ink-cue); margin: 1.4em 0 .8em; text-transform: none; letter-spacing: .02em; }
   #text .cue.inline { display: inline; margin: 0; padding: .1em .45em; border: 1px solid var(--line); border-radius: 6px; text-transform: none; letter-spacing: 0; }
-  #text.focus .card:not(.in), #text.focus .cue.part:not(.in) { display: none; }
+  #text:not(.practice) .cue.card { display: none; }
+  #text.practice .w.mark { box-shadow: inset 0 -3px 0 var(--amber-deep); }
   .w {
     display: inline-block; cursor: pointer; border-radius: .18em; padding: 0 .04em;
     transition: color .25s ease, transform .25s ease, text-shadow .25s ease, filter .3s ease;
@@ -127,24 +123,6 @@
   .sheet .foot button.primary { background: var(--amber); color: #1a1405; border-color: var(--amber); font-weight: 700; }
   .x { width: 36px; height: 36px; padding: 0; border-radius: 50%; font-size: 18px; line-height: 1; }
 
-  .sec { margin: 8px 0 14px; }
-  .sec-row {
-    display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;
-    padding: 10px 10px 10px 12px; border-left: 4px solid var(--c, var(--amber)); border-radius: 8px;
-    background: var(--raised); margin-bottom: 4px;
-  }
-  .sec-row .short { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--c, var(--amber)); }
-  .sec-row .name { font-size: 15px; line-height: 1.3; margin-top: 2px; }
-  .sec-row button { font-size: 13px; padding: 8px 11px; }
-  .card-row {
-    display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center;
-    width: 100%; text-align: left; border: 0; border-radius: 8px; padding: 9px 10px 9px 12px; font-size: 15px; line-height: 1.3;
-    color: var(--ink); white-space: normal;
-  }
-  .card-row:hover, .card-row:focus-visible { background: var(--raised); }
-  .card-row .n { font-family: var(--mono); font-size: 12px; color: var(--ink-cue); }
-  .chip { font-family: var(--mono); font-size: 11px; padding: 3px 8px; border-radius: 999px; background: var(--raised); color: var(--ink-cue); }
-  .chip.good { color: var(--ok); } .chip.mid { color: var(--amber); } .chip.low { color: var(--record); }
 
   .score { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 8px 4px 14px; }
   .score .big {
@@ -154,6 +132,8 @@
   .score.good .big { color: var(--ok); } .score.mid .big { color: var(--amber); } .score.low .big { color: var(--record); }
   .score .t { font-size: 16px; font-weight: 700; }
   .score .s { font-size: 13px; color: var(--ink-cue); margin-top: 3px; line-height: 1.4; }
+  .span { font-size: 13px; color: var(--ink-cue); line-height: 1.45; padding: 0 4px 12px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+  .span b { color: var(--ink); font-weight: 400; }
   .group { margin: 6px 0 14px; }
   .group h3 { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-cue); margin: 0 0 6px 4px; }
   .beats { list-style: none; margin: 0; padding: 0; }
@@ -191,7 +171,6 @@
       <button id="modeLive" class="active">Live</button>
       <button id="modePractice">Practice</button>
     </span>
-    <button id="pick" hidden>Choose a section</button>
     <button id="hide" hidden aria-pressed="false">Hide words</button>
     <button id="back" title="Back one sentence">◂ Sentence</button>
     <span class="spacer"></span>
@@ -209,13 +188,6 @@
   <main id="scroller"><div id="text"></div></main>
 </div>
 
-<div id="picker" class="sheet" hidden>
-  <div class="panel">
-    <div class="head"><h2>Practice a section</h2><button class="x" id="pickerClose" aria-label="Close">×</button></div>
-    <div class="body" id="pickerBody"></div>
-  </div>
-</div>
-
 <div id="results" class="sheet" hidden>
   <div class="panel">
     <div class="head"><h2 id="resTitle">Practice score</h2><button class="x" id="resClose" aria-label="Close">×</button></div>
@@ -224,11 +196,12 @@
         <div class="big"><span id="scoreNum">0</span><small>%</small></div>
         <div><div class="t" id="scoreT"></div><div class="s" id="scoreS"></div></div>
       </div>
+      <div class="span" id="spanNote"></div>
       <div id="groups"></div>
     </div>
     <div class="foot">
-      <button id="again" class="primary">Try again</button>
-      <button id="nextSel">Next</button>
+      <button id="again" class="primary">Run it again from the same spot</button>
+      <button id="resDone">Done</button>
     </div>
   </div>
 </div>
@@ -236,7 +209,7 @@
 <div id="nosupport" hidden>
   <div>
     <p><strong>This browser can't listen.</strong></p>
-    <p>Speech recognition works in <code>Chrome</code>, <code>Edge</code>, or <code>Safari</code> on iPhone and Mac. Open this link in one of those. You can still tap any word to move the prompter by hand.</p>
+    <p>Speech recognition works in <code>Chrome</code>, <code>Edge</code>, or <code>Safari</code> on iPhone and Mac. Open this link in one of those. You can still tap any sentence to move the prompter by hand.</p>
     <p><button id="dismiss">Continue without listening</button></p>
   </div>
 </div>
@@ -431,9 +404,7 @@
   var recBtn = $('rec'), recLabel = $('reclabel'), micEl = $('mic'), heardEl = $('heard'), pctEl = $('pct');
 
   /* ---------- Build the script from the keynote data ---------- */
-  var tokens = [];   // { norm, el, end }
-  var cardEls = {};  // card id -> wrapper div
-  var partEls = [];  // section header cues, by section index
+  var tokens = [];   // { norm, raw, el, end }
   function normalize(w) {
     return w.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]/g, '');
   }
@@ -445,7 +416,7 @@
     var first = tokens.length;
     parts.forEach(function (p) {
       var n = normalize(p);
-      if (n) tokens.push({ norm: n, el: span, end: false });
+      if (n) tokens.push({ norm: n, raw: p, el: span, end: false });
     });
     if (tokens.length > first) {
       if (/[.?!…]["”’)]*$/.test(chunk)) tokens[tokens.length - 1].end = true;
@@ -486,14 +457,10 @@
     var h = document.createElement('div');
     h.className = 'cue part';
     h.textContent = sec.title;
-    h.dataset.sec = si;
     textEl.appendChild(h);
-    partEls.push(h);
-    sec.first = null; sec.last = null;
     DATA.cards.filter(function (c) { return c.section === si; }).forEach(function (card) {
       var wrap = document.createElement('div');
       wrap.className = 'card';
-      wrap.dataset.card = card.id;
       var label = document.createElement('div');
       label.className = 'cue card';
       label.textContent = card.id + ' · ' + (card.title || 'Card ' + card.id);
@@ -502,12 +469,52 @@
       card.paragraphs.forEach(function (p) { addParagraph(wrap, p); });
       card.end = tokens.length;
       textEl.appendChild(wrap);
-      cardEls[card.id] = wrap;
-      if (sec.first === null) sec.first = card.start;
-      sec.last = card.end;
     });
   });
   var N = tokens.length;
+  // The last token of a paragraph always closes a sentence, even without punctuation.
+  DATA.cards.forEach(function (c) { if (c.end > c.start) tokens[c.end - 1].end = true; });
+
+  /* ---------- Where each idea beat sits in the text ---------- */
+  // Every token gets the same stem the scorer uses, so a beat's first key phrase can be located.
+  var stems = tokens.map(function (t) { var b = T.basicTokens(t.raw); return T.stem(b.length ? b[0] : t.norm); });
+  function findPhrase(phrase, from, to) {
+    var ph = T.prepareSpoken(phrase).map(T.stem);
+    if (!ph.length) return -1;
+    outer: for (var i = from; i + ph.length <= to; i++) {
+      for (var k = 0; k < ph.length; k++) if (!T.stemsMatch(ph[k], stems[i + k])) continue outer;
+      return i;
+    }
+    return -1;
+  }
+  var beats = []; // { card, label, keys, pos }
+  DATA.cards.forEach(function (card) {
+    var list = (card.beats && card.beats.length) ? card.beats : fallbackBeats(card);
+    var len = card.end - card.start, floor = card.start;
+    list.forEach(function (b, i) {
+      // Beats run in reading order, so each one is looked for only after the previous beat's position.
+      var pos = -1;
+      b.keys.forEach(function (alts) {
+        alts.forEach(function (alt) { var p = findPhrase(alt, floor, card.end); if (p >= 0 && (pos < 0 || p < pos)) pos = p; });
+      });
+      if (pos < 0) pos = Math.max(floor, card.start + Math.floor(len * i / list.length)); // not locatable: spread evenly
+      floor = pos;
+      beats.push({ card: card, label: b.label, keys: b.keys, pos: pos });
+    });
+  });
+  beats.sort(function (a, b) { return a.pos - b.pos; });
+  function fallbackBeats(card) {
+    // For a card without hand-written beats: one beat per sentence, keyed on its content words.
+    var text = card.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' ');
+    var words = text.split(/\s+/).filter(Boolean), sents = [], buf = [];
+    words.forEach(function (w) { buf.push(w); if (/[.?!]["”’)]*$/.test(w) && !/^(Dr|Mr|Mrs|Ms|St|vs)\.$/.test(w)) { sents.push(buf.join(' ')); buf = []; } });
+    if (buf.length) sents.push(buf.join(' '));
+    return sents.map(function (s) {
+      var keys = [], seen = {};
+      T.basicTokens(s).forEach(function (t) { if (T.STOP[t] || t.length < 3 || seen[t]) return; seen[t] = 1; keys.push([t]); });
+      return { label: s, keys: keys };
+    }).filter(function (b) { return b.keys.length; });
+  }
 
   /* ---------- Following: forward-only word matching ---------- */
   var STOP = {};
@@ -525,14 +532,14 @@
     if (a.length >= 5 && b.length >= 5 && Math.abs(a.length - b.length) <= 1) return lev1(a, b);
     return false;
   }
-  // Walk heard words forward from `start`, never past `limit`. Returns the new cursor.
-  function advance(start, heard, limit) {
+  // Walk heard words forward from `start`. Returns the new cursor; never moves backward.
+  function advance(start, heard) {
     var cur = start;
     for (var h = 0; h < heard.length; h++) {
       var n = normalize(heard[h]);
       if (!n) continue;
       var win = STOP[n] ? 3 : 14;
-      var end = Math.min(limit, cur + win);
+      var end = Math.min(N, cur + win);
       for (var i = cur; i < end; i++) {
         if (similar(n, tokens[i].norm)) { cur = i + 1; break; }
       }
@@ -541,12 +548,10 @@
   }
 
   /* ---------- Rendering ---------- */
-  var cursor = 0, shownUp = [];
+  var cursor = 0, shownUp = [], practice = false;
   var UP = 8, HOT = 4; // words ahead that light up; the first HOT of them go white
-  function rangeStart() { return sel ? sel.start : 0; }
-  function rangeEnd() { return sel ? sel.end : N; }
   function setCursor(c, opts) {
-    c = Math.max(rangeStart(), Math.min(rangeEnd(), c));
+    c = Math.max(0, Math.min(N, c));
     var old = cursor;
     cursor = c;
     if (c > old) { for (var i = old; i < c; i++) tokens[i].el.classList.add('past'); }
@@ -554,14 +559,18 @@
     if (c < N) tokens[c].el.classList.remove('past');
     shownUp.forEach(function (el) { el.classList.remove('up', 'hot'); });
     shownUp = [];
-    for (var k = 0; k < UP && c + k < rangeEnd(); k++) {
+    for (var k = 0; k < UP && c + k < N; k++) {
       var el = tokens[c + k].el;
       if (shownUp.indexOf(el) === -1) { el.classList.add('up'); if (k < HOT) el.classList.add('hot'); shownUp.push(el); }
     }
-    var span = rangeEnd() - rangeStart();
-    pctEl.textContent = span ? Math.round(100 * (c - rangeStart()) / span) + '%' : '';
+    pctEl.textContent = Math.round(100 * c / N) + '%';
     scrollToCursor(opts && opts.jump);
-    if (!sel) { try { localStorage.setItem('door-prompter-cursor', String(c)); } catch (e) {} }
+    try { localStorage.setItem(practice ? 'door-prompter-practice-cursor' : 'door-prompter-cursor', String(c)); } catch (e) {}
+  }
+  function sentenceStart(i) {
+    i = Math.max(0, Math.min(N - 1, i));
+    while (i > 0 && !tokens[i - 1].end) i--;
+    return i;
   }
 
   // Smooth follow-scroll: keep the cursor word ~30% from the top of the reading area
@@ -580,77 +589,49 @@
     requestAnimationFrame(step);
   }
 
-  // Tap a word to jump there (the recovery move when you're lost)
+  // Tap any word to jump to the start of its sentence. Live: the recovery move. Practice: where the run begins.
   textEl.addEventListener('click', function (e) {
     var w = e.target.closest('.w');
     if (!w || w.dataset.i === undefined) return;
-    committed = +w.dataset.i;
+    committed = sentenceStart(+w.dataset.i);
     setCursor(committed);
+    if (practice && !listening) setMark(committed);
   });
 
-  /* ---------- Modes and selection ---------- */
-  var sel = null; // null = live (whole talk); else { kind:'section'|'card', id, label, cards, start, end }
-  function selectionFor(kind, id) {
-    var cards, label;
-    if (kind === 'section') {
-      cards = DATA.cards.filter(function (c) { return c.section === id; });
-      label = DATA.sections[id].short + ' · whole section';
-    } else {
-      cards = DATA.cards.filter(function (c) { return c.id === id; });
-      label = DATA.sections[cards[0].section].short + ' · ' + id + ' · ' + (cards[0].title || 'Card ' + id);
-    }
-    return { kind: kind, id: id, label: label, cards: cards, start: cards[0].start, end: cards[cards.length - 1].end };
+  /* ---------- Modes ---------- */
+  var markEl = null, practiceStart = 0;
+  function setMark(i) {
+    practiceStart = i;
+    if (markEl) markEl.classList.remove('mark');
+    markEl = i < N ? tokens[i].el : null;
+    if (markEl) markEl.classList.add('mark');
+    setMic('start set here: tap Record when ready');
   }
-  function applySelection(s) {
-    sel = s;
-    Object.keys(cardEls).forEach(function (id) { cardEls[id].classList.remove('in'); });
-    partEls.forEach(function (el) { el.classList.remove('in'); });
-    if (s) {
-      s.cards.forEach(function (c) { cardEls[c.id].classList.add('in'); });
-      partEls[s.cards[0].section].classList.add('in');
-      textEl.classList.add('focus');
-      $('pick').textContent = s.label;
-      for (var i = 0; i < N; i++) tokens[i].el.classList.remove('past');
-      committed = s.start;
-      cursor = s.start;
-      setCursor(s.start, { jump: true });
-    } else {
-      textEl.classList.remove('focus');
-      var saved = 0;
-      try { saved = Math.min(N - 1, +localStorage.getItem('door-prompter-cursor') || 0); } catch (e) {}
-      for (var j = 0; j < N; j++) tokens[j].el.classList.toggle('past', j < saved);
-      committed = saved;
-      cursor = saved;
-      setCursor(saved, { jump: true });
-    }
-    requestAnimationFrame(function () { scrollToCursor(true); });
-  }
-  function setMode(practice) {
+  function setMode(toPractice) {
     if (listening) { listening = false; stopRec(); }
+    practice = toPractice;
     $('modeLive').classList.toggle('active', !practice);
     $('modePractice').classList.toggle('active', practice);
-    $('pick').hidden = !practice;
     $('hide').hidden = !practice;
+    textEl.classList.toggle('practice', practice);
     if (!practice) {
       textEl.classList.remove('blur');
       $('hide').classList.remove('active');
-      applySelection(null);
-      try { localStorage.setItem('door-prompter-mode', 'live'); } catch (e) {}
-    } else {
-      try { localStorage.setItem('door-prompter-mode', 'practice'); } catch (e) {}
-      var last = null;
-      try { last = JSON.parse(localStorage.getItem('door-prompter-sel') || 'null'); } catch (e) {}
-      if (last && (last.kind === 'section' ? DATA.sections[last.id] : DATA.cards.some(function (c) { return c.id === last.id; }))) {
-        applySelection(selectionFor(last.kind, last.id));
-      } else {
-        applySelection(selectionFor('section', 0));
-        openPicker();
-      }
+      $('hide').textContent = 'Hide words';
+      if (markEl) { markEl.classList.remove('mark'); markEl = null; }
     }
+    var saved = 0;
+    try { saved = Math.min(N - 1, +localStorage.getItem(practice ? 'door-prompter-practice-cursor' : 'door-prompter-cursor') || 0); } catch (e) {}
+    for (var j = 0; j < N; j++) tokens[j].el.classList.toggle('past', j < saved);
+    committed = saved;
+    cursor = saved;
+    setCursor(saved, { jump: true });
+    if (practice) setMark(sentenceStart(saved));
+    try { localStorage.setItem('door-prompter-mode', practice ? 'practice' : 'live'); } catch (e) {}
+    requestAnimationFrame(function () { scrollToCursor(true); });
   }
   $('modeLive').addEventListener('click', function () { setMode(false); });
   $('modePractice').addEventListener('click', function () { setMode(true); });
-  $('pick').addEventListener('click', openPicker);
   $('hide').addEventListener('click', function () {
     var on = textEl.classList.toggle('blur');
     $('hide').classList.toggle('active', on);
@@ -658,92 +639,44 @@
     $('hide').textContent = on ? 'Show words' : 'Hide words';
   });
 
-  /* ---------- Picker ---------- */
-  var best = {};
-  try { best = JSON.parse(localStorage.getItem('door-prompter-best') || '{}') || {}; } catch (e) {}
-  function bestKey(s) { return s.kind + ':' + s.id; }
-  function tier(score) { return score >= 90 ? 'good' : score >= 75 ? 'mid' : 'low'; }
-  function chip(key) {
-    var b = best[key];
-    return b === undefined ? '' : '<span class="chip ' + tier(b) + '">best ' + b + '%</span>';
-  }
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function renderPicker() {
-    var html = '';
-    DATA.sections.forEach(function (sec, si) {
-      html += '<div class="sec" style="--c:' + esc(sec.color) + '">';
-      html += '<div class="sec-row"><div><div class="short">' + esc(sec.short) + '</div><div class="name">' + esc(sec.title) + '</div></div>' +
-              '<div style="display:flex;gap:6px;align-items:center">' + chip('section:' + si) +
-              '<button data-kind="section" data-id="' + si + '">Whole section</button></div></div>';
-      DATA.cards.filter(function (c) { return c.section === si; }).forEach(function (c) {
-        html += '<button class="card-row" data-kind="card" data-id="' + c.id + '"><span class="n">' + c.id + '</span><span>' + esc(c.title || 'Card ' + c.id) + '</span>' + chip('card:' + c.id) + '</button>';
-      });
-      html += '</div>';
-    });
-    $('pickerBody').innerHTML = html;
-  }
-  function openPicker() {
-    renderPicker();
-    $('picker').hidden = false;
-    var cur = sel && $('pickerBody').querySelector('[data-kind="' + sel.kind + '"][data-id="' + sel.id + '"]');
-    if (cur) cur.scrollIntoView({ block: 'center' });
-  }
-  $('pickerBody').addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-kind]');
-    if (!b) return;
-    var s = selectionFor(b.dataset.kind, +b.dataset.id);
-    try { localStorage.setItem('door-prompter-sel', JSON.stringify({ kind: s.kind, id: s.id })); } catch (err) {}
-    if (listening) { listening = false; stopRec(); }
-    applySelection(s);
-    $('picker').hidden = true;
-  });
-  $('pickerClose').addEventListener('click', function () { $('picker').hidden = true; });
-
   /* ---------- Idea scoring (same rules as the note card page) ---------- */
-  var SENT_END = /[.?!]["”’)]*$/;
-  function fallbackBeats(card) {
-    // For a card without hand-written beats: one beat per sentence, keyed on its content words.
-    var text = card.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' ');
-    var words = text.split(/\s+/).filter(Boolean), sents = [], buf = [];
-    words.forEach(function (w) { buf.push(w); if (SENT_END.test(w) && !/^(Dr|Mr|Mrs|Ms|St|vs)\.$/.test(w)) { sents.push(buf.join(' ')); buf = []; } });
-    if (buf.length) sents.push(buf.join(' '));
-    return sents.map(function (s) {
-      var keys = [], seen = {};
-      T.basicTokens(s).forEach(function (t) { if (T.STOP[t] || t.length < 3 || seen[t]) return; seen[t] = 1; keys.push([t]); });
-      return { label: s, keys: keys };
-    }).filter(function (b) { return b.keys.length; });
-  }
-  function scoreSelection(s, spoken) {
-    var bag = T.spokenBag(spoken), total = 0, n = 0, covered = 0, partial = 0;
-    var groups = s.cards.map(function (card) {
-      var beats = (card.beats && card.beats.length) ? card.beats : fallbackBeats(card);
-      var rows = beats.map(function (b) {
-        var hit = [], missed = [];
-        b.keys.forEach(function (alts) { (alts.some(function (p) { return T.phraseIn(bag, p); }) ? hit : missed).push(alts[0]); });
-        var ratio = b.keys.length ? hit.length / b.keys.length : 1;
-        var status = ratio >= 0.5 ? 'hit' : (hit.length && ratio >= 0.25) ? 'part' : 'miss';
-        total += status === 'hit' ? 1 : status === 'part' ? 0.5 : 0;
-        n++;
-        if (status === 'hit') covered++; else if (status === 'part') partial++;
-        return { label: b.label, status: status, hit: hit, missed: missed };
-      });
-      return { card: card, rows: rows };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function tier(score) { return score >= 90 ? 'good' : score >= 75 ? 'mid' : 'low'; }
+  // Score the beats whose text begins inside [start, end) against what was heard.
+  function scoreSpan(start, end, spoken) {
+    var bag = T.spokenBag(spoken), total = 0, n = 0, covered = 0, partial = 0, groups = [], cur = null;
+    beats.forEach(function (b) {
+      if (b.pos < start - 2 || b.pos >= end) return;
+      var hit = [], missed = [];
+      b.keys.forEach(function (alts) { (alts.some(function (p) { return T.phraseIn(bag, p); }) ? hit : missed).push(alts[0]); });
+      var ratio = b.keys.length ? hit.length / b.keys.length : 1;
+      var status = ratio >= 0.5 ? 'hit' : (hit.length && ratio >= 0.25) ? 'part' : 'miss';
+      total += status === 'hit' ? 1 : status === 'part' ? 0.5 : 0;
+      n++;
+      if (status === 'hit') covered++; else if (status === 'part') partial++;
+      if (!cur || cur.card !== b.card) { cur = { card: b.card, rows: [] }; groups.push(cur); }
+      cur.rows.push({ label: b.label, status: status, hit: hit, missed: missed });
     });
-    return { groups: groups, score: n ? Math.round(100 * total / n) : 100, n: n, covered: covered, partial: partial };
+    return { groups: groups, score: n ? Math.round(100 * total / n) : 0, n: n, covered: covered, partial: partial, start: start, end: end };
+  }
+  function excerpt(from, to) {
+    var words = [];
+    for (var i = Math.max(0, from); i < Math.min(N, to); i++) words.push(tokens[i].raw);
+    return words.join(' ').replace(/\s+/g, ' ');
   }
   function showResults(res, spokenWords, seconds) {
-    var key = bestKey(sel);
-    var prev = best[key];
-    best[key] = Math.max(prev === undefined ? 0 : prev, res.score);
-    try { localStorage.setItem('door-prompter-best', JSON.stringify(best)); } catch (e) {}
-    $('resTitle').textContent = sel.label;
     $('scoreNum').textContent = res.score;
     $('scoreBox').className = 'score ' + tier(res.score);
-    $('scoreT').textContent = res.covered + ' of ' + res.n + ' ideas covered' + (res.partial ? ', ' + res.partial + ' partly' : '');
     var wpm = seconds > 5 ? Math.round(60 * spokenWords / seconds) : 0;
-    $('scoreS').textContent = (res.score >= 90 ? 'You have the flow. ' : res.score >= 75 ? 'Close. Look at the ideas marked below. ' : 'Run it again with the missed ideas in mind. ') +
-      (prev !== undefined && res.score > prev ? 'New best, up from ' + prev + '%. ' : prev !== undefined ? 'Best so far: ' + best[key] + '%. ' : '') +
-      (wpm ? 'Pace: ' + wpm + ' words a minute.' : '');
+    if (!res.n) {
+      $('scoreT').textContent = 'No ideas to score in that stretch';
+      $('scoreS').textContent = 'The run ended before the first idea past your starting point. Talk a little further next time.';
+    } else {
+      $('scoreT').textContent = res.covered + ' of ' + res.n + ' ideas covered' + (res.partial ? ', ' + res.partial + ' partly' : '');
+      $('scoreS').textContent = (res.score >= 90 ? 'You have the flow. ' : res.score >= 75 ? 'Close. Look at the ideas marked below. ' : 'Run it again with the missed ideas in mind. ') +
+        (wpm ? 'Pace: ' + wpm + ' words a minute.' : '');
+    }
+    $('spanNote').innerHTML = 'Scored from <b>“' + esc(excerpt(res.start, res.start + 6)) + '…”</b> through <b>“…' + esc(excerpt(res.end - 6, res.end)) + '”</b>';
     var html = '';
     res.groups.forEach(function (g) {
       html += '<div class="group"><h3>' + g.card.id + ' · ' + esc(g.card.title || 'Card ' + g.card.id) + '</h3><ul class="beats">';
@@ -759,30 +692,17 @@
       html += '</ul></div>';
     });
     $('groups').innerHTML = html;
-    var nxt = nextSelection();
-    $('nextSel').hidden = !nxt;
-    if (nxt) $('nextSel').textContent = 'Next: ' + (nxt.kind === 'section' ? DATA.sections[nxt.id].short : nxt.id + ' · ' + (nxt.cards[0].title || 'Card ' + nxt.id));
     $('results').hidden = false;
     $('results').querySelector('.body').scrollTop = 0;
   }
-  function nextSelection() {
-    if (!sel) return null;
-    if (sel.kind === 'section') return sel.id + 1 < DATA.sections.length ? selectionFor('section', sel.id + 1) : null;
-    var idx = DATA.cards.findIndex(function (c) { return c.id === sel.id; });
-    return idx >= 0 && idx + 1 < DATA.cards.length ? selectionFor('card', DATA.cards[idx + 1].id) : null;
-  }
   $('resClose').addEventListener('click', function () { $('results').hidden = true; });
+  $('resDone').addEventListener('click', function () { $('results').hidden = true; });
   $('again').addEventListener('click', function () {
     $('results').hidden = true;
-    applySelection(sel);
+    committed = practiceStart;
+    setCursor(practiceStart, { jump: true });
+    setMark(practiceStart);
     startListening();
-  });
-  $('nextSel').addEventListener('click', function () {
-    var nxt = nextSelection();
-    if (!nxt) return;
-    $('results').hidden = true;
-    try { localStorage.setItem('door-prompter-sel', JSON.stringify({ kind: nxt.kind, id: nxt.id })); } catch (e) {}
-    applySelection(nxt);
   });
 
   /* ---------- Speech recognition ---------- */
@@ -801,21 +721,20 @@
     finalCount = 0;
     rec.onstart = function () { setMic('listening', 'live'); };
     rec.onresult = function (e) {
-      var interim = [], limit = rangeEnd();
+      var interim = [];
       for (var i = finalCount; i < e.results.length; i++) {
         var r = e.results[i];
         var txt = r[0].transcript.trim();
         var words = txt.split(/\s+/);
-        if (r.isFinal) { committed = advance(committed, words, limit); finalCount = i + 1; if (txt) finals.push(txt); }
+        if (r.isFinal) { committed = advance(committed, words); finalCount = i + 1; if (txt) finals.push(txt); }
         else { interim = interim.concat(words); }
       }
       interimText = interim.join(' ');
-      var shown = advance(committed, interim, limit);
+      var shown = advance(committed, interim);
       var lastRes = e.results[e.results.length - 1];
       var heard = lastRes ? lastRes[0].transcript.trim().split(/\s+/).slice(-6).join(' ') : '';
       heardEl.textContent = heard;
       if (shown !== cursor) setCursor(shown);
-      if (sel && cursor >= sel.end) setMic('end of section: tap Stop to score', 'warn');
     };
     rec.onerror = function (e) {
       if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
@@ -838,7 +757,7 @@
     if (interimText) { finals.push(interimText); interimText = ''; }
     recBtn.classList.remove('on');
     recBtn.setAttribute('aria-pressed', 'false');
-    recLabel.textContent = sel ? 'Record' : 'Record';
+    recLabel.textContent = 'Record';
     setMic('mic off');
     if (wakeLock) { try { wakeLock.release(); } catch (e) {} wakeLock = null; }
   }
@@ -853,10 +772,11 @@
     if (!SR) { $('nosupport').hidden = false; return; }
     listening = true;
     committed = cursor;
+    if (practice) setMark(cursor);
     finals = []; interimText = ''; startedAt = Date.now();
     recBtn.classList.add('on');
     recBtn.setAttribute('aria-pressed', 'true');
-    recLabel.textContent = sel ? 'Stop & score' : 'Listening';
+    recLabel.textContent = practice ? 'Stop & score' : 'Listening';
     setMic('starting mic…');
     requestWake();
     try { startRec(); } catch (e) { setMic('could not start mic', 'warn'); }
@@ -865,11 +785,13 @@
     if (listening) {
       listening = false;
       stopRec();
-      if (sel) {
+      if (practice) {
         var spoken = finals.join(' ');
         var words = spoken.split(/\s+/).filter(Boolean).length;
         if (!words) { setMic('nothing heard, so nothing to score', 'warn'); return; }
-        showResults(scoreSelection(sel, spoken), words, (Date.now() - startedAt) / 1000);
+        // The run reaches wherever the follower got to, or as far as the word count says if it lost you.
+        var end = Math.min(N, Math.max(cursor, practiceStart + Math.round(words * 0.9)));
+        showResults(scoreSpan(practiceStart, end, spoken), words, (Date.now() - startedAt) / 1000);
       }
       return;
     }
@@ -877,14 +799,14 @@
   });
 
   $('back').addEventListener('click', function () {
-    var i = cursor - 1;
-    while (i > rangeStart() && !tokens[i - 1].end) i--;       // start of current sentence
-    if (i === cursor || cursor - i < 2) { i--; while (i > rangeStart() && !tokens[i - 1].end) i--; } // or the previous one
-    committed = Math.max(rangeStart(), i);
+    var i = sentenceStart(cursor - 1);
+    if (cursor - i < 2) i = sentenceStart(i - 1);
+    committed = Math.max(0, i);
     setCursor(committed);
+    if (practice && !listening) setMark(committed);
   });
   $('restart').addEventListener('click', function () {
-    if (sel) { applySelection(sel); return; }
+    if (practice) { committed = practiceStart; setCursor(practiceStart, { jump: true }); return; }
     if (cursor > 0 && !confirm('Go back to the top of the keynote?')) return;
     committed = 0;
     setCursor(0, { jump: true });
@@ -907,9 +829,9 @@
   var mode = 'live';
   try { mode = localStorage.getItem('door-prompter-mode') || 'live'; } catch (e) {}
   setMode(mode === 'practice');
-  if (!SR) setMic('this browser cannot listen; tap words to advance', 'warn');
+  if (!SR) setMic('this browser cannot listen; tap sentences to advance', 'warn');
   window.addEventListener('resize', function () { scrollToCursor(true); });
-  window.DoorPrompter = { scoreSelection: scoreSelection, selectionFor: selectionFor, applySelection: applySelection, showResults: showResults, tokens: tokens };
+  window.DoorPrompter = { scoreSpan: scoreSpan, showResults: showResults, beats: beats, tokens: tokens, sentenceStart: sentenceStart };
 })();
 </script>
 </body>
