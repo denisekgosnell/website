@@ -52,10 +52,6 @@ But even as I talk about the positives AI delivers, I need to acknowledge that A
 It is not irrational for people to worry about their job security. It is not irrational for people to worry about their elderly parents falling victim to identity theft or deepfake scams. It is not irrational for people to worry about their children growing up in a less stable world disrupted more quickly than a UT freshman changes majors.
 Some of the most powerful people in the AI world use language that leaves an independent observer uneasy. And for good reason.
 This is the Duality of AI.
-AI can give voice to people who have been talked over—and it can make it easier to counterfeit someone’s voice and steal their identity.
-AI can help a first-time builder create something valuable—and it can allow a small group of companies to control the tools on which every builder depends.
-AI can give us time back which we can use for our families, our friends, or ourselves—and it can tempt us to automate away the relationships that make the time worth having.
-Both sides are real. Neither is guaranteed.
 AI is not Field of Dreams. If we build it, the positive side will not magically come. As much as I love James Earl Jones and want this to be true.
 No. The positive side of the duality has to be built on purpose. It requires people in positions of leadership—in technology, in business, in society—to become door openers.
 But when we open the door and show people through, we create a whole new group of builders who can finally be seen, and who build better human experiences.

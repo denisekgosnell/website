@@ -95,14 +95,10 @@ Someone who struggles to write a memo can talk it through with Claude to find th
 Someone overwhelmed by a dozen responsibilities can create a system that gives them their day, and themselves, back :: overwhelmed ; dozen ; responsibilities ; system ; more of their day
 That is real; I see it happening in front of me; we all do :: real ; happening ; we all do
 
-card 10 | The Duality of AI: real fears, both sides, built on purpose
+card 10 | The Duality of AI: real fears, built on purpose
 Even with the positives, AI isn't immune from the duality of technology: disruption, displacement, fear are real too :: positives ; immune ; duality ; disruption ; displacement ; fear
 Not irrational to worry about job security, elderly parents and identity theft or deepfake scams, or children in a less stable world disrupted faster than a UT freshman changes majors :: irrational ; job security ; elderly parents ; identity theft ; deepfake ; children ; freshman ; majors
 Some of the most powerful people in AI use language that leaves an observer uneasy, for good reason; this is the Duality of AI :: powerful people ; language ; uneasy ; good reason ; duality of ai
-AI can give voice to the talked-over, and make it easier to counterfeit a voice and steal an identity :: voice ; talked over ; counterfeit ; steal ; identity
-AI can help a first-time builder create value, and let a small group of companies control the tools every builder depends on :: first-time builder ; valuable ; small group of companies ; control the tools ; depends
-AI can give us time back for family and friends, and tempt us to automate away the relationships that make the time worth having :: time back ; families ; friends ; automate away ; relationships ; worth having
-Both sides are real; neither is guaranteed :: both sides ; real ; neither ; guaranteed
 AI is not Field of Dreams: build it and the positive side won't magically come, much as I love James Earl Jones :: field of dreams ; build it ; magically ; james earl jones
 The positive side has to be built on purpose: leaders in technology, business, and society becoming door openers :: on purpose ; leadership ; technology ; business ; society ; door openers
 When we open the door and show people through, we get a new group of builders who can finally be seen and who build better human experiences :: open the door ; show people through ; builders ; seen ; human experiences
