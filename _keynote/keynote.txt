@@ -275,7 +275,31 @@ Closed systems may sometimes serve us well. A closed future will not.
 AI can open extraordinary doors.
 Our responsibility is to ensure that no company, institution, or individual becomes the only one holding the key.
 [~50 min]
-## Part 4. Conclusion: Be a Door-Opener
+## Part 4. Strategy and Execution: Writing Is Thinking
+Now, you are leaders. And every great leader in this room already knows that leading through change comes down to two things: strategy and execution. And they are equally important. A strategy nobody can execute is a wish. Execution without a strategy is just motion.
+You are going to spend the rest of this summit on execution. On detailed, practical frameworks for working through these tensions. The Future of Work session later today will take the jobs tension far deeper than I can from this stage. The AI strategy session will do the same for scaling beyond pilots. Go to them. Take notes. Steal shamelessly.
+But underneath every one of those sessions is the same thing. Every one of us is introducing a new workflow, a new process, into an organization full of people who like their things the way they like them. So the one framework I want to hand you is the one I learned from the best of the best at executing on invisible math puzzles.
+There is no better company at executing software than Amazon. And yes, Amazon has sixteen leadership principles. You do not need sixteen today. You need the one simple principle underneath how Amazon operates: writing is thinking.
+===
+Leadership decisions move at a different pace than customer transactions. A transaction happens in milliseconds. A strategic choice has to be thought through, argued, and made coherent with every other choice you have made. Amazon's document process forces that thinking. No slides. A narrative somebody had to write, and a room that reads it in silence before anyone gets to speak.
+So the real question becomes: which documents are we writing, what are they about, and who are they for?
+Here is the thing nobody tells you about agents. An agent is a document. Strip away the hype and a Claude agent is a markdown file: a set of instructions, some context, and the output you want back. J's golf app. Joyce's scheduler. Documents. So you already have one new document type entering your workflow, whether you planned for it or not.
+And what we are really doing when we write them is coordinating knowledge. Across people. And now across agents.
+The best pattern I have ever seen for coordinating knowledge is Amazon's Working Backwards process. You start with the customer and write a sequence of documents that align everyone on what you are shipping and when. A PR FAQ: the press release for the finished thing, written before anything exists, with the hard questions already answered. Then a PRD, the requirements. Then the business definition and architecture documents. We could spend a full day on how to run it, and I would happily spend that day with you.
+===
+But here is what matters most in this moment. Certain people write certain document types. Those documents then become the inputs to multiple processes at once. Finance reads the same PR FAQ that engineering reads that marketing reads. One document, many functions, all executing from shared context.
+And now agents help us write these documents. And we build agents that are specialized in reading them and building software directly from them. That is how Karen got in ninety days what an eighteen-month project could not deliver. That is how J and I run our own company. It is not magic. It is written down.
+[SLIDE: documents drawn as circles, processes as X's, arrows connecting them]
+That is the whole framework on one screen. Circles are documents. X's are the processes and the people who consume them. The lines are the handoffs.
+[SLIDE: the same diagram redrawn as a football play]
+And if that looks like a play chart, that is because it is one. A quarterback does not walk up to the line and describe the play in a paragraph. He calls a name everyone has already studied, and eleven people execute their piece at the same time. Which is exactly why, if we are all going through AI change together, maybe having Peyton Manning as mayor of Knoxville is not so bad after all.
+Because at the end of the day, every leader in this room is deciding what new process to introduce, and whether that process is going to scale knowledge or bottleneck it. You have to think. You have to write to think. And you have to agree, as a leadership team, on the handful of document structures you will write, so that you can hand one document to five departments and they can all go run.
+I left Tennessee to learn how the best builders in the world build. This is the part I most wanted to bring home. Silicon Valley figured out how to build this way. I want to see it built this way in this ZIP code.
+[~55 min]
+## Part 5. Conclusion: Be a Door-Opener
+So as you write those documents, and as you build those agents, I want you to run one more review on every single one of them. Call it the Door Test. Before your next AI decision, whether it is a vendor contract, a data center, a reorg, or the first PR FAQ you write on Monday morning, ask one question: does this open a door for people, or does it just happen to them? Then check it three ways. Who gets the tools, and who gets a path when their old one closes? Who benefits, and who pays? Who can understand and question this, and who can leave? If you can answer all three, you are opening doors. If you cannot answer one of them, you have found the door that is quietly closing on someone.
+That is the one document review Amazon never taught me. And it is the one I care about most.
+===
 So let me tell you what is really lighting me up. Because it isn’t the chips. I’d still drop those anyway. It isn’t the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created. It isn’t even the inventions and new possibilities AI will unlock.
 No.
 I do what I do for that kid who sees an open door—a door I helped open—and walks through. That kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world. That kid who discovers an entire set of possibilities on the other side of a door She did not realize existed before.
@@ -296,7 +320,6 @@ We do not have to choose between a future in which AI succeeds and one in which 
 Because you are already making the choices that will determine how AI is experienced. You decide whether a worker receives a tool or a pink slip and whether someone standing in front of a closing door has a supported path toward the next one.
 You decide whether an investment merely occupies a community or becomes part of that community’s future. You decide whether the systems you adopt give people greater capability and agency or quietly remove their ability to understand, question, and choose.
 You will not control every force shaping the future of AI. But you can control whether the choices within your reach open doors or close them.
-So here is a simple test you can carry out of this room to help you navigate those choices. Call it the Door Test. Before your next AI decision, whether it is a vendor contract, a data center, or a reorg, ask one question: does this open a door for people, or does it just happen to them? Then check it three ways. Who gets the tools, and who gets a path when their old one closes? Who benefits, and who pays? Who can understand and question this, and who can leave? If you can answer all three, you are opening doors. If you cannot answer one of them, you have found the door that is quietly closing on someone.
 ===
 So that is my challenge to you.
 Do not let a month go by when you cannot say, “I opened a door for someone.” Every month, find your Micah.
@@ -311,4 +334,4 @@ The technology alone will not decide which side of that Duality defines this era
 We will.
 So keep it human.
 And hold the door open.
-[~56 min]
+[~61 min]
