@@ -404,7 +404,8 @@
   var recBtn = $('rec'), recLabel = $('reclabel'), micEl = $('mic'), heardEl = $('heard'), pctEl = $('pct');
 
   /* ---------- Build the script from the keynote data ---------- */
-  var tokens = [];   // { norm, raw, el, end }
+  var tokens = [];   // { norm, raw, el, end, para }
+  var paraCount = 0; // paragraph index, so re-sync can be capped at "one paragraph ahead"
   function normalize(w) {
     return w.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]/g, '');
   }
@@ -416,7 +417,7 @@
     var first = tokens.length;
     parts.forEach(function (p) {
       var n = normalize(p);
-      if (n) tokens.push({ norm: n, raw: p, el: span, end: false });
+      if (n) tokens.push({ norm: n, raw: p, el: span, end: false, para: paraCount });
     });
     if (tokens.length > first) {
       if (/[.?!…]["”’)]*$/.test(chunk)) tokens[tokens.length - 1].end = true;
@@ -439,6 +440,7 @@
     }
     var p = document.createElement('p');
     p.className = 'p';
+    paraCount++;
     t.split(/(\[[^\]]*\])/).forEach(function (seg) {
       if (!seg) return;
       if (/^\[[^\]]*\]$/.test(seg)) {
@@ -532,19 +534,50 @@
     if (a.length >= 5 && b.length >= 5 && Math.abs(a.length - b.length) <= 1) return lev1(a, b);
     return false;
   }
-  // Walk heard words forward from `start`. Returns the new cursor; never moves backward.
-  function advance(start, heard) {
-    var cur = start;
+  // Walk heard words forward from `start`. Returns { cur, seq, jumped }; never moves backward.
+  // `recent` carries the last few heard words from earlier results so a re-sync phrase can span events.
+  //
+  // Re-sync: when a heard word finds nothing near the cursor, take the last PHRASE heard words and look for
+  // them spoken in a row further ahead, no farther than the end of the next paragraph. A hit needs every word
+  // of the phrase to match consecutively and at least MIN_CONTENT of them to be content words, so a stray
+  // "and the" or a single shared word never pulls the prompter forward. Missing a few words never triggers it
+  // either: the normal window catches up on its own as soon as the next scripted word arrives.
+  var PHRASE = 4, MIN_CONTENT = 2;
+  function resyncLimit(cur) {
+    if (cur >= N) return N;
+    var maxPara = tokens[cur].para + 1, i = cur;
+    while (i < N && tokens[i].para <= maxPara) i++;
+    return i;
+  }
+  function findPhraseAhead(seq, cur) {
+    if (seq.length < PHRASE) return -1;
+    var ph = seq.slice(-PHRASE), content = 0;
+    for (var c = 0; c < ph.length; c++) if (!STOP[ph[c]]) content++;
+    if (content < MIN_CONTENT) return -1;
+    var limit = resyncLimit(cur);
+    outer: for (var i = cur; i + PHRASE <= limit; i++) {
+      for (var k = 0; k < PHRASE; k++) if (!similar(ph[k], tokens[i + k].norm)) continue outer;
+      return i + PHRASE;
+    }
+    return -1;
+  }
+  function advance(start, heard, recent) {
+    var cur = start, seq = (recent || []).slice(), jumped = 0;
     for (var h = 0; h < heard.length; h++) {
       var n = normalize(heard[h]);
       if (!n) continue;
+      seq.push(n);
       var win = STOP[n] ? 3 : 14;
-      var end = Math.min(N, cur + win);
+      var end = Math.min(N, cur + win), hit = false;
       for (var i = cur; i < end; i++) {
-        if (similar(n, tokens[i].norm)) { cur = i + 1; break; }
+        if (similar(n, tokens[i].norm)) { cur = i + 1; hit = true; break; }
+      }
+      if (!hit) {
+        var j = findPhraseAhead(seq, cur);
+        if (j > cur + 1) { jumped += j - cur; cur = j; }
       }
     }
-    return cur;
+    return { cur: cur, seq: seq.slice(-8), jumped: jumped };
   }
 
   /* ---------- Rendering ---------- */
@@ -594,6 +627,7 @@
     var w = e.target.closest('.w');
     if (!w || w.dataset.i === undefined) return;
     committed = sentenceStart(+w.dataset.i);
+    recentFinal = [];
     setCursor(committed);
     if (practice && !listening) setMark(committed);
   });
@@ -708,7 +742,12 @@
   /* ---------- Speech recognition ---------- */
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   var rec = null, listening = false, committed = 0, finalCount = 0, wakeLock = null;
-  var finals = [], interimText = '', startedAt = 0;
+  var finals = [], interimText = '', startedAt = 0, recentFinal = [], resyncTimer = null;
+  function noteResync(words) {
+    setMic('re-synced ' + words + ' words ahead', 'warn');
+    clearTimeout(resyncTimer);
+    resyncTimer = setTimeout(function () { if (listening) setMic('listening', 'live'); }, 1800);
+  }
 
   function setMic(text, cls) { micEl.textContent = text; micEl.className = cls || ''; }
 
@@ -721,16 +760,22 @@
     finalCount = 0;
     rec.onstart = function () { setMic('listening', 'live'); };
     rec.onresult = function (e) {
-      var interim = [];
+      var interim = [], jumped = 0;
       for (var i = finalCount; i < e.results.length; i++) {
         var r = e.results[i];
         var txt = r[0].transcript.trim();
         var words = txt.split(/\s+/);
-        if (r.isFinal) { committed = advance(committed, words); finalCount = i + 1; if (txt) finals.push(txt); }
+        if (r.isFinal) {
+          var res = advance(committed, words, recentFinal);
+          committed = res.cur; recentFinal = res.seq; jumped += res.jumped;
+          finalCount = i + 1; if (txt) finals.push(txt);
+        }
         else { interim = interim.concat(words); }
       }
       interimText = interim.join(' ');
-      var shown = advance(committed, interim);
+      var live = advance(committed, interim, recentFinal);
+      var shown = live.cur; jumped += live.jumped;
+      if (jumped) noteResync(jumped);
       var lastRes = e.results[e.results.length - 1];
       var heard = lastRes ? lastRes[0].transcript.trim().split(/\s+/).slice(-6).join(' ') : '';
       heardEl.textContent = heard;
@@ -773,7 +818,7 @@
     listening = true;
     committed = cursor;
     if (practice) setMark(cursor);
-    finals = []; interimText = ''; startedAt = Date.now();
+    finals = []; interimText = ''; startedAt = Date.now(); recentFinal = [];
     recBtn.classList.add('on');
     recBtn.setAttribute('aria-pressed', 'true');
     recLabel.textContent = practice ? 'Stop & score' : 'Listening';
@@ -831,7 +876,7 @@
   setMode(mode === 'practice');
   if (!SR) setMic('this browser cannot listen; tap sentences to advance', 'warn');
   window.addEventListener('resize', function () { scrollToCursor(true); });
-  window.DoorPrompter = { scoreSpan: scoreSpan, showResults: showResults, beats: beats, tokens: tokens, sentenceStart: sentenceStart };
+  window.DoorPrompter = { scoreSpan: scoreSpan, showResults: showResults, beats: beats, tokens: tokens, sentenceStart: sentenceStart, advance: advance, resyncLimit: resyncLimit };
 })();
 </script>
 </body>
