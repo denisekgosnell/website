@@ -42,8 +42,7 @@ That is how my mind works. I understand by moving. Talking. Testing. Making. If 
 4. Kinesthetic.
 I’m the kinesthetic type. Things click for me when I’m moving.
 ===
-Traditional software development works for builders, like me, but it’s not tailor-made for us. There is a door for us. It’s not the biggest door, but it’s there. It’s part of why I love open source—the freedom, no, the demand to build, to experiment.
-But software development is really tailored for the reading and writing learners. That’s the biggest door. And even moreso, it’s tailored for people in that group who can articulate a solution to a problem through one or more foreign languages, by which I mean Python, Java, Javascript, Ruby, C, C++. If that’s hard for you, then you will struggle in this world. If it’s hard, you were not in the club. You were standing outside the door.
+Traditional software development works for builders, like me, but it’s not tailor-made for us. Software development is really tailored for the reading and writing learners. That’s the biggest door. And even moreso, it’s tailored for people in that group who can articulate a solution to a problem through one or more foreign languages, by which I mean Python, Java, Javascript, Ruby, C, C++. If that’s hard for you, then you will struggle in this world. If it’s hard, you were not in the club. You were standing outside the door.
 Now, however, I’m watching AI create new doorways. A new set of doors for creating and sharing, open to other people who were stuck on the outside before.
 Someone who cannot read or write or think in computer programming languages can now simply speak a problem in plain English—or French or Mandarin or Hungarian—and begin to build their solution. Someone who struggles to turn an idea into a polished memo can literally talk it through and discuss it with Claude to find the shape of their argument. Someone overwhelmed by a dozen competing responsibilities can create a system that gives them more of their day—and more of themselves—back.
 That is real. I see it happening in front of me. We all do.
@@ -52,6 +51,10 @@ But even as I talk about the positives AI delivers, I need to acknowledge that A
 It is not irrational for people to worry about their job security. It is not irrational for people to worry about their elderly parents falling victim to identity theft or deepfake scams. It is not irrational for people to worry about their children growing up in a less stable world disrupted more quickly than a UT freshman changes majors.
 Some of the most powerful people in the AI world use language that leaves an independent observer uneasy. And for good reason.
 This is the Duality of AI.
+AI can give voice to people who have been talked over—and it can make it easier to counterfeit someone’s voice and steal their identity.
+AI can help a first-time builder create something valuable—and it can allow a small group of companies to control the tools on which every builder depends.
+AI can give us time back which we can use for our families, our friends, or ourselves—and it can tempt us to automate away the relationships that make the time worth having.
+Both sides are real. Neither is guaranteed.
 AI is not Field of Dreams. If we build it, the positive side will not magically come. As much as I love James Earl Jones and want this to be true.
 No. The positive side of the duality has to be built on purpose. It requires people in positions of leadership—in technology, in business, in society—to become door openers.
 But when we open the door and show people through, we create a whole new group of builders who can finally be seen, and who build better human experiences.
@@ -70,7 +73,7 @@ The numbers aren't the only part I remember. What I remember is the text she sen
 That’s not self promotion. All I did was open the door for her.
 For years those tools sat behind a vendor and a purchase order, and Karen figured that door was closed to her. It wasn't. Open source had been open the whole time, everyone invited to the party, and the moment Karen walked through it she stopped buying software and started building it.
 ===
-Over more than a decade since I left Tennessee, my hands have been on code, and ideas, and product direction that touch a big share of the Fortune 100's technology stacks. I will never be able to prove the exact number. A friend of mine who is a researcher in politics tells me, it doesn’t matter if it’s true, as long as people perceive it to be true. Still, I won’t lie to you and say “more than 75 percent of Fortune 100 companies use technology that I helped build.” But it's roughly around there.
+Over more than a decade since I left Tennessee, my hands have been on code, and ideas, and product direction that touch a big share of the Fortune 100's technology stacks.
 And when I decided to leave AWS, and start my own company in April 2025, with a mission to educate the curious about AI and to connect people through technology, Dr. Mike Berry sent me a note. It said, "I've been waiting for you to do this."
 And so this is what I want to talk about. This is why I am glad to be standing here and for you all to be here with me today.
 This is the group of people who can help build the positive side of the duality. This is the group of people who can help open doors for more people.
@@ -206,6 +209,7 @@ This tension can be narrow.
 Will AI democratize software development, allowing far more people to build tools and solve problems more easily and more effectively than before?
 Or will the essential technology be controlled by a handful of companies, with everyone else renting access on terms they did not set, having to forfeit their data, their privacy, their deeply personal thoughts?
 [ZUCK QUOTE]
+“You’re going to get a handful of companies that run these closed models that are going to be in control of the APIs and therefore able to tell you what you can build.”
 But the tension can also be much wider.
 Will AI give individuals more control over their time, knowledge, work, and choices? In short, will AI give people more control over their own lives?
 Or will it give institutions more power to monitor people, predict them, influence them, and make decisions about them?
@@ -271,18 +275,58 @@ Closed systems may sometimes serve us well. A closed future will not.
 AI can open extraordinary doors.
 Our responsibility is to ensure that no company, institution, or individual becomes the only one holding the key.
 [~50 min]
-## Part 4. Conclusion: Be a Door-Opener
-So let me tell you what is really lighting me up. Because it isn’t the chips. I’d still drop those anyway. It isn’t the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created. It isn’t even the inventions and new possibilities AI will unlock.
+## PART 4. STRATEGY AND EXECUTION: WRITING IS THINKING
+Now, you are leaders. In your community, at your company, in your industry. Every great leader in this room already knows that leading through change comes down to two things: strategy and execution. And they are equally important.
+A strategy nobody can execute is a wish.
+Execution without a strategy is just motion.
+You are going to spend the rest of this summit on execution. The Future of Work session later today takes a deep dive into the jobs tension. The AI strategy session does the same for scaling beyond pilots, which is where your future gets decided. Go to them. Take notes. Steal shamelessly.
+===
+But underneath every one of those sessions is the same opportunity. Every one of us is introducing a new workflow, a new process, or a new idea into an organization full of people.
+And we are doing it for good reason. We want to do what we do better and faster. More value. More opportunity.
+But that also means every one of us in this room is a disruptor. We are causing change. And people do not like change. Change is hard. It is why "change management" is an entire field.
+So as we all spend the next two days learning how to disrupt for good, I want to leave you with one framework. I learned it from the best in the world at solving invisible math puzzles.
+===
+There is no better company at executing software than Amazon. Amazon has sixteen leadership principles. You do not need sixteen. One habit underlies how Amazon operates:
+Writing is thinking.
+Because you have to write, you have to think it through. Your goal. Your options. The case for your recommendation.
+Good strategic thinking starts at the end. What is the outcome we are trying to achieve?
+At Amazon, we took that to the extreme. We called it Working Backwards. Before we built a product, we wrote the press release for the finished thing. Then we wrote our way back from that announcement to the very first requirements. The whole plan existed on paper before anything existed in code.
+===
+But here is the real trick. It was never about the documents themselves. Finance, engineering, marketing, legal, operations, every function with its own needs and skills, all worked from the same small set of core pages. One set of pages. Many readers. Everyone thinking together, everyone clear on what we were trying to accomplish.
+So when it came time to execute, the strategy was already clear. Nobody had to hold the whole plan in their head. It was written down.
+[SLIDE: documents drawn as circles, processes as X's, arrows connecting them]
+That is the whole idea on one screen. Documents, the people who read them, and the handoffs between them.
+[SLIDE: the same diagram redrawn as a football play]
+And if that looks like a play chart, it is one. A quarterback does not walk to the line and describe the play in a paragraph. He calls a name everyone has already studied, and eleven people execute their piece at the same time. Which is why, if we are all going through this AI change together, maybe having Peyton Manning as mayor of Knoxville is not so bad after all.
+===
+And that is where we are today. The strategy is muddied. Not because people are careless, but because everything is so new and moving so fast that we cannot keep up. We are asking people to hold too much in their heads.
+So here is the one thing to remember: agents are documents.
+Strip away the hype, and a Claude agent is a file. A set of instructions, some context, and the output you want back. J's golf app. Joyce's scheduler. Karen's analytics cloud. Every one of them started as something written down. That is not magic. It is written down.
+If you take the time to write your strategy and think it through, you already have the inputs you need to take advantage of AI to the fullest. The thinking is the work. The agents just read.
+Every leader in this room is deciding what new process to introduce, and whether that process will scale knowledge or bottleneck it. You have to think. You have to write to think. And you have to agree, as a leadership team, on the handful of pages you will write, so that one page can send the whole team running.
+I left Tennessee to learn how the best builders in the world build. This is the part I most wanted to bring home. Silicon Valley figured out how to solve invisible math puzzles this way. I want to see it built this way in this zip code. In 37996.
+## PART 5. CONCLUSION: BE A DOOR-OPENER
+So as you write those documents, and as you build those agents, I want you to run one more review on every single one of them.
+Call it the Door Test.
+Before your next AI decision, whether it is a vendor contract, a data center, a reorg, or the first strategy page you write on Monday morning, ask one question: does this open a door for people, or does it just happen to them? Then check it three ways.
+1. Who gets the tools, and who gets a path when their old one closes?
+2. Who benefits, and who pays?
+3. Who can understand and question this, and who can leave?
+If you can answer all three, you are opening doors. If you cannot answer one of them, you have found the door that is quietly closing on someone.
+That is the one document review Amazon never taught me. And it is the one I care about most.
+Here is why.
+===
+It isn't the chips. I'd still drop those anyway. It isn't the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created. It isn't even the inventions and new possibilities AI will unlock.
 No.
-I do what I do for that kid who sees an open door—a door I helped open—and walks through. That kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world. That kid who discovers an entire set of possibilities on the other side of a door She did not realize existed before.
-Because for her, it didn’t. Until it did. And all she needed was for someone to open the door and show her where it was.
-That’s it. That’s the whole thing. I do what I do for the Micahs of the world. I would go so far as to say I exist to light somebody else’s fire—and to help keep it burning.
+I do what I do for the next kid who sees an open door, a door I helped open, and walks through. The kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world. The kid who discovers an entire set of possibilities on the other side of a door she did not realize existed before.
+Because for her, it didn't. Until it did. And all she needed was for someone to open the door and show her where it was.
+That's it. That's the whole thing. I do what I do for the Micahs of the world. I would go so far as to say I exist to light somebody else's fire—and to help keep it burning.
 That is my philosophical North Star. It is what gives me energy. It is what gives me purpose. And every one of the dualities we just walked through comes back to that same purpose.
 ===
-The jobs duality is about whether people whose old paths are disappearing can see a path into what comes next. It is about whether AI simply closes the door on work they once depended on, or whether someone helps them find the skills, tools, and opportunities waiting beyond it.
-The community duality is about whether data center and AI investment leaves communities stronger than it found them. It is about whether growth simply arrives, consumes resources, and moves on, or whether it creates lasting capacity, local opportunity, and more ways for people to participate in the prosperity it generates.
-And the control duality is about whether the future remains open at all: open to scrutiny, open to challenge, open to new builders, and open to people who want to create a better alternative. It is about making sure no company, institution, or individual becomes the only one holding the key.
-These dualities are different in scale, but each presents us with the same choice: Will AI happen TO people, Or will we help people have agency in what happens next?
+The jobs duality asks whether people whose paths are disappearing can see a path into what comes next.
+The community duality asks whether AI investment leaves a place stronger than it found it.
+And the control duality asks whether the future stays open at all, and whether anyone ends up the only one holding the key.
+Different in scale. Same choice. Will AI happen TO people, or will we help people have agency in what happens next?
 ===
 The headlines want you to be afraid. And that fear is not unfounded. Change is hard. Fast change is unsettling. Fast change that affects individuals and society simultaneously, a mile wide and a mile deep, that is—if you genuinely pause and think what that means—in a word, terrifying.
 But fear has a way of narrowing our field of vision. It makes us look for safety in certainty. It pushes us to pick a side: acceleration or obstruction, optimism or pessimism, opportunity or danger.
@@ -290,16 +334,17 @@ The Duality of AI demands something harder from us. It asks us to see both sides
 ===
 We do not have to choose between a future in which AI succeeds and one in which people do. It does not have to be zero-sum. But the better future does not happen automatically. It will take the people in this room—the leaders of businesses, institutions, and communities—to make it happen.
 Because you are already making the choices that will determine how AI is experienced. You decide whether a worker receives a tool or a pink slip and whether someone standing in front of a closing door has a supported path toward the next one.
-You decide whether an investment merely occupies a community or becomes part of that community’s future. You decide whether the systems you adopt give people greater capability and agency or quietly remove their ability to understand, question, and choose.
+You decide whether an investment merely occupies a community or becomes part of that community's future. You decide whether the systems you adopt give people greater capability and agency or quietly remove their ability to understand, question, and choose.
 You will not control every force shaping the future of AI. But you can control whether the choices within your reach open doors or close them.
-So here is a simple test you can carry out of this room to help you navigate those choices. Call it the Door Test. Before your next AI decision, whether it is a vendor contract, a data center, or a reorg, ask one question: does this open a door for people, or does it just happen to them? Then check it three ways. Who gets the tools, and who gets a path when their old one closes? Who benefits, and who pays? Who can understand and question this, and who can leave? If you can answer all three, you are opening doors. If you cannot answer one of them, you have found the door that is quietly closing on someone.
+So run the Door Test. Does this open a door, or does it just happen to them? Who gets the tools. Who pays. Who can leave.
+Micah walked through his door on his own. But first, somebody had to make it visible.
 ===
 So that is my challenge to you.
-Do not let a month go by when you cannot say, “I opened a door for someone.” Every month, find your Micah.
+Do not let a month go by when you cannot say, "I opened a door for someone." Every month, find your Micah.
 Find the person with the problem but not the title. The person with the idea but not the technical vocabulary. The person whose old path is disappearing. The person who does not look like you, think like you, learn like you, or arrive by the path you did.
 You do not have to determine their future for them. You do not have to carry them through the door. Just open the door and make it visible.
 Give them the tools. Help them reach the threshold. And then let them surprise you.
-We are all going to move through this AI moment differently—you, me, J, [SOMEONE ELSE YOU KNOW IN THE ROOM]. Everyone in this room.
+We are all going to move through this AI moment differently. You, me, J, Dr. Berry. Everyone in this room.
 But none of us is moving through it alone.
 Our choices shape the paths available to other people. And every door we open expands what someone else can imagine, attempt, and become.
 AI will open extraordinary doors. AI will close some, too.
@@ -307,4 +352,3 @@ The technology alone will not decide which side of that Duality defines this era
 We will.
 So keep it human.
 And hold the door open.
-[~56 min]

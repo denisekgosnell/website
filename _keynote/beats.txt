@@ -84,8 +84,7 @@ Researchers sort learning styles into four buckets: visual, auditory, reading an
 I'm the kinesthetic type; things click for me when I'm moving :: kinesthetic type ; click ; moving
 
 card 9 | The biggest door, and the new doorways AI creates
-Traditional software development works for builders like me but isn't tailor-made for us; there is a door, not the biggest, but it's there :: traditional ; software development ; builders ; tailor-made ; door ; biggest
-Part of why I love open source: the freedom, no, the demand to build and experiment :: open source ; freedom ; demand ; build ; experiment
+Traditional software development works for builders like me, but it is not tailor-made for us :: traditional ; software development ; builders ; tailor-made
 Software development is really tailored for reading-and-writing learners; that's the biggest door :: reading and writing ; learners ; biggest door
 Even more for those who can articulate a solution in foreign languages: Python, Java, Javascript, Ruby, C, C++ :: articulate ; foreign languages ; python ; java ; javascript ; ruby ; c++
 If that's hard for you, you struggle; you were not in the club; you were standing outside the door :: struggle ; club ; outside the door
@@ -95,10 +94,14 @@ Someone who struggles to write a memo can talk it through with Claude to find th
 Someone overwhelmed by a dozen responsibilities can create a system that gives them their day, and themselves, back :: overwhelmed ; dozen ; responsibilities ; system ; more of their day
 That is real; I see it happening in front of me; we all do :: real ; happening ; we all do
 
-card 10 | The Duality of AI: real fears, built on purpose
+card 10 | The Duality of AI: real fears, both sides, built on purpose
 Even with the positives, AI isn't immune from the duality of technology: disruption, displacement, fear are real too :: positives ; immune ; duality ; disruption ; displacement ; fear
 Not irrational to worry about job security, elderly parents and identity theft or deepfake scams, or children in a less stable world disrupted faster than a UT freshman changes majors :: irrational ; job security ; elderly parents ; identity theft ; deepfake ; children ; freshman ; majors
 Some of the most powerful people in AI use language that leaves an observer uneasy, for good reason; this is the Duality of AI :: powerful people ; language ; uneasy ; good reason ; duality of ai
+AI can give voice to the talked-over, and make it easier to counterfeit a voice and steal an identity :: voice ; talked over ; counterfeit ; steal ; identity
+AI can help a first-time builder create value, and let a small group of companies control the tools every builder depends on :: first-time builder ; valuable ; small group of companies ; control the tools ; depends
+AI can give us time back for family and friends, and tempt us to automate away the relationships that make the time worth having :: time back ; families ; friends ; automate away ; relationships ; worth having
+Both sides are real; neither is guaranteed :: both sides ; real ; neither ; guaranteed
 AI is not Field of Dreams: build it and the positive side won't magically come, much as I love James Earl Jones :: field of dreams ; build it ; magically ; james earl jones
 The positive side has to be built on purpose: leaders in technology, business, and society becoming door openers :: on purpose ; leadership ; technology ; business ; society ; door openers
 When we open the door and show people through, we get a new group of builders who can finally be seen and who build better human experiences :: open the door ; show people through ; builders ; seen ; human experiences
@@ -129,8 +132,6 @@ It wasn't; open source had been open the whole time, everyone invited to the par
 
 card 13 | Fortune 100, Dr. Berry's note, and three places
 Over a decade since Tennessee, my hands on code, ideas, and product direction across a big share of Fortune 100 tech stacks :: decade ; tennessee ; code ; product direction ; fortune 100 ; technology stacks
-I can't prove the exact number; a researcher friend in politics says it doesn't matter if it's true, as long as people perceive it :: prove ; exact number ; researcher ; politics ; perceive
-I won't say "more than 75 percent of the Fortune 100 use tech I helped build," but it's roughly around there :: 75 percent ; fortune 100 ; helped build ; roughly
 I left AWS in April 2025 to start my company: educate the curious about AI, connect people through technology :: aws ; april 2025 ; educate ; curious ; connect people
 Dr. Mike Berry sent a note: "I've been waiting for you to do this" :: berry ; note ; waiting for you
 This is what I want to talk about; glad to be standing here with you all today :: talk about ; glad ; here with me
@@ -269,6 +270,7 @@ The third great tension: control :: third great tension ; control
 Who gets to build with AI, inspect it, question it, adapt it, decide how it's used, and who retains agency over their lives? :: build ; inspect ; question ; adapt ; agency
 The narrow version: will AI democratize software development so far more people can build tools and solve problems? :: narrow ; democratize ; software development ; more people ; solve problems
 Or a handful of companies controlling it, everyone else renting access on terms they didn't set, forfeiting their data, privacy, and personal thoughts? :: handful of companies ; renting access ; terms ; forfeit ; privacy ; personal thoughts
+The Zuckerberg warning: a handful of companies running closed models, in control of the APIs, able to tell you what you can build :: closed models ; apis ; tell you what you can build
 The wider version: will AI give individuals more control over their time, knowledge, work, choices, their own lives? :: wider ; individuals ; control ; time ; knowledge ; choices ; own lives
 Or give institutions more power to monitor people, predict them, influence them, and make decisions about them? :: institutions ; monitor ; predict ; influence ; decisions
 The Altman quote: intelligence as a utility, like electricity or water, bought from us on a meter :: altman ; utility ; electricity ; water ; meter
@@ -331,40 +333,91 @@ The third question: who can understand and question this, and who can leave? :: 
 Openness here isn't every system open source or nothing protected; it's a future open to scrutiny, challenge, competition, and people who want to create a better alternative :: openness ; open source ; protected ; scrutiny ; challenge ; competition ; better alternative
 Closed systems may sometimes serve us well; a closed future will not; AI can open extraordinary doors; no company, institution, or individual should be the only one holding the key :: closed systems ; closed future ; extraordinary doors ; company ; institution ; individual ; holding the key
 
-card 34 | What lights me up: the Micahs of the world
-What is really lighting me up isn't the chips (I'd still drop those), the layoff numbers, the record new businesses, the jobs to be created, or the inventions AI will unlock :: lighting me up ; chips ; drop ; layoff ; new businesses ; jobs ; inventions ; unlock
-No. I do what I do for that kid who sees an open door, a door I helped open, and walks through :: kid ; open door ; helped open ; walks through
-The kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world; who discovers possibilities on the other side of a door he didn't know existed :: hugs ; off the ground ; new way ; see the world ; discovers ; possibilities ; other side ; existed
-For her it didn't exist, until it did; all she needed was someone to open the door and show her where it was :: until it did ; someone ; open the door ; show her where it was
-That's it, that's the whole thing: I do what I do for the Micahs of the world; I exist to light somebody else's fire and help keep it burning :: whole thing ; micahs ; light ; fire ; burning
-That is my philosophical North Star: what gives me energy and purpose; every duality we walked through comes back to that same purpose :: north star ; energy ; purpose ; dualities ; walked through
+card 34 | Strategy and execution: a wish versus motion
+You are leaders in your community, at your company, in your industry :: leaders ; community ; company ; industry
+Leading through change comes down to two things, strategy and execution, and they are equally important :: leading through change ; strategy ; execution ; equally important
+A strategy nobody can execute is a wish :: strategy ; execute ; wish
+Execution without a strategy is just motion :: execution ; without ; motion
+You will spend the rest of the summit on execution: Future of Work on the jobs tension, AI strategy on scaling beyond pilots :: rest of this summit ; future of work ; jobs tension ; ai strategy ; scaling beyond pilots
+Go to them, take notes, steal shamelessly :: go to them ; take notes ; steal shamelessly
 
-card 35 | The three dualities, one choice
-The jobs duality: can people whose old paths are disappearing see a path into what comes next? does AI simply close the door, or does someone help them find the skills, tools, and opportunities beyond it? :: jobs duality ; old paths ; disappearing ; closes the door ; skills ; tools ; opportunities
-The community duality: does data center and AI investment leave communities stronger, or does growth arrive, consume resources, and move on? lasting capacity, local opportunity, participation in the prosperity :: community duality ; data center ; investment ; stronger ; consumes resources ; lasting capacity ; local opportunity ; participate ; prosperity
-The control duality: does the future remain open to scrutiny, challenge, new builders, and better alternatives? no company, institution, or individual the only one holding the key :: control duality ; scrutiny ; challenge ; new builders ; alternative ; holding the key
-Different in scale, but the same choice: will AI happen TO people, or will we help people have agency in what happens next? :: different in scale ; same choice ; happen to people ; agency ; what happens next
+card 35 | Every one of us in this room is a disruptor
+Underneath every one of those sessions is the same opportunity: each of us is introducing a new workflow, process, or idea into an organization full of people :: underneath ; same opportunity ; new workflow ; process ; organization full of people
+We do it for good reason: to do what we do better and faster, more value, more opportunity :: good reason ; better and faster ; more value ; more opportunity
+Which means every one of us is a disruptor; we are causing change :: disruptor ; causing change
+People do not like change; change is hard; it is why change management is an entire field :: do not like change ; change is hard ; change management ; entire field
+Over the next two days we learn how to disrupt for good; one framework, from the best in the world at solving invisible math puzzles :: next two days ; disrupt for good ; framework ; invisible math puzzles
 
-card 36 | Fear narrows vision; see both sides at once
+card 36 | Writing is thinking, and Working Backwards
+No better company at executing software than Amazon; sixteen leadership principles, but you do not need sixteen :: amazon ; executing software ; sixteen ; leadership principles
+One habit underlies how Amazon operates: writing is thinking :: one habit ; operates ; writing is thinking
+Because you have to write, you have to think it through: your goal, your options, the case for your recommendation :: have to write ; think it through ; goal ; options ; recommendation
+Good strategic thinking starts at the end: what outcome are we trying to achieve? :: strategic thinking ; starts at the end ; outcome ; achieve
+At Amazon we took that to the extreme and called it Working Backwards :: extreme ; working backwards
+We wrote the press release for the finished thing first, then wrote back to the first requirements; the plan existed on paper before anything existed in code :: press release ; finished thing ; requirements ; on paper ; in code
+
+card 37 | The real trick: one set of pages, many readers
+Here is the real trick: it was never about the documents themselves :: real trick ; never about ; documents
+Finance, engineering, marketing, legal, operations, every function worked from the same small set of core pages :: finance ; engineering ; marketing ; legal ; operations ; core pages
+One set of pages, many readers, everyone thinking together and clear on what we were trying to accomplish :: one set of pages ; many readers ; thinking together ; accomplish
+So when it came time to execute the strategy was already clear; nobody had to hold the whole plan in their head; it was written down :: time to execute ; already clear ; whole plan ; written down
+The whole idea on one screen: documents, the people who read them, and the handoffs between them :: one screen ; documents ; read them ; handoffs
+If it looks like a play chart, it is one: a quarterback calls a name everyone has already studied and eleven people execute at the same time :: play chart ; quarterback ; calls a name ; eleven people
+Which is why maybe Peyton Manning as mayor of Knoxville is not so bad after all :: peyton manning ; mayor ; knoxville ; not so bad
+
+card 38 | Agents are documents, and 37996
+That is where we are today: the strategy is muddied, not because people are careless, but because everything is new and moving so fast we cannot keep up :: muddied ; careless ; moving so fast ; keep up
+We are asking people to hold too much in their heads :: hold too much ; heads
+The one thing to remember: agents are documents :: one thing to remember ; agents are documents
+Strip away the hype and a Claude agent is a file: instructions, context, and the output you want back :: strip away ; hype ; claude agent ; file ; instructions ; context ; output
+J's golf app, Joyce's scheduler, Karen's analytics cloud: every one started as something written down :: golf app ; scheduler ; analytics cloud ; written down
+Write your strategy and think it through and you already have the inputs to use AI to the fullest; the thinking is the work, the agents just read :: inputs ; fullest ; thinking is the work ; agents just read
+Every leader is deciding whether a new process will scale knowledge or bottleneck it :: scale knowledge ; bottleneck
+Agree as a leadership team on the handful of pages you will write, so one page can send the whole team running :: leadership team ; handful of pages ; whole team running
+I left Tennessee to learn how the best builders build; this is the part I most wanted to bring home; built this way in this zip code, 37996 :: left tennessee ; best builders ; bring home ; zip code ; 37996
+
+card 39 | The Door Test: one more review
+As you write those documents and build those agents, run one more review on every single one of them :: write those documents ; build those agents ; one more review
+Call it the Door Test :: door test
+Before your next AI decision, a vendor contract, a data center, a reorg, or the first strategy page you write Monday morning :: vendor contract ; data center ; reorg ; strategy page ; monday morning
+Ask one question: does this open a door for people, or does it just happen to them? :: one question ; open a door ; just happen to them
+Then check it three ways: who gets the tools and who gets a path; who benefits and who pays; who can understand and question this, and who can leave :: three ways ; who gets the tools ; who benefits ; who pays ; understand and question ; who can leave
+Answer all three and you are opening doors; miss one and you have found the door quietly closing on someone :: all three ; opening doors ; cannot answer ; quietly closing
+That is the one document review Amazon never taught me, and the one I care about most :: document review ; amazon ; never taught me ; care about most
+
+card 40 | What lights me up: the Micahs of the world
+It isn't the chips (I'd still drop those), the layoff numbers, the record new businesses, the jobs waiting to be created, or the inventions AI will unlock :: chips ; drop those ; layoff numbers ; new businesses ; inventions
+I do what I do for the next kid who sees an open door, a door I helped open, and walks through :: next kid ; open door ; helped open ; walks through
+The kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world :: hugs me ; lifts me ; new way to see the world
+The kid who discovers an entire set of possibilities on the other side of a door she did not realize existed :: discovers ; possibilities ; other side ; did not realize
+For her it didn't, until it did; all she needed was someone to open the door and show her where it was :: until it did ; someone ; open the door ; show her where it was
+That's the whole thing: I do what I do for the Micahs of the world; I exist to light somebody else's fire and help keep it burning :: whole thing ; micahs ; light ; fire ; burning
+That is my philosophical North Star: what gives me energy and purpose; every duality comes back to that same purpose :: north star ; energy ; purpose ; same purpose
+
+card 41 | The three dualities, one choice
+The jobs duality asks whether people whose paths are disappearing can see a path into what comes next :: jobs duality ; paths ; disappearing ; comes next
+The community duality asks whether AI investment leaves a place stronger than it found it :: community duality ; investment ; stronger ; found it
+The control duality asks whether the future stays open at all, and whether anyone ends up the only one holding the key :: control duality ; stays open ; only one ; holding the key
+Different in scale, same choice: will AI happen TO people, or will we help people have agency in what happens next? :: different in scale ; same choice ; happen to people ; agency ; happens next
+
+card 42 | Fear narrows vision; see both sides at once
 The headlines want you afraid; not unfounded: change is hard, fast change is unsettling; fast change hitting individuals and society at once, a mile wide and a mile deep, is, in a word, terrifying :: headlines ; afraid ; unfounded ; fast change ; unsettling ; individuals and society ; mile wide ; mile deep ; terrifying
 Fear narrows our field of vision, seeks safety in certainty, pushes us to pick a side: acceleration or obstruction, optimism or pessimism, opportunity or danger :: narrowing ; field of vision ; safety in certainty ; pick a side ; acceleration ; obstruction ; optimism ; pessimism ; danger
 The Duality of AI demands something harder: see both sides at once; acknowledge the danger without surrendering the possibility; pursue the possibility without pretending the danger isn't real :: harder ; both sides at once ; acknowledge ; surrendering ; possibility ; pretending
 
-card 37 | You decide: the Door Test
-We don't have to choose between a future where AI succeeds and one where people do; not zero-sum; but the better future isn't automatic; it takes the people in this room, the leaders :: choose ; ai succeeds ; people do ; zero-sum ; automatically ; this room ; leaders
-You're already making the choices that determine how AI is experienced: a worker gets a tool or a pink slip; someone at a closing door gets a supported path or not :: already making ; experienced ; tool ; pink slip ; closing door ; supported path
-Whether an investment merely occupies a community or becomes part of its future; whether systems give people capability and agency or quietly remove their ability to understand, question, and choose :: investment ; occupies ; community ; future ; capability ; agency ; quietly remove ; understand ; question ; choose
-You won't control every force, but you can control whether the choices within your reach open doors or close them :: every force ; within your reach ; open doors ; close them
-A simple test to carry out of this room to help navigate those choices: the Door Test :: simple test ; carry out of this room ; navigate those choices ; door test
-Before your next AI decision, a vendor contract, a data center, a reorg, ask one question: does this open a door for people, or does it just happen to them? :: next ai decision ; vendor contract ; data center ; reorg ; open a door for people ; happen to them
-Then check it three ways: who gets the tools and who gets a path; who benefits and who pays; who can understand and question this, and who can leave :: three ways ; who gets the tools ; path ; who benefits ; who pays ; understand and question ; who can leave
-Answer all three and you are opening doors; miss one and you have found the door quietly closing on someone :: all three ; opening doors ; cannot answer ; quietly closing
+card 43 | You decide: run the Door Test
+We don't have to choose between a future where AI succeeds and one where people do; it is not zero-sum; the better future does not happen automatically; it takes the people in this room :: zero-sum ; automatically ; people in this room ; leaders
+You're already making the choices that determine how AI is experienced: a worker gets a tool or a pink slip; someone at a closing door gets a supported path :: already making ; experienced ; tool ; pink slip ; supported path
+Whether an investment merely occupies a community or becomes part of its future; whether the systems you adopt give people capability and agency or remove their ability to understand, question, and choose :: occupies ; part of that community ; capability ; agency ; understand
+You will not control every force, but you can control whether the choices within your reach open doors or close them :: every force ; within your reach ; open doors ; close them
+So run the Door Test: does this open a door, or does it just happen to them? who gets the tools, who pays, who can leave :: run the door test ; open a door ; who gets the tools ; who pays ; who can leave
+Micah walked through his door on his own, but first somebody had to make it visible :: micah ; walked through ; on his own ; make it visible
 
-card 38 | The challenge: find your Micah, and hold the door open
+card 44 | The challenge: find your Micah, and hold the door open
 My challenge: don't let a month go by when you can't say "I opened a door for someone"; every month, find your Micah :: challenge ; month ; opened a door ; find your micah
 The person with the problem but not the title; the idea but not the technical vocabulary; whose old path is disappearing; who doesn't look, think, learn, or arrive by the path you did :: problem ; title ; idea ; technical vocabulary ; old path ; disappearing ; look like you ; arrive
 You don't have to determine their future or carry them through the door; just open it and make it visible; give them the tools, help them reach the threshold, then let them surprise you :: determine ; carry ; open the door ; visible ; tools ; threshold ; surprise
-We'll all move through this AI moment differently: you, me, J, everyone in this room; but none of us is moving through it alone :: ai moment ; differently ; j / jay ; everyone in this room ; alone
+We'll all move through this AI moment differently: you, me, J, Dr. Berry, everyone in this room; but none of us is moving through it alone :: ai moment ; differently ; j / jay ; berry ; everyone in this room ; alone
 Our choices shape the paths available to other people; every door we open expands what someone else can imagine, attempt, and become :: choices ; paths ; door ; imagine ; attempt ; become
 AI will open extraordinary doors, and close some too; the technology alone won't decide which side of the duality defines this era; we will :: extraordinary doors ; close some ; technology alone ; duality ; era ; we will
 So keep it human, and hold the door open :: keep it human ; hold the door open

@@ -83,7 +83,8 @@ const SECTION_META = [
   { short: 'Tension 1 · Jobs',        color: '#2563eb' },
   { short: 'Tension 2 · Prosperity',  color: '#16a34a' },
   { short: 'Tension 3 · Control',     color: '#e11d48' },
-  { short: 'Part 4 · Door-Opener',    color: '#7c3aed' },
+  { short: 'Part 4 · Writing',        color: '#c2410c' },
+  { short: 'Part 5 · Door-Opener',    color: '#7c3aed' },
 ];
 if (SECTION_META.length !== sections.length) { console.error(`expected ${SECTION_META.length} sections, found ${sections.length}`); process.exit(1); }
 sections.forEach((s, i) => Object.assign(s, SECTION_META[i]));
