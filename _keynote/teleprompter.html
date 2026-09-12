@@ -61,6 +61,7 @@
   .seg button { border: 0; border-radius: 0; padding: 9px 12px; }
   .seg button + button { border-left: 1px solid var(--line); }
   .seg button.active { background: var(--amber); color: #1a1405; font-weight: 700; }
+  .tag { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--amber-deep); border: 1px solid var(--amber-deep); border-radius: 999px; padding: 6px 10px; }
   #hide.active { background: var(--raised); border-color: var(--amber-deep); color: var(--amber); }
 
   #status {
@@ -171,6 +172,7 @@
       <button id="modeLive" class="active">Live</button>
       <button id="modePractice">Practice</button>
     </span>
+    <span id="variant" class="tag" hidden></span>
     <button id="hide" hidden aria-pressed="false">Hide words</button>
     <button id="back" title="Back one sentence">◂ Sentence</button>
     <span class="spacer"></span>
@@ -219,6 +221,11 @@
 (function () {
   'use strict';
   var DATA = __KEYNOTE_DATA__;
+  var STORE = 'door-prompter' + (DATA.variant ? '-' + DATA.variant : '');
+  if (DATA.variantLabel) {
+    document.title += ' · ' + DATA.variantLabel;
+    var tag = document.getElementById('variant'); tag.textContent = DATA.variantLabel; tag.hidden = false;
+  }
   var T = window.KeynoteText;
   var $ = function (id) { return document.getElementById(id); };
   var textEl = $('text'), scroller = $('scroller');
@@ -422,7 +429,7 @@
     }
     pctEl.textContent = Math.round(100 * c / N) + '%';
     scrollToCursor(opts && opts.jump);
-    try { localStorage.setItem(practice ? 'door-prompter-practice-cursor' : 'door-prompter-cursor', String(c)); } catch (e) {}
+    try { localStorage.setItem(practice ? STORE + '-practice-cursor' : STORE + '-cursor', String(c)); } catch (e) {}
   }
   function sentenceStart(i) {
     i = Math.max(0, Math.min(N - 1, i));
@@ -479,13 +486,13 @@
       if (markEl) { markEl.classList.remove('mark'); markEl = null; }
     }
     var saved = 0;
-    try { saved = Math.min(N - 1, +localStorage.getItem(practice ? 'door-prompter-practice-cursor' : 'door-prompter-cursor') || 0); } catch (e) {}
+    try { saved = Math.min(N - 1, +localStorage.getItem(practice ? STORE + '-practice-cursor' : STORE + '-cursor') || 0); } catch (e) {}
     for (var j = 0; j < N; j++) tokens[j].el.classList.toggle('past', j < saved);
     committed = saved;
     cursor = saved;
     setCursor(saved, { jump: true });
     if (practice) setMark(sentenceStart(saved));
-    try { localStorage.setItem('door-prompter-mode', practice ? 'practice' : 'live'); } catch (e) {}
+    try { localStorage.setItem(STORE + '-mode', practice ? 'practice' : 'live'); } catch (e) {}
     requestAnimationFrame(function () { scrollToCursor(true); });
   }
   $('modeLive').addEventListener('click', function () { setMode(false); });
@@ -683,10 +690,10 @@
 
   /* ---------- Text size ---------- */
   var size = 30;
-  try { size = +localStorage.getItem('door-prompter-size') || 30; } catch (e) {}
+  try { size = +localStorage.getItem(STORE + '-size') || 30; } catch (e) {}
   function applySize() {
     document.documentElement.style.setProperty('--size', size + 'px');
-    try { localStorage.setItem('door-prompter-size', String(size)); } catch (e) {}
+    try { localStorage.setItem(STORE + '-size', String(size)); } catch (e) {}
     requestAnimationFrame(function () { scrollToCursor(true); });
   }
   $('bigger').addEventListener('click', function () { size = Math.min(56, size + 3); applySize(); });
@@ -696,7 +703,7 @@
   /* ---------- Boot ---------- */
   applySize();
   var mode = 'live';
-  try { mode = localStorage.getItem('door-prompter-mode') || 'live'; } catch (e) {}
+  try { mode = localStorage.getItem(STORE + '-mode') || 'live'; } catch (e) {}
   setMode(mode === 'practice');
   if (!SR) setMic('this browser cannot listen; tap sentences to advance', 'warn');
   window.addEventListener('resize', function () { scrollToCursor(true); });

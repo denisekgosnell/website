@@ -297,7 +297,8 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
 </div>
 <div class="toast" id="toast"></div>
 
-<script>window.KEYNOTE = __KEYNOTE_DATA__;</script>
+<script>window.KEYNOTE = __KEYNOTE_DATA__;
+if (window.KEYNOTE.variantLabel) { var _b = document.querySelector(".brand small"); if (_b) _b.textContent = "The Duality of AI · " + window.KEYNOTE.variantLabel + " deck"; }</script>
 <script>
 __TEXTMATCH_JS__
 </script>

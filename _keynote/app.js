@@ -6,7 +6,7 @@
       lev = T.lev, stem = T.stem, stemsMatch = T.stemsMatch, spokenBag = T.spokenBag, bagHas = T.bagHas, phraseIn = T.phraseIn;
   var sections = DATA.sections;
   var cards = DATA.cards;
-  var STORE_KEY = 'keynote-practice-v1';
+  var STORE_KEY = 'keynote-practice-v1' + (window.KEYNOTE && window.KEYNOTE.variant ? '-' + window.KEYNOTE.variant : '');
 
   // ---------- persistence ----------
   function loadState() {
@@ -281,7 +281,7 @@
     $('nextBtn').disabled = neighbor(1) === null;
     state.pos = idx; saveState();
     renderLegend(); renderMap();
-    document.title = 'Card ' + card.id + ' · Keynote Note Cards';
+    document.title = 'Card ' + card.id + ' · Keynote Note Cards' + (window.KEYNOTE.variantLabel ? ' · ' + window.KEYNOTE.variantLabel : '');
   }
   function renderBest(card) {
     var a = attempt(card.id), best = $('cardBest'), bs = bestOf(a);

@@ -9,11 +9,22 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
-const srcPath = path.join(__dirname, 'keynote.txt');
 const tplPath = path.join(__dirname, 'template.html');
-const outPath = path.join(root, 'keynote-practice.html');
 const tpTplPath = path.join(__dirname, 'teleprompter.html');
-const tpOutPath = path.join(root, 'keynote-teleprompter.html');
+
+// Variants: a subfolder of _keynote holding its own keynote.txt (and beats.txt) builds a second pair of
+// pages with the folder name as a suffix, e.g. _keynote/charleston -> keynote-practice-charleston.html.
+const VARIANT_LABEL = { charleston: 'Charleston' };
+const variants = [''].concat(fs.readdirSync(__dirname).filter(d => fs.existsSync(path.join(__dirname, d, 'keynote.txt'))).sort());
+for (const variant of variants) build(variant);
+
+function build(variant) {
+const dir = variant ? path.join(__dirname, variant) : __dirname;
+const suffix = variant ? '-' + variant : '';
+const srcPath = path.join(dir, 'keynote.txt');
+const outPath = path.join(root, 'keynote-practice' + suffix + '.html');
+const tpOutPath = path.join(root, 'keynote-teleprompter' + suffix + '.html');
+console.log(variant ? `\n=== variant: ${variant} ===` : '\n=== default (Knoxville) ===');
 
 const raw = fs.readFileSync(srcPath, 'utf8');
 const lines = raw.split('\n');
@@ -91,7 +102,7 @@ sections.forEach((s, i) => Object.assign(s, SECTION_META[i]));
 
 // Hand-written idea beats and scene titles (see beats.txt for the format).
 const T = require('./textmatch.js');
-const beatsPath = path.join(__dirname, 'beats.txt');
+const beatsPath = path.join(dir, 'beats.txt');
 if (fs.existsSync(beatsPath)) {
   let current = null;
   fs.readFileSync(beatsPath, 'utf8').split('\n').forEach((line, ln) => {
@@ -130,7 +141,7 @@ if (fs.existsSync(beatsPath)) {
   if (without.length) console.log(`cards using automatic sentence beats: ${without.join(', ')}`);
 }
 
-const data = { sections, cards };
+const data = { sections, cards, variant: variant, variantLabel: VARIANT_LABEL[variant] || '' };
 const json = JSON.stringify(data).replace(/<\//g, '<\\/');
 
 if (fs.existsSync(tplPath)) {
@@ -159,4 +170,5 @@ const sizes = cards.map(c => c.words);
 console.log(`card words: min ${Math.min(...sizes)}, max ${Math.max(...sizes)}, avg ${Math.round(sizes.reduce((a,b)=>a+b,0)/sizes.length)}`);
 if (process.argv.includes('--dump')) {
   cards.forEach(c => console.log(`\n--- card ${c.id} (sec ${c.section+1}, ${c.words}w)\n${c.paragraphs.join('\n')}`));
+}
 }
