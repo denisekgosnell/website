@@ -262,14 +262,17 @@
     var p = document.createElement('p');
     p.className = 'p';
     paraCount++;
-    t.split(/(\[[^\]]*\])/).forEach(function (seg) {
+    var segs = t.split(/(\[[^\]]*\])/);
+    segs.forEach(function (seg, si) {
       if (!seg) return;
       if (/^\[[^\]]*\]$/.test(seg)) {
         var c = document.createElement('span');
         c.className = 'cue inline';
         c.textContent = seg;
         p.appendChild(c);
-        p.appendChild(document.createTextNode(' '));
+        // punctuation right after a cue stays attached to it: "[SLIDE]." not "[SLIDE] ."
+        var next = (segs[si + 1] || '').replace(/^\s+/, '');
+        if (!/^[.,;:?!]/.test(next)) p.appendChild(document.createTextNode(' '));
       } else {
         seg.trim().split(/\s+/).forEach(function (chunk) { if (chunk) addWords(p, chunk); });
       }
