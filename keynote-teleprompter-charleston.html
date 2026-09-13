@@ -125,6 +125,31 @@
   .x { width: 36px; height: 36px; padding: 0; border-radius: 50%; font-size: 18px; line-height: 1; }
 
 
+  .timing { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 6px 4px 14px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+  .timing .clock { font-family: var(--mono); font-size: 46px; font-weight: 500; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--amber); }
+  .timing .clock.short { color: var(--ink-cue); }
+  .timing .t { font-size: 15px; font-weight: 700; }
+  .timing .s { font-size: 13px; color: var(--ink-cue); margin-top: 3px; line-height: 1.45; }
+  .timing .s b { color: var(--ink); font-weight: 400; }
+  .timing .s .up { color: var(--ok); } .timing .s .down { color: var(--record); }
+  .hist { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .hist span { font-family: var(--mono); font-size: 12px; padding: 3px 8px; border-radius: 6px; background: var(--raised); color: var(--ink-cue); font-variant-numeric: tabular-nums; }
+  .hist span.now { color: var(--amber); border: 1px solid var(--amber-deep); }
+  .hist span.best { color: var(--ok); }
+  .part { margin: 8px 0 16px; }
+  .part h3 { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-cue); margin: 0 0 6px 4px; display: flex; justify-content: space-between; gap: 8px; }
+  .part h3 b { color: var(--ink); font-weight: 500; text-transform: none; letter-spacing: 0; }
+  .stat { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 8px; }
+  .stat div { background: var(--raised); border-radius: 8px; padding: 8px 6px; text-align: center; }
+  .stat .v { font-family: var(--mono); font-size: 16px; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .stat .l { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-cue); margin-top: 3px; }
+  .runs { list-style: none; margin: 0; padding: 0; }
+  .runs li { display: grid; grid-template-columns: 1fr auto auto auto; gap: 10px; align-items: center; padding: 6px 10px; border-radius: 8px; font-size: 13px; color: var(--ink-cue); }
+  .runs li:nth-child(odd) { background: var(--raised); }
+  .runs li .d { font-family: var(--mono); font-size: 15px; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .runs li .cov { font-family: var(--mono); font-size: 11px; }
+  .runs li button { padding: 4px 9px; font-size: 13px; border-color: transparent; color: var(--ink-cue); }
+  .empty { color: var(--ink-cue); font-size: 14px; padding: 20px 8px; text-align: center; }
   .score { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 8px 4px 14px; }
   .score .big {
     font-size: 54px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em;
@@ -174,6 +199,7 @@
     </span>
     <span id="variant" class="tag" hidden></span>
     <button id="hide" hidden aria-pressed="false">Hide words</button>
+    <button id="times" hidden>Times</button>
     <button id="back" title="Back one sentence">◂ Sentence</button>
     <span class="spacer"></span>
     <span class="seg">
@@ -194,6 +220,7 @@
   <div class="panel">
     <div class="head"><h2 id="resTitle">Practice score</h2><button class="x" id="resClose" aria-label="Close">×</button></div>
     <div class="body">
+      <div class="timing" id="timing" hidden></div>
       <div class="score" id="scoreBox">
         <div class="big"><span id="scoreNum">0</span><small>%</small></div>
         <div><div class="t" id="scoreT"></div><div class="s" id="scoreS"></div></div>
@@ -205,6 +232,13 @@
       <button id="again" class="primary">Run it again from the same spot</button>
       <button id="resDone">Done</button>
     </div>
+  </div>
+</div>
+
+<div id="timesSheet" class="sheet" hidden>
+  <div class="panel">
+    <div class="head"><h2>Your times by part</h2><button class="x" id="timesClose" aria-label="Close">×</button></div>
+    <div class="body" id="timesBody"></div>
   </div>
 </div>
 
@@ -484,6 +518,15 @@
     });
   });
   var N = tokens.length;
+  // Token range of each section (Part), for timing a practice run against the Part it was in.
+  DATA.sections.forEach(function (sec, si) {
+    var cs = DATA.cards.filter(function (c) { return c.section === si; });
+    sec.first = cs.length ? cs[0].start : 0; sec.last = cs.length ? cs[cs.length - 1].end : 0;
+  });
+  function sectionOf(i) {
+    for (var k = 0; k < DATA.sections.length; k++) if (i < DATA.sections[k].last) return k;
+    return DATA.sections.length - 1;
+  }
   // The last token of a paragraph always closes a sentence, even without punctuation.
   DATA.cards.forEach(function (c) { if (c.end > c.start) tokens[c.end - 1].end = true; });
 
@@ -657,6 +700,7 @@
     $('modeLive').classList.toggle('active', !practice);
     $('modePractice').classList.toggle('active', practice);
     $('hide').hidden = !practice;
+    $('times').hidden = !practice;
     textEl.classList.toggle('practice', practice);
     if (!practice) {
       textEl.classList.remove('blur');
@@ -708,7 +752,87 @@
     for (var i = Math.max(0, from); i < Math.min(N, to); i++) words.push(tokens[i].raw);
     return words.join(' ').replace(/\s+/g, ' ');
   }
-  function showResults(res, spokenWords, seconds) {
+  /* ---------- Timing each practice run, by Part ---------- */
+  var MIN_SAVE = 20; // seconds; anything shorter is shown but not kept as a run
+  function loadRuns() { try { return JSON.parse(localStorage.getItem(STORE + '-runs') || '{}') || {}; } catch (e) { return {}; } }
+  function saveRuns(r) { try { localStorage.setItem(STORE + '-runs', JSON.stringify(r)); } catch (e) {} }
+  function mmss(sec) { sec = Math.round(sec); var m = Math.floor(sec / 60), s2 = sec % 60; return m + ':' + (s2 < 10 ? '0' : '') + s2; }
+  function signed(sec) { var a = Math.abs(Math.round(sec)); return (sec < 0 ? '\u2212' : '+') + (a >= 60 ? mmss(a) : a + 's'); }
+  function coverage(si, start, end) {
+    var sec = DATA.sections[si], span = sec.last - sec.first;
+    var lo = Math.max(start, sec.first), hi = Math.min(end, sec.last);
+    return span ? Math.max(0, hi - lo) / span : 0;
+  }
+  // Record a run against the Part it started in. Returns the run and that Part's history (oldest first, this run last).
+  function recordRun(start, end, seconds, spokenWords, score) {
+    var si = sectionOf(start);
+    var run = { at: new Date().toISOString(), s: Math.round(seconds), words: spokenWords, cov: Math.round(100 * coverage(si, start, end)), score: score, saved: seconds >= MIN_SAVE };
+    var runs = loadRuns(); var list = runs[si] || (runs[si] = []);
+    var prev = list.slice();
+    if (run.saved) { list.push(run); saveRuns(runs); }
+    return { si: si, run: run, prev: prev };
+  }
+  function renderTiming(info) {
+    var sec = DATA.sections[info.si], run = info.run, prev = info.prev;
+    var target = sec.words / 150 * 60; // a comfortable keynote pace
+    var html = '<div class="clock' + (run.saved ? '' : ' short') + '">' + mmss(run.s) + '</div><div>';
+    html += '<div class="t">' + esc(sec.short) + (run.cov < 85 ? ' · ' + run.cov + '% of the part' : '') + '</div><div class="s">';
+    if (!run.saved) html += 'Under ' + MIN_SAVE + ' seconds, so this run was not saved to your times. ';
+    else if (!prev.length) html += 'First saved run for this part. ';
+    else {
+      var last = prev[prev.length - 1], best = Math.min.apply(null, prev.map(function (r) { return r.s; }));
+      var avg = prev.reduce(function (a, r) { return a + r.s; }, 0) / prev.length;
+      var d = run.s - last.s;
+      html += '<span class="' + (d <= 0 ? 'up' : 'down') + '">' + signed(d) + '</span> vs your last run (' + mmss(last.s) + '). ';
+      html += 'Best before this: <b>' + mmss(best) + '</b>. Average of ' + prev.length + ': <b>' + mmss(avg) + '</b>. ';
+      if (run.s < best) html += 'New best. ';
+    }
+    html += 'At 150 words a minute this part reads in about <b>' + mmss(target) + '</b>.</div>';
+    var all = prev.concat(run.saved ? [run] : []);
+    if (all.length > 1) {
+      var bestAll = Math.min.apply(null, all.map(function (r) { return r.s; }));
+      html += '<div class="hist">' + all.slice(-8).map(function (r, i, arr) {
+        var cls = (i === arr.length - 1 && run.saved) ? 'now' : (r.s === bestAll ? 'best' : '');
+        return '<span class="' + cls + '">' + mmss(r.s) + '</span>';
+      }).join('') + '</div>';
+    }
+    html += '</div>';
+    $('timing').innerHTML = html; $('timing').hidden = false;
+  }
+  function renderTimes() {
+    var runs = loadRuns(), html = '', any = false;
+    DATA.sections.forEach(function (sec, si) {
+      var list = runs[si] || [];
+      if (!list.length) return; any = true;
+      var best = Math.min.apply(null, list.map(function (r) { return r.s; }));
+      var avg = list.reduce(function (a, r) { return a + r.s; }, 0) / list.length;
+      var last = list[list.length - 1];
+      html += '<div class="part"><h3><span>' + esc(sec.short) + '</span><b>' + list.length + (list.length === 1 ? ' run' : ' runs') + '</b></h3>';
+      html += '<div class="stat"><div><div class="v">' + mmss(last.s) + '</div><div class="l">last</div></div>' +
+              '<div><div class="v">' + mmss(best) + '</div><div class="l">best</div></div>' +
+              '<div><div class="v">' + mmss(avg) + '</div><div class="l">average</div></div>' +
+              '<div><div class="v">' + mmss(sec.words / 150 * 60) + '</div><div class="l">at 150 wpm</div></div></div>';
+      html += '<ul class="runs">' + list.slice().reverse().map(function (r) {
+        var idx = list.indexOf(r), dt = new Date(r.at);
+        var when = dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' + dt.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        return '<li><span>' + esc(when) + '</span><span class="cov">' + r.cov + '%</span><span class="d">' + mmss(r.s) + '</span><button data-si="' + si + '" data-i="' + idx + '" aria-label="Delete this run">×</button></li>';
+      }).join('') + '</ul></div>';
+    });
+    $('timesBody').innerHTML = any ? html : '<div class="empty">No saved runs yet. In Practice, tap a sentence, hit Record, run the whole part, then Stop. Runs of ' + MIN_SAVE + ' seconds or more are kept here.</div>';
+  }
+  $('times').addEventListener('click', function () { renderTimes(); $('timesSheet').hidden = false; });
+  $('timesClose').addEventListener('click', function () { $('timesSheet').hidden = true; });
+  $('timesBody').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-si]'); if (!b) return;
+    var runs = loadRuns(), list = runs[b.dataset.si] || [];
+    var r = list[+b.dataset.i]; if (!r) return;
+    if (!confirm('Delete the ' + mmss(r.s) + ' run for ' + DATA.sections[+b.dataset.si].short + '?')) return;
+    list.splice(+b.dataset.i, 1); if (!list.length) delete runs[b.dataset.si];
+    saveRuns(runs); renderTimes();
+  });
+
+  function showResults(res, spokenWords, seconds, timingInfo) {
+    if (timingInfo) renderTiming(timingInfo); else $('timing').hidden = true;
     $('scoreNum').textContent = res.score;
     $('scoreBox').className = 'score ' + tier(res.score);
     var wpm = seconds > 5 ? Math.round(60 * spokenWords / seconds) : 0;
@@ -846,7 +970,9 @@
         if (!words) { setMic('nothing heard, so nothing to score', 'warn'); return; }
         // The run reaches wherever the follower got to, or as far as the word count says if it lost you.
         var end = Math.min(N, Math.max(cursor, practiceStart + Math.round(words * 0.9)));
-        showResults(scoreSpan(practiceStart, end, spoken), words, (Date.now() - startedAt) / 1000);
+        var seconds = (Date.now() - startedAt) / 1000;
+        var res = scoreSpan(practiceStart, end, spoken);
+        showResults(res, words, seconds, recordRun(practiceStart, end, seconds, words, res.score));
       }
       return;
     }
@@ -886,7 +1012,7 @@
   setMode(mode === 'practice');
   if (!SR) setMic('this browser cannot listen; tap sentences to advance', 'warn');
   window.addEventListener('resize', function () { scrollToCursor(true); });
-  window.DoorPrompter = { scoreSpan: scoreSpan, showResults: showResults, beats: beats, tokens: tokens, sentenceStart: sentenceStart, advance: advance, resyncLimit: resyncLimit };
+  window.DoorPrompter = { scoreSpan: scoreSpan, showResults: showResults, beats: beats, tokens: tokens, sentenceStart: sentenceStart, advance: advance, resyncLimit: resyncLimit, recordRun: recordRun, sectionOf: sectionOf, loadRuns: loadRuns, mmss: mmss, sections: DATA.sections };
 })();
 </script>
 </body>
