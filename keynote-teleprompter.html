@@ -91,7 +91,6 @@
   #text .cue.part { color: var(--amber-deep); border-top: 1px solid var(--line); padding-top: 1.2em; margin-top: 2.4em; }
   #text .cue.card { font-size: .42em; color: var(--ink-cue); margin: 1.4em 0 .8em; text-transform: none; letter-spacing: .02em; }
   #text .cue.inline { display: inline; margin: 0; padding: .1em .45em; border: 1px solid var(--line); border-radius: 6px; text-transform: none; letter-spacing: 0; }
-  #text:not(.practice) .cue.card { display: none; }
   #text.practice .w.mark { box-shadow: inset 0 -3px 0 var(--amber-deep); }
   .w {
     display: inline-block; cursor: pointer; border-radius: .18em; padding: 0 .04em;
@@ -509,7 +508,7 @@
       wrap.className = 'card';
       var label = document.createElement('div');
       label.className = 'cue card';
-      label.textContent = card.id + ' · ' + (card.title || 'Card ' + card.id);
+      label.textContent = /^Slide \d/.test(card.title || '') ? card.title : card.id + ' · ' + (card.title || 'Card ' + card.id);
       wrap.appendChild(label);
       card.start = tokens.length;
       card.paragraphs.forEach(function (p) { addParagraph(wrap, p); });
