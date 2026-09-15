@@ -76,6 +76,8 @@
   #status .warn { color: var(--amber-deep); }
   #heard { flex: 1; overflow: hidden; text-overflow: ellipsis; color: var(--ink); opacity: .7; }
   #pct { font-variant-numeric: tabular-nums; }
+  #clock { flex: 0 0 auto; font-variant-numeric: tabular-nums; color: var(--amber); }
+  #clock:empty { display: none; }
 
   /* Script body */
   main#scroller { overflow-y: auto; overflow-x: hidden; position: relative; min-width: 0; max-width: 100%; -webkit-overflow-scrolling: touch; }
@@ -158,6 +160,23 @@
   .runs li .cov { font-family: var(--mono); font-size: 11px; }
   .runs li button { padding: 4px 9px; font-size: 13px; border-color: transparent; color: var(--ink-cue); }
   .empty { color: var(--ink-cue); font-size: 14px; padding: 20px 8px; text-align: center; }
+  /* Section stopwatch report */
+  .secs { width: 100%; border-collapse: collapse; font-size: 14px; margin: 4px 0 12px; }
+  .secs th { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-cue); text-align: right; padding: 4px 8px; font-weight: 400; }
+  .secs th:first-child, .secs td:first-child { text-align: left; }
+  .secs td { padding: 8px; border-top: 1px solid var(--line); text-align: right; vertical-align: top; }
+  .secs td small { color: var(--ink-cue); font-size: 11px; }
+  .secs .d { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+  .secs .dim { color: var(--ink-cue); }
+  .secs .slow { color: var(--amber-deep); } .secs .on { color: var(--ok); } .secs .fast { color: var(--ink-cue); }
+  .secs tr.detail td { border-top: 0; padding: 0 8px 8px; text-align: left; }
+  .secs details summary { cursor: pointer; font-size: 12px; color: var(--ink-cue); }
+  .secs details ul { list-style: none; margin: 6px 0 0; padding: 0; }
+  .secs details li { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--ink-cue); padding: 3px 0 3px 10px; }
+  .secs tfoot td { font-weight: 700; border-top: 2px solid var(--line); }
+  .runs li.sess { cursor: pointer; }
+  .runs li .mode { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 6px; border-radius: 5px; background: var(--panel); }
+  .runs li .mode.live { color: var(--record); }
   .score { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 8px 4px 14px; }
   .score .big {
     font-size: 54px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em;
@@ -207,7 +226,7 @@
     </span>
     <span id="variant" class="tag" hidden></span>
     <button id="hide" hidden aria-pressed="false">Hide words</button>
-    <button id="times" hidden>Times</button>
+    <button id="times">Times</button>
     <button id="back" title="Back one sentence">◂ Sentence</button>
     <span class="spacer"></span>
     <span class="seg">
@@ -219,6 +238,7 @@
   <div id="status">
     <span id="mic">mic off</span>
     <span id="heard"></span>
+    <span id="clock"></span>
     <span id="pct">0%</span>
   </div>
   <main id="scroller"><div id="text"></div></main>
@@ -229,6 +249,7 @@
     <div class="head"><h2 id="resTitle">Practice score</h2><button class="x" id="resClose" aria-label="Close">×</button></div>
     <div class="body">
       <div class="timing" id="timing" hidden></div>
+      <div id="sections"></div>
       <div class="score" id="scoreBox">
         <div class="big"><span id="scoreNum">0</span><small>%</small></div>
         <div><div class="t" id="scoreT"></div><div class="s" id="scoreS"></div></div>
@@ -243,9 +264,17 @@
   </div>
 </div>
 
+<div id="report" class="sheet" hidden>
+  <div class="panel">
+    <div class="head"><h2 id="repTitle">Run report</h2><button class="x" id="repClose" aria-label="Close">×</button></div>
+    <div class="body" id="repBody"></div>
+    <div class="foot"><button id="repDone" class="primary">Done</button></div>
+  </div>
+</div>
+
 <div id="timesSheet" class="sheet" hidden>
   <div class="panel">
-    <div class="head"><h2>Your times by part</h2><button class="x" id="timesClose" aria-label="Close">×</button></div>
+    <div class="head"><h2>Your times</h2><button class="x" id="timesClose" aria-label="Close">×</button></div>
     <div class="body" id="timesBody"></div>
   </div>
 </div>
@@ -271,7 +300,7 @@
   var T = window.KeynoteText;
   var $ = function (id) { return document.getElementById(id); };
   var textEl = $('text'), scroller = $('scroller');
-  var recBtn = $('rec'), recLabel = $('reclabel'), micEl = $('mic'), heardEl = $('heard'), pctEl = $('pct');
+  var recBtn = $('rec'), recLabel = $('reclabel'), micEl = $('mic'), heardEl = $('heard'), pctEl = $('pct'), clockEl = $('clock');
 
   /* ---------- Build the script from the keynote data ---------- */
   var tokens = [];   // { norm, raw, el, end, para }
@@ -479,6 +508,7 @@
   function setCursor(c, opts) {
     c = Math.max(0, Math.min(N, c));
     var old = cursor;
+    if (track && c !== old) trackTick();   // close out the time spent up to this move at the old position
     cursor = c;
     if (c > old) { for (var i = old; i < c; i++) tokens[i].el.classList.add('past'); }
     else if (c < old) { for (var j = c; j < old; j++) tokens[j].el.classList.remove('past'); }
@@ -535,12 +565,11 @@
     setMic('start set here: tap Record when ready');
   }
   function setMode(toPractice) {
-    if (listening) { listening = false; stopRec(); }
+    if (listening) { listening = false; stopRec(); trackStop(); }
     practice = toPractice;
     $('modeLive').classList.toggle('active', !practice);
     $('modePractice').classList.toggle('active', practice);
     $('hide').hidden = !practice;
-    $('times').hidden = !practice;
     textEl.classList.toggle('practice', practice);
     if (!practice) {
       textEl.classList.remove('blur');
@@ -641,6 +670,18 @@
   }
   function renderTimes() {
     var runs = loadRuns(), html = '', any = false;
+    var sessions = loadSessions();
+    if (sessions.length) {
+      any = true;
+      html += '<div class="part"><h3><span>Runs \u00b7 time by part</span><b>' + sessions.length + (sessions.length === 1 ? ' run' : ' runs') + '</b></h3>';
+      html += '<ul class="runs">' + sessions.slice().reverse().map(function (t, k) {
+        var idx = sessions.length - 1 - k, dt = new Date(t.at), first = -1, last = -1;
+        DATA.sections.forEach(function (sec, si) { if ((t.secs[si] || 0) >= 1) { if (first < 0) first = si; last = si; } });
+        var range = first < 0 ? '' : first === last ? DATA.sections[first].short : DATA.sections[first].short.replace(/ \u00b7.*$/, '') + ' \u2192 ' + DATA.sections[last].short.replace(/ \u00b7.*$/, '');
+        var when = dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' + dt.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        return '<li class="sess" data-sess="' + idx + '"><span>' + esc(when) + '<br><small>' + esc(range) + '</small></span><span class="mode ' + t.mode + '">' + t.mode + '</span><span class="d">' + mmss(t.total) + '</span><button data-del="' + idx + '" aria-label="Delete this run">\u00d7</button></li>';
+      }).join('') + '</ul></div>';
+    }
     DATA.sections.forEach(function (sec, si) {
       var list = runs[si] || [];
       if (!list.length) return; any = true;
@@ -658,11 +699,21 @@
         return '<li><span>' + esc(when) + '</span><span class="cov">' + r.cov + '%</span><span class="d">' + mmss(r.s) + '</span><button data-si="' + si + '" data-i="' + idx + '" aria-label="Delete this run">×</button></li>';
       }).join('') + '</ul></div>';
     });
-    $('timesBody').innerHTML = any ? html : '<div class="empty">No saved runs yet. In Practice, tap a sentence, hit Record, run the whole part, then Stop. Runs of ' + MIN_SAVE + ' seconds or more are kept here.</div>';
+    $('timesBody').innerHTML = any ? html : '<div class="empty">No saved runs yet. Hit Record, give the talk (or a part of it), then Stop: you get a report of how long each part took, and runs of ' + MIN_SAVE + ' seconds or more are kept here.</div>';
   }
   $('times').addEventListener('click', function () { renderTimes(); $('timesSheet').hidden = false; });
   $('timesClose').addEventListener('click', function () { $('timesSheet').hidden = true; });
   $('timesBody').addEventListener('click', function (e) {
+    var del = e.target.closest('button[data-del]');
+    if (del) {
+      var ss = loadSessions(), t0 = ss[+del.dataset.del]; if (!t0) return;
+      if (!confirm('Delete the ' + mmss(t0.total) + ' ' + t0.mode + ' run?')) return;
+      ss.splice(+del.dataset.del, 1);
+      try { localStorage.setItem(STORE + '-sessions', JSON.stringify(ss)); } catch (err) {}
+      renderTimes(); return;
+    }
+    var row = e.target.closest('li[data-sess]');
+    if (row) { var t1 = loadSessions()[+row.dataset.sess]; if (t1) { t1.total = t1.total; showReport(t1, t1.mode === 'live'); } return; }
     var b = e.target.closest('button[data-si]'); if (!b) return;
     var runs = loadRuns(), list = runs[b.dataset.si] || [];
     var r = list[+b.dataset.i]; if (!r) return;
@@ -671,8 +722,94 @@
     saveRuns(runs); renderTimes();
   });
 
-  function showResults(res, spokenWords, seconds, timingInfo) {
+  /* ---------- Section stopwatch: how long each Part (and each slide) took, Live and Practice ---------- */
+  var track = null, trackTimer = null;
+  function cardOf(i) { for (var k = 0; k < DATA.cards.length; k++) if (i < DATA.cards[k].end) return k; return DATA.cards.length - 1; }
+  function trackStart() {
+    var here = Math.min(cursor, N - 1);
+    track = { at: new Date().toISOString(), mode: practice ? 'practice' : 'live', t0: Date.now(), last: Date.now(),
+              si: sectionOf(here), ci: cardOf(here), secs: {}, cards: {}, from: cursor, to: cursor };
+    clearInterval(trackTimer); trackTimer = setInterval(trackTick, 1000);
+    trackTick();
+  }
+  // Every second (and on stop) the time since the last tick goes to the Part and slide the cursor was in.
+  function trackTick() {
+    if (!track) return;
+    var now = Date.now(), dt = (now - track.last) / 1000;
+    track.secs[track.si] = (track.secs[track.si] || 0) + dt;
+    track.cards[track.ci] = (track.cards[track.ci] || 0) + dt;
+    track.last = now;
+    var here = Math.min(cursor, N - 1);
+    track.si = sectionOf(here); track.ci = cardOf(here);
+    track.to = Math.max(track.to, cursor);
+    clockEl.textContent = mmss((now - track.t0) / 1000) + ' \u00b7 ' + DATA.sections[track.si].short.replace(/^(Part \d|Tension \d).*$/, '$1') + ' ' + mmss(track.secs[track.si] || 0);
+  }
+  function trackStop() {
+    clearInterval(trackTimer);
+    if (!track) { clockEl.textContent = ''; return null; }
+    trackTick(); var t = track; track = null; clockEl.textContent = '';
+    t.total = (Date.now() - t.t0) / 1000;
+    return t;
+  }
+  function loadSessions() { try { return JSON.parse(localStorage.getItem(STORE + '-sessions') || '[]') || []; } catch (e) { return []; } }
+  function saveSession(t) {
+    if (!t || t.total < MIN_SAVE) return false;
+    var list = loadSessions();
+    list.push({ at: t.at, mode: t.mode, total: Math.round(t.total), heard: t.heard || 0, from: t.from, to: t.to, secs: t.secs, cards: t.cards });
+    while (list.length > 40) list.shift();
+    try { localStorage.setItem(STORE + '-sessions', JSON.stringify(list)); } catch (e) {}
+    return true;
+  }
+  function paceClass(s, target) { return !target ? '' : s > target * 1.1 ? 'slow' : s < target * 0.9 ? 'fast' : 'on'; }
+  function sectionTable(t) {
+    var html = '<table class="secs"><thead><tr><th>Part</th><th>time</th><th>split</th><th>vs 150 wpm</th></tr></thead><tbody>';
+    var cum = 0, tgtTotal = 0, any = false;
+    DATA.sections.forEach(function (sec, si) {
+      var s = t.secs[si] || 0; if (s < 1) return; any = true;
+      var cov = coverage(si, t.from, t.to), words = Math.round(sec.words * cov), target = words / 150 * 60;
+      cum += s; tgtTotal += target;
+      html += '<tr><td>' + esc(sec.short) + (cov < 0.9 ? ' <small>' + Math.round(cov * 100) + '% of it</small>' : '') + '</td>' +
+              '<td class="d">' + mmss(s) + '</td><td class="d dim">' + mmss(cum) + '</td>' +
+              '<td class="d ' + paceClass(s, target) + '">' + signed(s - target) + '</td></tr>';
+      var slides = [];
+      DATA.cards.forEach(function (c, ci) { if (c.section === si && (t.cards[ci] || 0) >= 1) slides.push({ c: c, s: t.cards[ci] }); });
+      if (slides.length > 1) {
+        html += '<tr class="detail"><td colspan="4"><details><summary>' + slides.length + ' slides in this part</summary><ul>' +
+          slides.map(function (x) { return '<li><span>' + esc(x.c.title || 'Card ' + x.c.id) + '</span><span class="d">' + mmss(x.s) + '</span></li>'; }).join('') +
+          '</ul></details></td></tr>';
+      }
+    });
+    if (!any) return '';
+    html += '</tbody><tfoot><tr><td>Total</td><td class="d">' + mmss(t.total) + '</td><td></td><td class="d ' + paceClass(t.total, tgtTotal) + '">' + signed(t.total - tgtTotal) + '</td></tr></tfoot></table>';
+    return html;
+  }
+  function reportHTML(t) {
+    var firstSi = -1, lastSi = -1, tgt = 0;
+    DATA.sections.forEach(function (sec, si) {
+      if ((t.secs[si] || 0) < 1) return;
+      if (firstSi < 0) firstSi = si; lastSi = si;
+      tgt += Math.round(sec.words * coverage(si, t.from, t.to)) / 150 * 60;
+    });
+    var range = firstSi < 0 ? '' : firstSi === lastSi ? DATA.sections[firstSi].short : DATA.sections[firstSi].short + ' \u2192 ' + DATA.sections[lastSi].short;
+    var html = '<div class="timing"><div class="clock">' + mmss(t.total) + '</div><div><div class="t">' + esc(range || 'Run') + '</div><div class="s">';
+    if (t.heard) html += '<b>' + t.heard + '</b> words heard, about <b>' + Math.round(60 * t.heard / t.total) + '</b> a minute. ';
+    html += 'At 150 words a minute this stretch reads in about <b>' + mmss(tgt) + '</b>' +
+            (tgt ? ' (<span class="' + (t.total > tgt ? 'down' : 'up') + '">' + signed(t.total - tgt) + '</span>)' : '') + '. ';
+    html += '\u201cvs 150 wpm\u201d is how far each part ran over (+) or under (\u2212) that pace.</div></div></div>';
+    html += sectionTable(t);
+    return html;
+  }
+  function showReport(t, live) {
+    $('repTitle').textContent = (live ? 'Live run' : 'Run') + ' \u00b7 ' + new Date(t.at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' + new Date(t.at).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    $('repBody').innerHTML = reportHTML(t) + (t.total < MIN_SAVE ? '<div class="empty">Under ' + MIN_SAVE + ' seconds, so this run was not saved.</div>' : '');
+    $('report').hidden = false; $('repBody').scrollTop = 0;
+  }
+  $('repClose').addEventListener('click', function () { $('report').hidden = true; });
+  $('repDone').addEventListener('click', function () { $('report').hidden = true; });
+
+  function showResults(res, spokenWords, seconds, timingInfo, trk) {
     if (timingInfo) renderTiming(timingInfo); else $('timing').hidden = true;
+    $('sections').innerHTML = trk ? sectionTable(trk) : '';
     $('scoreNum').textContent = res.score;
     $('scoreBox').className = 'score ' + tier(res.score);
     var wpm = seconds > 5 ? Math.round(60 * spokenWords / seconds) : 0;
@@ -758,7 +895,7 @@
     rec.onerror = function (e) {
       if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
         listening = false;
-        stopRec();
+        stopRec(); trackStop();
         setMic('mic blocked: allow microphone access for this page', 'warn');
       } else if (e.error !== 'no-speech' && e.error !== 'aborted') {
         setMic('mic hiccup (' + e.error + '), retrying', 'warn');
@@ -793,6 +930,7 @@
     committed = cursor;
     if (practice) setMark(cursor);
     finals = []; interimText = ''; startedAt = Date.now(); recentFinal = [];
+    trackStart();
     recBtn.classList.add('on');
     recBtn.setAttribute('aria-pressed', 'true');
     recLabel.textContent = practice ? 'Stop & score' : 'Listening';
@@ -804,16 +942,21 @@
     if (listening) {
       listening = false;
       stopRec();
-      if (practice) {
-        var spoken = finals.join(' ');
-        var words = spoken.split(/\s+/).filter(Boolean).length;
-        if (!words) { setMic('nothing heard, so nothing to score', 'warn'); return; }
-        // The run reaches wherever the follower got to, or as far as the word count says if it lost you.
-        var end = Math.min(N, Math.max(cursor, practiceStart + Math.round(words * 0.9)));
-        var seconds = (Date.now() - startedAt) / 1000;
-        var res = scoreSpan(practiceStart, end, spoken);
-        showResults(res, words, seconds, recordRun(practiceStart, end, seconds, words, res.score));
+      var trk = trackStop();
+      var spoken = finals.join(' ');
+      var words = spoken.split(/\s+/).filter(Boolean).length;
+      if (trk) trk.heard = words;
+      if (!practice) {                         // Live: report how long every part took
+        if (trk) { saveSession(trk); showReport(trk, true); }
+        return;
       }
+      if (!words) { setMic('nothing heard, so nothing to score', 'warn'); return; }
+      // The run reaches wherever the follower got to, or as far as the word count says if it lost you.
+      var end = Math.min(N, Math.max(cursor, practiceStart + Math.round(words * 0.9)));
+      var seconds = (Date.now() - startedAt) / 1000;
+      var res = scoreSpan(practiceStart, end, spoken);
+      if (trk) { trk.to = Math.max(trk.to, end); saveSession(trk); }
+      showResults(res, words, seconds, recordRun(practiceStart, end, seconds, words, res.score), trk);
       return;
     }
     startListening();
@@ -852,7 +995,7 @@
   setMode(mode === 'practice');
   if (!SR) setMic('this browser cannot listen; tap sentences to advance', 'warn');
   window.addEventListener('resize', function () { scrollToCursor(true); });
-  window.DoorPrompter = { scoreSpan: scoreSpan, showResults: showResults, beats: beats, tokens: tokens, sentenceStart: sentenceStart, advance: advance, resyncLimit: resyncLimit, recordRun: recordRun, sectionOf: sectionOf, loadRuns: loadRuns, mmss: mmss, sections: DATA.sections };
+  window.DoorPrompter = { trackStart: trackStart, trackStop: trackStop, showReport: showReport, reportHTML: reportHTML, loadSessions: loadSessions, scoreSpan: scoreSpan, showResults: showResults, beats: beats, tokens: tokens, sentenceStart: sentenceStart, advance: advance, resyncLimit: resyncLimit, recordRun: recordRun, sectionOf: sectionOf, loadRuns: loadRuns, mmss: mmss, sections: DATA.sections };
 })();
 </script>
 </body>
