@@ -12,7 +12,11 @@ He puts me down, thanks me and tells me that he took this class just wanting a b
 Micah walked out of the room, and Dr. Berry turned to me and said, "I've never seen anything like that. The way you share your curiosity and your passion for computing, you've lit that kid on fire." Micah later told Dr. Berry that he was switching his major to computer science, and he wanted to thank me for showing him his path.
 And that is why I'm standing here today.
 ===
-We live through millions of moments. Most pass through us. Some become memories. A small handful become something more. They become a part of the story we tell about who we are. Psychologists call them self-defining memories—moments that stick with us and define what we believe about ourselves.
+We live through millions of moments.
+Most pass through us.
+Some become memories.
+A small handful become something more. They become a part of the story we tell about who we are.
+Psychologists call them self-defining memories—moments that stick with us and define what we believe about ourselves.
 ===
 I thought I had spent the semester teaching computer science. What I had really done was open a door. Micah was the one who walked through it.
 But first, somebody had to make the door visible.
@@ -24,7 +28,10 @@ And like many things in life, I got here because of a happy accident…or rather
 I didn't plan on this field. When the 2008 crash took the job market with it, math sent me back to school, and two people at Tennessee, Dr. Langston and Dr. Cynthia Peterson, opened the door to computer science for a mathematician who didn't yet know she belonged there.
 I met Micah on my way to earning my PhD in computer science from the Center for Intelligent Systems and Machine Learning at the University of Tennessee.
 ===
-After finishing my PhD, there was only one destination for me: Silicon Valley. I wanted to learn and build from the best. I wanted to learn how the best builders in the world turned code into products. But I also wanted to see how those products became things people could actually use. How people’s jobs or lives were impacted and enhanced by things that started out as an idea and some code.
+After finishing my PhD, there was only one destination for me: Silicon Valley.
+I wanted to learn and build from the best.
+I wanted to learn how the best builders in the world turned code into products.
+But I also wanted to see how those products became things people could actually use. How people’s jobs or lives were impacted and enhanced by things that started out as an idea and some code.
 While in Silicon Valley, I quickly fell into the gravity well of open source. Think of open source like academia at its best. Everyone's invited, everyone shares, and the reward isn't hoarding what you know. It's being the one who figured it out first and told everybody.
 I became a leader in open-source graph technology and helped dozens of organizations like Netflix, Starbucks, Home Depot, FedEx, SnapChat, and the Federal Government connect data in ways that break silos. Of course, a broken silo itself is a duality—it breaks somebody's closed, comfortable model of how the world was supposed to work and replaces it with an opportunity for someone else.
 ===
@@ -33,10 +40,14 @@ That same start-up built automated healthcare claims processing and saved people
 After enough times, you stop seeing innovation as one thing. What you build as a door for one person is a wall coming down for someone else.
 ===
 The technology doesn't pick. People do.
-So here's something else about me. I've always felt like I lived in a duality between what makes sense to me and what everybody else says is true. This isn’t like colorblindness where I think green looks orange. Or my firm belief that DABO SWINNEY  the actual mayor of SOUTH CAROLINA, period.
+So here's something else about me. I've always felt like I lived in a duality between what makes sense to me and what everybody else says is true. This isn’t like colorblindness where I think green looks orange.
+Or my firm belief that DABO SWINNEY  the actual mayor of SOUTH CAROLINA, period.
 It’s more that my biggest moments of synthesis often don’t arrive in the moment, while reading at my desk, or listening to a lecture back here in my grad days. Rather, they arrive later, when I’m moving.
 Once, while I was swimming laps, the last piece of an algorithm I had been working on suddenly clicked into place in my brain. I immediately climbed out, wrapped myself in a towel, got into my car soaking wet, and drove straight home to the wall-sized whiteboard in my apartment so I could get it down before it disappeared.
-That is how my mind works. I understand by moving. Talking. Testing. Making.
+That is how my mind works. I understand by moving.
+Talking.
+Testing.
+Making.
 ===
 If you go down the research rabbit hole on this, professionals in this space sort people’s creating and learning styles into four buckets.
 1. Visual.
@@ -69,7 +80,10 @@ But when we open the door and show people through, we create a whole new group o
 ===
 Take J, my chief of staff. J is a former pro golfer. She won on the LPGA tour. Then, she excelled in a career as an operations expert in tech. I showed her how to use plain language to design an app in Lovable. She's built a whole series of apps since.
 The one she is most proud of solved a problem that had her completely buried. She was running a charity golf event for Folds of Honor. The whole thing was being run out of her inbox. Sourcing donations over email, tracking donations over email, all of it. And the donors had no way to follow the players, who were golfing 185 holes in a single day to raise money to fund the education of kids for fallen military members.
-J built a Lovable app to manage the donations coming in and send status updates back out. It took her a few hours. Then she added live scoring. Then she added a way for donors to send messages to the players while they were out on the course. All of this in a weekend.
+J built a Lovable app to manage the donations coming in and send status updates back out. It took her a few hours.
+Then she added live scoring.
+Then she added a way for donors to send messages to the players while they were out on the course.
+All of this in a weekend.
 What used to keep her up working until 2am just to stay afloat was now a slick app that not only let her get some sleep at night but was a better experience for the donors to a good cause.
 I'll never forget how excited she was to tell me her app got over a thousand views on the day of the event.
 Now, I can't stand up here and tell you that application views went up some clean percentage year over year. There's no baseline.
@@ -87,7 +101,11 @@ Anyone know who that was? Any guesses?
 That's John F. Kennedy. Read it again and try to tell me it wasn't written for this moment. What does that tell us? What does it tell us that a quote from the early 60s is equally applicable today? I suspect if we looked hard enough—or asked AI to look for us—we could find something similar from the 1890s or 1920s.
 ===
 In prehistoric times, Thog probably lamented the downfall of his sledge business when Grog invented the wheel.
-We invent new things. Those new things bring change. Change is disruptive. That disruption has positive effects and negative effects. This is the inherent tension in change.
+We invent new things.
+Those new things bring change.
+Change is disruptive.
+That disruption has positive effects and negative effects.
+This is the inherent tension in change.
 ===
 But humans don’t like change.
 Macro, we are very adaptable as a species.
@@ -103,7 +121,10 @@ The long run is an abstraction. People live in the present. They experience chan
 That is where leadership comes in. That is where people in this room with the power to resolve these tensions and open doors comes in.
 The leaders in this room cannot make every consequence of AI positive. We cannot promise that no job will disappear, no community will face new costs, and no powerful institution will use AI in ways we wish it would not.
 But we can influence how the change is experienced.
-We can make the benefits more accessible. We can anticipate who is likely to carry the costs. We can help people move from one opportunity to the next. We can give more people a voice in the decisions that will shape their lives.
+We can make the benefits more accessible.
+We can anticipate who is likely to carry the costs.
+We can help people move from one opportunity to the next.
+We can give more people a voice in the decisions that will shape their lives.
 That is what it means to navigate the Duality of AI.
 ## The First Great Tension: AI Will Eliminate Jobs—and Create New Ones
 Let’s take the first great tension: jobs.
@@ -111,15 +132,25 @@ As with every major technological disruption, AI will eliminate jobs.
 ===
 That is as inevitable as the decline of Thog’s sledge-making shop.
 But equally inevitable is the creation of new work.
-Grog needed someone to make wheels. Then someone had to build the cart. Someone had to repair it, improve it, sell it, and figure out what else could be moved once moving things became easier.
+Grog needed someone to make wheels.
+Then someone had to build the cart.
+Someone had to repair it, improve it, sell it, and figure out what else could be moved once moving things became easier.
 Sometimes, the skills transfer.
-If you can make a sledge, probably you can make a cart. Perhaps you can learn to make a wheel.
+If you can make a sledge, probably you can make a cart.
+Perhaps you can learn to make a wheel.
 But sometimes, the skills do not transfer easily.
 When a robot automates an assembly-line job, it is technically possible that the displaced worker will retrain in advanced robotics or software engineering.
 But “technically possible” is doing a lot of work there.
 ===
-The evidence from previous waves of automation does not give us great confidence that everyone who loses a job will simply move into one of the new jobs being created. In 1950, almost 1.5 million people worked as telephone switchboard operators, either for the Bell system or in offices, hotels, and factories. By 1984 that number fell to 40,000. Today, it’s under 2,000.
-These jobs disappeared as new ones were created—first people to design and build the automation systems, engineering jobs; then people to maintain that automation, like linemen and other electrical and mechanical repair jobs; then eventually it’s computerized, which is a whole new category of jobs, and so on. Those new jobs may require different skills. They may be located somewhere else. They may arrive years after the old job disappears. And they may go to entirely different people.
+The evidence from previous waves of automation does not give us great confidence that everyone who loses a job will simply move into one of the new jobs being created.
+In 1950, almost 1.5 million people worked as telephone switchboard operators, either for the Bell system or in offices, hotels, and factories.
+By 1984 that number fell to 40,000.
+Today, it’s under 2,000.
+These jobs disappeared as new ones were created—first people to design and build the automation systems, engineering jobs; then people to maintain that automation, like linemen and other electrical and mechanical repair jobs; then eventually it’s computerized, which is a whole new category of jobs, and so on.
+Those new jobs may require different skills.
+They may be located somewhere else.
+They may arrive years after the old job disappears.
+And they may go to entirely different people.
 That is the part we lose when we talk only in aggregate.
 ===
 Economists treat jobs as a statistic. But for an individual, they are mortgages, college tuitions, food on the table; and they are also identity, dignity, community, and a sense of value.
@@ -127,30 +158,43 @@ And what happens when the disruption begins early in a career?
 AI is already capable of performing some of the basic work traditionally assigned to entry-level employees: initial research, first drafts, basic analysis, routine coding, and administrative coordination.
 Those tasks may not be glamorous. But they are often how people learn.
 The first rung of a career is where someone watches more experienced colleagues, makes manageable mistakes, begins developing judgment, and earns the opportunity to take on more consequential work.
-If AI removes the first rung, how does the next generation reach the second? We told young people to get an education and prepare for the jobs of the future. They did. And today, 42% of recent college graduates are underemployed—working in jobs that don’t require degrees and another 6% cannot find work at all.
+If AI removes the first rung, how does the next generation reach the second?
+We told young people to get an education and prepare for the jobs of the future.
+They did.
+And today, 42% of recent college graduates are underemployed—working in jobs that don’t require degrees and another 6% cannot find work at all.
 We should not answer that anxiety with a lecture about productivity.
 We should answer it with honesty.
 ===
-Some jobs will disappear. Some career paths will narrow. Some hard-earned skills will become less valuable. That is one side of the Duality.
+Some jobs will disappear.
+Some career paths will narrow.
+Some hard-earned skills will become less valuable.
+That is one side of the Duality.
 But it is not the only side.
 At the same time that AI is closing off some forms of work, it is dramatically lowering the threshold for creating others.
 My dear friend Joyce is a Pilates instructor. She runs her own studio. She is talented, disciplined, and exceptionally capable — she has helped people like me, with severe disabling injuries, find mobility again.
 But she never thought of herself as a software developer.
 In one hour, I showed her how she could use AI to create an email agent.
-I did not build anything for her. I did not hand her a finished answer.
+I did not build anything for her.
+I did not hand her a finished answer.
 I simply helped her see that a door she had assumed was closed was now open.
 Joyce started as a one-woman shop teaching one-on-one lessons. Her business has since grown into a full gym — a room of clients, multiple teachers, and genuinely complicated schedules. The hour we spent together was on a Claude agent to help her with email.
 Two weeks later, I opened her scheduling app to book a class and noticed something new. I could type: book me in the Tuesday 8am class for the next ten weeks.
 And it just happened.
-No hundred clicks. One sentence in English. She had gone from an email agent to connecting Claude and MCP servers into her business's actual stack.
+No hundred clicks.
+One sentence in English.
+She had gone from an email agent to connecting Claude and MCP servers into her business's actual stack.
 I never asked her to build that. I only showed her how.
 It was something useful that had never existed, built by someone who had never thought the word "builder" applied to her.
 That is also real.
-Joyce did not need me to build her app. But she did need someone to show her that she could. She did need someone to open the door for her.
+Joyce did not need me to build her app.
+But she did need someone to show her that she could.
+She did need someone to open the door for her.
 That is the leadership responsibility inside this tension.
 ===
 Who in your organization could do more meaningful work if someone made these new capabilities accessible to them?
-Who has insight but not the title? Who understands the problem but lacks the technical vocabulary? Who has never been invited to see themselves as a builder?
+Who has insight but not the title?
+Who understands the problem but lacks the technical vocabulary?
+Who has never been invited to see themselves as a builder?
 And at the same time, who is standing in front of a closing door with no clear path to the next one?
 Opening doors means doing both: giving people genuine access to the new tools and helping people navigate the disruption those tools create.
 So here is the first question I want you to carry out of this room.
@@ -162,13 +206,17 @@ The second great tension is about who benefits—and who pays.
 AI has the potential to create extraordinary value. It can help businesses grow, enable entrepreneurs to compete, accelerate scientific research, improve public services, and bring entirely new investment or products to places and communities that stand to benefit.
 But economic growth does not automagically equate to community prosperity.
 A company can become more productive while employing fewer people locally.
-Small businesses can gain powerful new capabilities and simultaneously find themselves competing against companies with vastly greater access to data and computing power. And the physical infrastructure required to power AI can bring new investment while placing new demands on land, electricity, water, and noise pollution.
+Small businesses can gain powerful new capabilities and simultaneously find themselves competing against companies with vastly greater access to data and computing power.
+And the physical infrastructure required to power AI can bring new investment while placing new demands on land, electricity, water, and noise pollution.
 This is the data center debate that is raging today.
 ===
 There are real benefits and real costs. That is the tension. And this tension demands we acknowledge the responsibility that comes with those benefits.
-A community can gain investment and still feel strained by it—again, data centers are not simply a cost-free economic boon. A business can become more productive while its workers feel less secure. A new technology can create real opportunity without making that opportunity visible or accessible to the people who live nearby.
+A community can gain investment and still feel strained by it—again, data centers are not simply a cost-free economic boon.
+A business can become more productive while its workers feel less secure.
+A new technology can create real opportunity without making that opportunity visible or accessible to the people who live nearby.
 That is the tension. And we need to be honest about it.
-Will AI help more communities build durable prosperity? Or will its greatest benefits pass through them—or pass them by—while they absorb much of the disruption?
+Will AI help more communities build durable prosperity?
+Or will its greatest benefits pass through them—or pass them by—while they absorb much of the disruption?
 Those questions are not anti-business or anti-technology. They are fundamental business questions.
 What will this investment require?
 What value will it create?
@@ -176,16 +224,23 @@ Who will be able to participate?
 This tension demands we acknowledge the responsibility that comes with those benefits.
 ===
 Responsible business leaders want AI investment to leave communities stronger than it found them. Because this creates a virtuous cycle of opportunity for the business. Take Henry Ford for example. He was an advocate for paying his workers a good wage because he knew the way to sell more cars was to facilitate more people with the wherewithal to buy them.
-Today in the AI wave, this can mean creating pathways into new kinds of work rather than simply importing talent. It can mean helping local businesses adopt AI rather than allowing only the largest companies to capture its productivity gains. It can mean partnering with schools, universities, and workforce programs so that the capabilities created locally remain local.
+Today in the AI wave, this can mean creating pathways into new kinds of work rather than simply importing talent.
+It can mean helping local businesses adopt AI rather than allowing only the largest companies to capture its productivity gains.
+It can mean partnering with schools, universities, and workforce programs so that the capabilities created locally remain local.
 And yes, it also means paying attention to infrastructure.
 ===
 For many people, a data center is the first part of the AI economy they can actually see. Data centers are the pinata in the room they can hit.
-An AI model is abstract. The algorithm is invisible. But the building at the edge of town? That’s concrete.
+An AI model is abstract.
+The algorithm is invisible.
+But the building at the edge of town? That’s concrete.
 A data center can expand the tax base, support construction, strengthen infrastructure, and connect a region to one of the most important technological transformations of our time.
 It can also draw enormous amounts of electricity, occupy land, use water, create noise, and require significant public investment.
 The answer is not to stop building.
 ===
-It is to build in a way that earns and sustains community support and trust. That means listening before the major decisions have already been made. It means being candid about costs as well as benefits. It means investing in the infrastructure a project requires rather than quietly shifting those burdens onto everyone else.
+It is to build in a way that earns and sustains community support and trust.
+That means listening before the major decisions have already been made.
+It means being candid about costs as well as benefits.
+It means investing in the infrastructure a project requires rather than quietly shifting those burdens onto everyone else.
 And it means asking what else we can build.
 ===
 Dr. Katie Schuman and I were doing our PhD research at the University of Tennessee at the same time. I left for Silicon Valley. Dr. Schuman stayed and became one of the leading neuromorphic-computing researchers in the world.
@@ -201,19 +256,31 @@ But those chips represented something important.
 We sometimes talk about the demands created by AI as if they are simply the unavoidable price of progress.
 They are not.
 They are shaped by decisions: what we fund, what we build, which technical approaches we pursue, and whose needs we consider along the way.
-We can invest in more efficient architectures. We can support local research. We can build smaller and more specialized models. We can prepare local workers and businesses to participate. We can ensure that new infrastructure strengthens the systems communities will continue relying on long after construction is complete.
+We can invest in more efficient architectures.
+We can support local research.
+We can build smaller and more specialized models.
+We can prepare local workers and businesses to participate.
+We can ensure that new infrastructure strengthens the systems communities will continue relying on long after construction is complete.
 ===
 The leadership responsibility inside this tension is not to choose between innovation and community.
 It is to connect them.
-Which gives us the second question to carry. Who benefits, and who pays? Ask it of every building, every contract, and every announcement.
+Which gives us the second question to carry.
+Who benefits, and who pays?
+Ask it of every building, every contract, and every announcement.
 ===
 The strongest AI investments will not simply be located in a community. They will expand what that community is capable of doing.
-They will create opportunities that last beyond the initial construction project or corporate announcement. They will help more local businesses compete, more workers develop valuable skills, and more people see a place for themselves in the future being built around them.
+They will create opportunities that last beyond the initial construction project or corporate announcement.
+They will help more local businesses compete, more workers develop valuable skills, and more people see a place for themselves in the future being built around them.
 That is not charity.
-It is stewardship. It is good business. It is opening doors for communities. And it is how economic growth becomes durable community prosperity.
+It is stewardship.
+It is good business.
+It is opening doors for communities.
+And it is how economic growth becomes durable community prosperity.
 ## The Third Great Tension: AI Can Democratize Control—or Concentrate It
 And that brings us to the third great tension: control.
-Who gets to build with AI? Who gets to inspect it, question it, adapt it, and decide how it is used? And who retains agency over the parts of their lives that AI increasingly touches?
+Who gets to build with AI?
+Who gets to inspect it, question it, adapt it, and decide how it is used?
+And who retains agency over the parts of their lives that AI increasingly touches?
 This tension can be narrow.
 ===
 Will AI democratize software development, allowing far more people to build tools and solve problems more easily and more effectively than before?
@@ -231,8 +298,11 @@ Is it opening doors or closing them?
 Here’s the part where I get to talk about what really gets me excited: Open Source.
 ===
 The architecture of a technology helps determine the distribution of power around it. I have spent a significant part of my career in open source technology.
-Open source does not mean that everything must be free. And it does not mean that anyone can wander in, change the code, and instantly push that change out to everyone who depends on it.
-What it does mean is that the underlying code can be examined, tested, challenged, improved, and adapted. More people can understand the foundations on which they depend. They can identify weaknesses, question assumptions, modify a tool for their own needs, and create things the people at the center never anticipated.
+Open source does not mean that everything must be free.
+And it does not mean that anyone can wander in, change the code, and instantly push that change out to everyone who depends on it.
+What it does mean is that the underlying code can be examined, tested, challenged, improved, and adapted.
+More people can understand the foundations on which they depend.
+They can identify weaknesses, question assumptions, modify a tool for their own needs, and create things the people at the center never anticipated.
 On the flip side, closed is not a synonym for “bad.”
 Closed systems can offer real benefits: integration, consistency, technical support, simplicity, and clearer lines of accountability.
 Anyone who is an Apple user knows what I’m talking about. Apple controls the entire experience, and much of the time, that is precisely why the experience works so well. It’s a beautiful walled garden on the inside. If you’re into that sorta thing.
@@ -250,7 +320,8 @@ AI can give a person access to knowledge that once required years of specialized
 It can allow people to create software, analyze data, understand a medical document, prepare for an important conversation, or navigate a complicated institution that previously felt inaccessible.
 Used well, AI can increase our capacity to think and act.
 But the same technology can also weaken the very capabilities it appears to expand.
-If we routinely ask AI what to think before we have tried to think, we risk outsourcing more than a task. We risk outsourcing the struggle through which judgment develops.
+If we routinely ask AI what to think before we have tried to think, we risk outsourcing more than a task.
+We risk outsourcing the struggle through which judgment develops.
 ===
 Analytical cognition is not simply the production of an answer.
 It is the process of examining evidence, tolerating uncertainty, recognizing assumptions, changing our minds, and understanding why we believe what we believe.
@@ -258,7 +329,10 @@ AI can strengthen that process by challenging us, extending us, and helping us s
 Or it can short-circuit the process by giving us an answer that sounds complete before our own thinking has begun.
 And once again, convenience can conceal a transfer of control.
 If a system chooses which sources to summarize, which arguments to emphasize, which options to present, and which conclusions appear reasonable, then it is helping shape our understanding of the world—even when it feels as though it is merely helping us save time.
-That does not mean we should reject AI assistance, much less AI in general. It means we need to remain conscious of what we are delegating. Are we asking AI to help us reason or asking it to reason for us? Are we using it to expand our choices or allowing it to narrow them without our awareness? Are we gaining greater control over our lives or becoming more dependent on systems we cannot understand, challenge, or leave?
+That does not mean we should reject AI assistance, much less AI in general. It means we need to remain conscious of what we are delegating.
+Are we asking AI to help us reason or asking it to reason for us?
+Are we using it to expand our choices or allowing it to narrow them without our awareness?
+Are we gaining greater control over our lives or becoming more dependent on systems we cannot understand, challenge, or leave?
 This is the tension.
 Open source is one response to that tension. It is not the only response, but it is a response I happen to love that you also touch daily, so I couldn’t stand in front of a room full of leaders and not plant that flag.
 Open source, open access, or a well-governed proprietary approach—all can work, as long as they guarantee some fundamentals.
@@ -280,21 +354,31 @@ That is the leadership responsibility inside this duality.
 ===
 And it gives you the third question. Who can understand and question this, and who can leave?
 That is what openness means in this context. Not that every system must be open source or that nothing should be protected, but that our future must remain open to scrutiny, open to challenge, open to competition, and open to people who want to create a better alternative.
-Closed systems may sometimes serve us well. A closed future will not.
+Closed systems may sometimes serve us well.
+A closed future will not.
 AI can open extraordinary doors.
 Our responsibility is to ensure that no company, institution, or individual becomes the only one holding the key.
 ## PART 4. STRATEGY AND EXECUTION: WRITING IS THINKING
-Now, you are leaders. In your community, at your company, in your industry. Every great leader in this room already knows that leading through change comes down to two things: strategy and execution. And they are equally important.
+Now, you are leaders. In your community, at your company, in your industry.
+Every great leader in this room already knows that leading through change comes down to two things: strategy and execution. And they are equally important.
 A strategy nobody can execute is a wish.
 Execution without a strategy is just motion.
 So, I want to leave you with one framework. I learned it from the best in the world at solving invisible math puzzles.
 There is no better company at executing software than Amazon. Amazon has sixteen leadership principles. You do not need sixteen. One habit underlies how Amazon operates:
 ===
 Writing is thinking.
-Because you have to write, you have to think it through. Your goal. Your options. The case for your recommendation.
+Because you have to write, you have to think it through.
+Your goal.
+Your options.
+The case for your recommendation.
 Good strategic thinking starts at the end. What is the outcome we are trying to achieve?
-At Amazon, we took that to the extreme. We called it Working Backwards. Before we built a product, we wrote the press release for the finished thing. Then we wrote our way back from that announcement to the very first requirements. The whole plan existed on paper before anything existed in code.
-But here is the real trick. It was never about the documents themselves. It was about shared clarity. Finance, engineering, marketing, legal, operations, every function with its own needs and skills, all worked from the same small set of core pages.
+At Amazon, we took that to the extreme. We called it Working Backwards.
+Before we built a product, we wrote the press release for the finished thing.
+Then we wrote our way back from that announcement to the very first requirements.
+The whole plan existed on paper before anything existed in code.
+But here is the real trick. It was never about the documents themselves.
+It was about shared clarity.
+Finance, engineering, marketing, legal, operations, every function with its own needs and skills, all worked from the same small set of core pages.
 One set of pages.
 Many readers.
 Everyone thinking together, everyone clear on what we were trying to accomplish.
@@ -307,11 +391,19 @@ We need to take moments, like this one, this evening, to find that time to manuf
 Maybe if Dabo Swiney is the mayor of South Carolina, maybe this won’t be too bad.
 I hear some of you asking, documents are great, but we’re talking about AI, right? Well guess what: agents are documents.
 ===
-Strip away the hype, and a Claude agent is a file. A set of instructions, some context, and the output you want back. J's golf app. Joyce's scheduler. Every one of them started as something written down.
+Strip away the hype, and a Claude agent is a file. A set of instructions, some context, and the output you want back.
+J's golf app.
+Joyce's scheduler.
+Every one of them started as something written down.
 That is not magic.
 It is written down.
-If you take the time to write your strategy and think it through, you already have the inputs you need to take advantage of AI to the fullest. The thinking is the work. The agents just read.
-Every leader in this room is deciding what new process to introduce, and whether that process will scale knowledge or bottleneck it. You have to think. You have to write to think. And you have to agree, as a leadership team, on the handful of pages you will write, so that one page can send the whole team running.
+If you take the time to write your strategy and think it through, you already have the inputs you need to take advantage of AI to the fullest.
+The thinking is the work.
+The agents just read.
+Every leader in this room is deciding what new process to introduce, and whether that process will scale knowledge or bottleneck it.
+You have to think.
+You have to write to think.
+And you have to agree, as a leadership team, on the handful of pages you will write, so that one page can send the whole team running.
 I left Tennessee to learn how the best builders in the world build. This is the part I most wanted to bring home.
 Silicon Valley figured out how to solve invisible math puzzles this way. I want to see it built this way in this zip code. In 29401.
 ## PART 5. CONCLUSION: BE A DOOR-OPENER
@@ -326,14 +418,22 @@ And remember our 3 tensions? There are three simple checks you can perform as pa
 If you can answer all three, you are opening doors. If you cannot answer one of them, you have found the door that is quietly closing on someone.
 That is the one document review Amazon never taught me. And it is the one I care about most.
 ===
-So let me tell you what is really lighting me up. Because it isn’t the chips. I’d still drop those anyway. It isn’t the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created. It isn’t even the inventions and new possibilities AI will unlock.
+So let me tell you what is really lighting me up.
+Because it isn’t the chips. I’d still drop those anyway.
+It isn’t the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created.
+It isn’t even the inventions and new possibilities AI will unlock.
 No.
-I do what I do for that kid who sees an open door—a door I helped open—and walks through. That kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world. That kid who discovers an entire set of possibilities on the other side of a door she did not realize existed before.
+I do what I do for that kid who sees an open door—a door I helped open—and walks through.
+That kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world.
+That kid who discovers an entire set of possibilities on the other side of a door she did not realize existed before.
 Because for her, it didn’t.
 Until it did.
 And all she needed was for someone to open the door and show her where it was.
 That’s it. That’s the whole thing. I do what I do for the Micahs of the world. I would go so far as to say I exist to light somebody else’s fire—and to help keep it burning.
-That is my philosophical North Star. It is what gives me energy. It is what gives me purpose. And every one of the dualities we just walked through comes back to that same purpose.
+That is my philosophical North Star.
+It is what gives me energy.
+It is what gives me purpose.
+And every one of the dualities we just walked through comes back to that same purpose.
 The jobs duality is about whether people whose old paths are disappearing can see a path into what comes next. It is about whether AI simply closes the door on work they once depended on, or whether someone helps them find the skills, tools, and opportunities waiting beyond it.
 The community duality is about whether data center and AI investment leaves communities stronger than it found them. It is about whether growth simply arrives, consumes resources, and moves on, or whether it creates lasting capacity, local opportunity, and more ways for people to participate in the prosperity it generates.
 And the control duality is about whether the future remains open at all: open to scrutiny, open to challenge, open to new builders, and open to people who want to create a better alternative. It is about making sure no company, institution, or individual becomes the only one holding the key.
@@ -345,12 +445,16 @@ And that fear is not unfounded.
 Change is hard.
 Fast change is unsettling.
 Fast change that affects individuals and society simultaneously, a mile wide and a mile deep, that is—if you genuinely pause and think what that means—in a word, terrifying.
-But fear has a way of narrowing our field of vision. It makes us look for safety in certainty. It pushes us to pick a side:
+But fear has a way of narrowing our field of vision.
+It makes us look for safety in certainty.
+It pushes us to pick a side:
 * acceleration or obstruction,
 * optimism or pessimism,
 * opportunity or danger.
 The Duality of AI demands something harder from us.
-It asks us to see both sides at once. To acknowledge the danger without surrendering the possibility. To pursue the possibility without pretending the danger is not real.
+It asks us to see both sides at once.
+To acknowledge the danger without surrendering the possibility.
+To pursue the possibility without pretending the danger is not real.
 We do not have to choose between a future in which AI succeeds and one in which people do. It does not have to be zero-sum. But the better future does not happen automatically. It will take the people in this room—the leaders of businesses, institutions, and communities—to make it happen.
 ===
 You will not control every force shaping the future of AI. But you can control whether the choices within your reach open doors or close them.
@@ -360,9 +464,16 @@ You will not control every force shaping the future of AI. But you can control w
 So that is my challenge to you.
 ===
 Do not let a month go by when you cannot say, “I opened a door for someone.” Every month, find your Micah.
-Find the person with the problem but not the title. The person with the idea but not the technical vocabulary. The person whose old path is disappearing. The person who does not look like you, think like you, learn like you, or arrive by the path you did.
-You do not have to determine their future for them. You do not have to carry them through the door. Just open the door and make it visible.
-Give them the tools. Help them reach the threshold. And then let them surprise you.
+Find the person with the problem but not the title.
+The person with the idea but not the technical vocabulary.
+The person whose old path is disappearing.
+The person who does not look like you, think like you, learn like you, or arrive by the path you did.
+You do not have to determine their future for them.
+You do not have to carry them through the door.
+Just open the door and make it visible.
+Give them the tools.
+Help them reach the threshold.
+And then let them surprise you.
 We are all going to move through this AI moment differently—you, me, J, Karen, Fay.. Everyone in this room.
 But none of us is moving through it alone.
 Our choices shape the paths available to other people. And every door we open expands what someone else can imagine, attempt, and become.
