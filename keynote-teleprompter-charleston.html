@@ -20,6 +20,7 @@
     --amber: #ffc857;
     --amber-deep: #f2a93b;
     --record: #e2503c;
+    --slide: #ff2d95;
     --ok: #5ec48a;
     --body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
     --mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
@@ -90,6 +91,14 @@
   }
   #text .cue.part { color: var(--amber-deep); border-top: 1px solid var(--line); padding-top: 1.2em; margin-top: 2.4em; }
   #text .cue.card { font-size: .42em; color: var(--ink-cue); margin: 1.4em 0 .8em; text-transform: none; letter-spacing: .02em; }
+  /* Slide-change marker: a bright bar across the whole screen so it can't be missed at a glance */
+  #text .cue.slide {
+    display: block; width: 100vw; margin: 1.3em 0 .9em calc(50% - 50vw); padding: .4em 16px;
+    font-size: .6em; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-align: center;
+    color: #fff; background: var(--slide); border-top: 5px solid #fff; border-bottom: 5px solid #fff;
+    box-shadow: 0 0 28px rgba(255,45,149,.55); overflow-wrap: normal;
+  }
+  #text .cue.slide .lbl { display: block; font-weight: 400; letter-spacing: .04em; text-transform: none; font-size: .85em; opacity: .95; margin-top: .15em; }
   #text .cue.inline { display: inline; margin: 0; padding: .1em .45em; border: 1px solid var(--line); border-radius: 6px; text-transform: none; letter-spacing: 0; }
   #text.practice .w.mark { box-shadow: inset 0 -3px 0 var(--amber-deep); }
   .w {
@@ -475,6 +484,11 @@
       var c = document.createElement('div');
       c.className = 'cue';
       c.textContent = t;
+      if (/slide/i.test(t)) {              // [NEXT SLIDE], [SLIDE: ...] -> full-width slide-change bar
+        c.className = 'cue slide';
+        c.textContent = '\u25B6 NEW SLIDE \u25B6';
+        var d = document.createElement('span'); d.className = 'lbl'; d.textContent = t; c.appendChild(d);
+      }
       container.appendChild(c);
       return;
     }
@@ -507,8 +521,14 @@
       var wrap = document.createElement('div');
       wrap.className = 'card';
       var label = document.createElement('div');
-      label.className = 'cue card';
-      label.textContent = /^Slide \d/.test(card.title || '') ? card.title : card.id + ' · ' + (card.title || 'Card ' + card.id);
+      if (/^Slide \d/.test(card.title || '')) {   // one card per slide: the card label IS the slide change
+        label.className = 'cue slide';
+        label.textContent = '\u25B6 NEW SLIDE \u25B6';
+        var sl = document.createElement('span'); sl.className = 'lbl'; sl.textContent = card.title; label.appendChild(sl);
+      } else {
+        label.className = 'cue card';
+        label.textContent = card.id + ' · ' + (card.title || 'Card ' + card.id);
+      }
       wrap.appendChild(label);
       card.start = tokens.length;
       card.paragraphs.forEach(function (p) { addParagraph(wrap, p); });
