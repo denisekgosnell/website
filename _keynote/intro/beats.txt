@@ -1,0 +1,8 @@
+# Idea beats for the intro video script. Format: label :: key ; key / alternative
+card 1 | Intro
+Who I am :: denise gosnell ; chief data officer / data architect
+Fifteen years of systems :: distributed data systems
+Executive teams, lead through AI :: executive teams ; lead through ai
+Grounded calls :: grounded calls ; artificial intelligence
+The good and the messy :: the good ; the messy / everything in between
+Think out loud :: think out loud ; follow along

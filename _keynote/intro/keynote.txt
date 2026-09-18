@@ -1,0 +1,6 @@
+## Intro
+I'm Denise Gosnell. Former Chief Data Officer and longtime data architect.
+I spent 15+ years building distributed data systems.
+Now, I work directly with executive teams to help you lead through AI, and make grounded calls when it comes to integrating artificial intelligence in your business.
+Here, I'm sharing how I actually think through those calls: the good, the messy, and everything in between, so you can feel confident making them yourself.
+Follow along, this is where I think out loud!
