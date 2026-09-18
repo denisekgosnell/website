@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Voice-following teleprompter for the Duality of AI keynote. Live mode follows your words through the whole talk; Practice mode scores any stretch you run, starting from whatever sentence you tap.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark">
+<title>Hold the Door Prompter</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #0b0d12;
+    --panel: #12151d;
+    --raised: #1a1e29;
+    --line: #232837;
+    --ink: #d9dde8;
+    --ink-past: #4b5264;
+    --ink-cue: #6b7a99;
+    --amber: #ffc857;
+    --amber-deep: #f2a93b;
+    --record: #e2503c;
+    --slide: #ff2d95;
+    --ok: #5ec48a;
+    --body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+    --size: 30px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; width: 100%; max-width: 100%; overflow-x: hidden; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: var(--body); overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+  [hidden] { display: none !important; }
+  #app { height: 100vh; height: 100dvh; width: 100%; min-width: 0; overflow: hidden; display: grid; grid-template-rows: auto auto 1fr; }
+
+  /* Top bar */
+  header {
+    min-width: 0; max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+    padding-top: max(10px, env(safe-area-inset-top));
+  }
+  button {
+    font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line);
+    border-radius: 999px; padding: 9px 13px; cursor: pointer; font-size: 15px; line-height: 1;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; white-space: nowrap;
+  }
+  button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  button:active { background: var(--raised); }
+  #rec {
+    display: inline-flex; align-items: center; gap: 9px; font-weight: 700;
+    border-color: var(--record); color: var(--record); padding: 10px 16px;
+  }
+  #rec .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--record); }
+  #rec.on { background: var(--record); color: #fff; }
+  #rec.on .dot { background: #fff; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .45; transform: scale(.7);} }
+  .spacer { flex: 1; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; padding: 9px 12px; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button.active { background: var(--amber); color: #1a1405; font-weight: 700; }
+  .tag { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--amber-deep); border: 1px solid var(--amber-deep); border-radius: 999px; padding: 6px 10px; }
+  #hide.active { background: var(--raised); border-color: var(--amber-deep); color: var(--amber); }
+
+  #status {
+    min-width: 0; max-width: 100%;
+    font-family: var(--mono); font-size: 12px; color: var(--ink-cue); line-height: 1.3;
+    padding: 7px 14px 9px; background: var(--panel); border-bottom: 1px solid var(--line);
+    display: flex; gap: 14px; align-items: baseline; white-space: nowrap; overflow: hidden;
+  }
+  #status #mic { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  #status .live { color: var(--ok); }
+  #status .warn { color: var(--amber-deep); }
+  #heard { flex: 1; overflow: hidden; text-overflow: ellipsis; color: var(--ink); opacity: .7; }
+  #pct { font-variant-numeric: tabular-nums; }
+  #clock { flex: 0 0 auto; font-variant-numeric: tabular-nums; color: var(--amber); }
+  #clock:empty { display: none; }
+
+  /* Script body */
+  main#scroller { overflow-y: auto; overflow-x: hidden; position: relative; min-width: 0; max-width: 100%; -webkit-overflow-scrolling: touch; }
+  #text {
+    position: relative; padding: 26vh 12px 60vh; width: 100%; max-width: min(100%, 42em); margin: 0 auto;
+    font-size: var(--size); line-height: 1.5; font-weight: 400;
+    overflow-wrap: anywhere;
+  }
+  #text .p { margin: 0 0 .8em; }
+  #text .cue {
+    font-family: var(--mono); font-size: .48em; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-cue); margin: 1.6em 0 .9em; line-height: 1.4;
+  }
+  #text .cue.part { color: var(--amber-deep); border-top: 1px solid var(--line); padding-top: 1.2em; margin-top: 2.4em; }
+  #text .cue.card { font-size: .42em; color: var(--ink-cue); margin: 1.4em 0 .8em; text-transform: none; letter-spacing: .02em; }
+  /* Slide-change marker: a bright bar across the whole screen so it can't be missed at a glance */
+  #text .cue.slide {
+    display: block; width: 100vw; margin: 1.3em 0 .9em calc(50% - 50vw); padding: .4em 16px;
+    font-size: .6em; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-align: center;
+    color: #fff; background: var(--slide); border-top: 5px solid #fff; border-bottom: 5px solid #fff;
+    box-shadow: 0 0 28px rgba(255,45,149,.55); overflow-wrap: normal;
+  }
+  #text .cue.slide .lbl { display: block; font-weight: 400; letter-spacing: .04em; text-transform: none; font-size: .85em; opacity: .95; margin-top: .15em; }
+  #text .cue.inline { display: inline; margin: 0; padding: .1em .45em; border: 1px solid var(--line); border-radius: 6px; text-transform: none; letter-spacing: 0; }
+  #text.practice .w.mark { box-shadow: inset 0 -3px 0 var(--amber-deep); }
+  .w {
+    display: inline-block; cursor: pointer; border-radius: .18em; padding: 0 .04em;
+    transition: color .25s ease, transform .25s ease, text-shadow .25s ease, filter .3s ease;
+    transform-origin: center bottom;
+  }
+  .w.past { color: var(--ink-past); }
+  .w.up { color: var(--amber); font-weight: 700; }
+  .w.hot { color: #fff; transform: scale(1.03); text-shadow: 0 0 16px rgba(255,200,87,.6); }
+  #text.blur .w { filter: blur(7px); }
+  #text.blur .w.hot { filter: blur(4px); }
+  #text.blur .cue { filter: none; }
+
+  /* Sheets: picker and results */
+  .sheet {
+    position: fixed; inset: 0; background: rgba(6,8,12,.78); display: grid; align-items: end; z-index: 20;
+  }
+  .sheet .panel {
+    background: var(--panel); border-top: 1px solid var(--line); border-radius: 18px 18px 0 0;
+    max-height: 88vh; max-height: 88dvh; display: flex; flex-direction: column;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .sheet .head {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px 10px; border-bottom: 1px solid var(--line);
+  }
+  .sheet .head h2 { margin: 0; font-size: 17px; font-weight: 700; flex: 1; }
+  .sheet .body { overflow-y: auto; padding: 8px 12px 12px; -webkit-overflow-scrolling: touch; }
+  .sheet .foot { display: flex; gap: 8px; padding: 10px 12px 0; flex-wrap: wrap; }
+  .sheet .foot button { flex: 1; padding: 12px 14px; }
+  .sheet .foot button.primary { background: var(--amber); color: #1a1405; border-color: var(--amber); font-weight: 700; }
+  .x { width: 36px; height: 36px; padding: 0; border-radius: 50%; font-size: 18px; line-height: 1; }
+
+
+  .timing { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 6px 4px 14px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+  .timing .clock { font-family: var(--mono); font-size: 46px; font-weight: 500; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--amber); }
+  .timing .clock.short { color: var(--ink-cue); }
+  .timing .t { font-size: 15px; font-weight: 700; }
+  .timing .s { font-size: 13px; color: var(--ink-cue); margin-top: 3px; line-height: 1.45; }
+  .timing .s b { color: var(--ink); font-weight: 400; }
+  .timing .s .up { color: var(--ok); } .timing .s .down { color: var(--record); }
+  .hist { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .hist span { font-family: var(--mono); font-size: 12px; padding: 3px 8px; border-radius: 6px; background: var(--raised); color: var(--ink-cue); font-variant-numeric: tabular-nums; }
+  .hist span.now { color: var(--amber); border: 1px solid var(--amber-deep); }
+  .hist span.best { color: var(--ok); }
+  .part { margin: 8px 0 16px; }
+  .part h3 { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-cue); margin: 0 0 6px 4px; display: flex; justify-content: space-between; gap: 8px; }
+  .part h3 b { color: var(--ink); font-weight: 500; text-transform: none; letter-spacing: 0; }
+  .stat { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 8px; }
+  .stat div { background: var(--raised); border-radius: 8px; padding: 8px 6px; text-align: center; }
+  .stat .v { font-family: var(--mono); font-size: 16px; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .stat .l { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-cue); margin-top: 3px; }
+  .runs { list-style: none; margin: 0; padding: 0; }
+  .runs li { display: grid; grid-template-columns: 1fr auto auto auto; gap: 10px; align-items: center; padding: 6px 10px; border-radius: 8px; font-size: 13px; color: var(--ink-cue); }
+  .runs li:nth-child(odd) { background: var(--raised); }
+  .runs li .d { font-family: var(--mono); font-size: 15px; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .runs li .cov { font-family: var(--mono); font-size: 11px; }
+  .runs li button { padding: 4px 9px; font-size: 13px; border-color: transparent; color: var(--ink-cue); }
+  .empty { color: var(--ink-cue); font-size: 14px; padding: 20px 8px; text-align: center; }
+  /* Section stopwatch report */
+  .secs { width: 100%; border-collapse: collapse; font-size: 14px; margin: 4px 0 12px; }
+  .secs th { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-cue); text-align: right; padding: 4px 8px; font-weight: 400; }
+  .secs th:first-child, .secs td:first-child { text-align: left; }
+  .secs td { padding: 8px; border-top: 1px solid var(--line); text-align: right; vertical-align: top; }
+  .secs td small { color: var(--ink-cue); font-size: 11px; }
+  .secs .d { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+  .secs .dim { color: var(--ink-cue); }
+  .secs .slow { color: var(--amber-deep); } .secs .on { color: var(--ok); } .secs .fast { color: var(--ink-cue); }
+  .secs tr.detail td { border-top: 0; padding: 0 8px 8px; text-align: left; }
+  .secs details summary { cursor: pointer; font-size: 12px; color: var(--ink-cue); }
+  .secs details ul { list-style: none; margin: 6px 0 0; padding: 0; }
+  .secs details li { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--ink-cue); padding: 3px 0 3px 10px; }
+  .secs tfoot td { font-weight: 700; border-top: 2px solid var(--line); }
+  .runs li.sess { cursor: pointer; }
+  .runs li .mode { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 6px; border-radius: 5px; background: var(--panel); }
+  .runs li .mode.live { color: var(--record); }
+  .score { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 8px 4px 14px; }
+  .score .big {
+    font-size: 54px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+  }
+  .score .big small { font-size: 22px; font-weight: 400; color: var(--ink-cue); }
+  .score.good .big { color: var(--ok); } .score.mid .big { color: var(--amber); } .score.low .big { color: var(--record); }
+  .score .t { font-size: 16px; font-weight: 700; }
+  .score .s { font-size: 13px; color: var(--ink-cue); margin-top: 3px; line-height: 1.4; }
+  .span { font-size: 13px; color: var(--ink-cue); line-height: 1.45; padding: 0 4px 12px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+  .span b { color: var(--ink); font-weight: 400; }
+  .group { margin: 6px 0 14px; }
+  .group h3 { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-cue); margin: 0 0 6px 4px; }
+  .beats { list-style: none; margin: 0; padding: 0; }
+  .beats li {
+    display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 8px 10px; border-radius: 10px; margin-bottom: 5px;
+    font-size: 15px; line-height: 1.4; background: var(--raised);
+  }
+  .beats li .mark { font-weight: 700; text-align: center; }
+  .beats li.hit { border-left: 3px solid var(--ok); } .beats li.hit .mark { color: var(--ok); }
+  .beats li.part { border-left: 3px solid var(--amber); } .beats li.part .mark { color: var(--amber); }
+  .beats li.miss { border-left: 3px solid var(--record); } .beats li.miss .mark { color: var(--record); }
+  .beats li.miss .label, .beats li.part .label { color: var(--ink); }
+  .beats li.hit .label { color: var(--ink-past); }
+  .beats .keys { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .beats .k { font-family: var(--mono); font-size: 11px; padding: 2px 7px; border-radius: 6px; background: var(--panel); color: var(--ink-cue); }
+  .beats .k.hit { color: var(--ok); } .beats .k.miss { color: var(--record); text-decoration: line-through; }
+
+  #nosupport {
+    position: fixed; inset: 0; background: rgba(11,13,18,.94); display: grid; place-items: center; padding: 30px; text-align: center;
+    font-size: 18px; line-height: 1.5; z-index: 30;
+  }
+  #nosupport code { font-family: var(--mono); color: var(--amber); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .w { transition: none; }
+    #rec.on .dot { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <button id="rec" aria-pressed="false"><span class="dot"></span><span id="reclabel">Record</span></button>
+    <span class="seg" role="group" aria-label="Mode">
+      <button id="modeLive" class="active">Live</button>
+      <button id="modePractice">Practice</button>
+    </span>
+    <span id="variant" class="tag" hidden></span>
+    <button id="hide" hidden aria-pressed="false">Hide words</button>
+    <button id="times">Times</button>
+    <button id="back" title="Back one sentence">◂ Sentence</button>
+    <span class="spacer"></span>
+    <span class="seg">
+      <button id="smaller" aria-label="Smaller text">A−</button>
+      <button id="bigger" aria-label="Larger text">A+</button>
+    </span>
+    <button id="restart">Restart</button>
+  </header>
+  <div id="status">
+    <span id="mic">mic off</span>
+    <span id="heard"></span>
+    <span id="clock"></span>
+    <span id="pct">0%</span>
+  </div>
+  <main id="scroller"><div id="text"></div></main>
+</div>
+
+<div id="results" class="sheet" hidden>
+  <div class="panel">
+    <div class="head"><h2 id="resTitle">Practice score</h2><button class="x" id="resClose" aria-label="Close">×</button></div>
+    <div class="body">
+      <div class="timing" id="timing" hidden></div>
+      <div id="sections"></div>
+      <div class="score" id="scoreBox">
+        <div class="big"><span id="scoreNum">0</span><small>%</small></div>
+        <div><div class="t" id="scoreT"></div><div class="s" id="scoreS"></div></div>
+      </div>
+      <div class="span" id="spanNote"></div>
+      <div id="groups"></div>
+    </div>
+    <div class="foot">
+      <button id="again" class="primary">Run it again from the same spot</button>
+      <button id="resDone">Done</button>
+    </div>
+  </div>
+</div>
+
+<div id="report" class="sheet" hidden>
+  <div class="panel">
+    <div class="head"><h2 id="repTitle">Run report</h2><button class="x" id="repClose" aria-label="Close">×</button></div>
+    <div class="body" id="repBody"></div>
+    <div class="foot"><button id="repDone" class="primary">Done</button></div>
+  </div>
+</div>
+
+<div id="timesSheet" class="sheet" hidden>
+  <div class="panel">
+    <div class="head"><h2>Your times</h2><button class="x" id="timesClose" aria-label="Close">×</button></div>
+    <div class="body" id="timesBody"></div>
+  </div>
+</div>
+
+<div id="nosupport" hidden>
+  <div>
+    <p><strong>This browser can't listen.</strong></p>
+    <p>Speech recognition works in <code>Chrome</code>, <code>Edge</code>, or <code>Safari</code> on iPhone and Mac. Open this link in one of those. You can still tap any sentence to move the prompter by hand.</p>
+    <p><button id="dismiss">Continue without listening</button></p>
+  </div>
+</div>
+
+<script>// Text normalization and matching shared by the practice page (browser) and the build/verification step (node).
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.KeynoteText = api;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+  var UNITS = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19 };
+  var TENS = { twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90 };
+  var SCALES = { hundred: 100, thousand: 1000, million: 1000000, billion: 1000000000 };
+  var ALIASES = {
+    jay: 'j', barbecue: 'bbq', barbeque: 'bbq', doctor: 'dr', mister: 'mr', okay: 'ok',
+    mica: 'micah', mika: 'micah', mikah: 'micah', myka: 'micah', micha: 'micah', barry: 'berry', berrys: 'berrys',
+    twenties: '20s', thirties: '30s', forties: '40s', fifties: '50s', sixties: '60s', seventies: '70s', eighties: '80s', nineties: '90s',
+    fourty: 'forty'
+  };
+  var FILLERS = { um: 1, uh: 1, umm: 1, uhh: 1, hmm: 1, mm: 1, er: 1, ah: 1, uhm: 1 };
+  var STOP = {};
+  ('a an the and or but so if then than that this these those there here it its i me my we our us you your he him his she her they them their ' +
+   'is am are was were be been being do does did done have has had having will would can could should may might must shall ' +
+   'of in on at to for from by with about into onto over under up down out off as through between after before again ' +
+   'not no nor yes very really just also too even still only ever never always often sometimes somewhere else ' +
+   'what which who whom whose when where why how all any both each few more most much some such own same other another ' +
+   'because while until since though although whether like kind kinda sort get got gets getting go goes going went gone ' +
+   'one thing things something someone somebody anything everything everyone everybody nothing nobody way ways well let lets ' +
+   'now today back right little lot lots part parts bit make makes made making take takes took taking put say says said saying ' +
+   'know knew think thought see saw seen come came coming want wanted look looked looking around theyre were dont im ive youre ' +
+   'thats whats isnt wasnt arent werent didnt doesnt cant couldnt wont wouldnt shouldnt hasnt havent hadnt aint').split(/\s+/).forEach(function (w) { STOP[w] = 1; });
+
+  function isDigits(w) { return /^\d+$/.test(w); }
+  function isNumWord(w) { return (w in UNITS) || (w in TENS) || (w in SCALES); }
+
+  function basicTokens(text) {
+    var s = text.toLowerCase();
+    s = s.replace(/[’‘`]/g, "'").replace(/[“”]/g, '"');
+    s = s.replace(/c\+\+/g, ' c plus plus ');
+    s = s.replace(/&/g, ' and ');
+    s = s.replace(/%/g, ' percent ');
+    s = s.replace(/(\d),(\d{3})/g, '$1$2').replace(/(\d),(\d{3})/g, '$1$2');
+    s = s.replace(/\$\s*(\d[\d.]*)\s*(million|billion|thousand|m|b|k)\b/g, function (m, n, sc) {
+      var full = { m: 'million', b: 'billion', k: 'thousand' }[sc] || sc; return n + ' ' + full + ' dollars';
+    });
+    s = s.replace(/\$\s*(\d[\d.]*)/g, '$1 dollars');
+    s = s.replace(/#\s*(\d+)/g, 'number $1');
+    s = s.replace(/(\d)\.(\d)/g, '$1 point $2');
+    s = s.replace(/(\d)\s*(am|pm)\b/g, '$1 $2');
+    s = s.replace(/\b([ap])\.m\b\.?/g, '$1m');
+    s = s.replace(/\ba\.i\b\.?/g, 'ai');
+    s = s.replace(/[—–\-]+/g, ' ');
+    s = s.replace(/…/g, ' ');
+    s = s.replace(/[^a-z0-9'\s]/g, ' ');
+    s = s.replace(/'/g, '');
+    return s.split(/\s+/).filter(Boolean).map(function (w) { return ALIASES[w] || w; });
+  }
+
+  // Merge spoken number words into digits so "twenty seven" == "27", "a hundred and twenty" == "120",
+  // "nineteen fifty" == "1950", "twenty million" == "20 million". Tokens are {t, src}.
+  function mergeNumbers(tokens) {
+    var out = [], i = 0;
+    while (i < tokens.length) {
+      var w = tokens[i].t, run = [];
+      var nextT = i + 1 < tokens.length ? tokens[i + 1].t : '';
+      if (w === 'a' && (nextT in SCALES)) { run.push({ t: 'one', src: tokens[i].src }); i++; }
+      else if (isDigits(w) && (nextT in SCALES) && nextT !== 'hundred') { run.push(tokens[i]); i++; }
+      else if (!isNumWord(w)) { out.push(tokens[i]); i++; continue; }
+      var andSrc = [];
+      while (i < tokens.length) {
+        var x = tokens[i].t;
+        if (isNumWord(x)) { run.push(tokens[i]); i++; continue; }
+        if (x === 'and' && run.length && (run[run.length - 1].t in SCALES) && i + 1 < tokens.length &&
+            ((tokens[i + 1].t in UNITS) || (tokens[i + 1].t in TENS))) { andSrc = andSrc.concat(tokens[i].src); i++; continue; }
+        break;
+      }
+      var res = numberRun(run);
+      if (andSrc.length && res.length) res[res.length - 1].src = res[res.length - 1].src.concat(andSrc);
+      // "eighteen" + "90s" -> "1890s"
+      if (res.length === 1 && /^\d\d$/.test(res[0].t) && i < tokens.length && /^\d\ds$/.test(tokens[i].t)) {
+        res[0] = { t: res[0].t + tokens[i].t, src: res[0].src.concat(tokens[i].src) }; i++;
+      }
+      out.push.apply(out, res);
+    }
+    return out;
+  }
+  function unionSrc(run) { var s = []; run.forEach(function (r) { r.src.forEach(function (v) { if (s.indexOf(v) < 0) s.push(v); }); }); return s; }
+  function numberRun(run) {
+    var words = run.map(function (r) { return r.t; });
+    var hasScale = words.some(function (w) { return w in SCALES; });
+    var src = unionSrc(run);
+    if (!hasScale) {
+      var groups = [], open = false;
+      words.forEach(function (w) {
+        if (w in TENS) { groups.push(TENS[w]); open = true; }
+        else if (UNITS[w] !== undefined) {
+          if (open && UNITS[w] > 0 && UNITS[w] < 10) { groups[groups.length - 1] += UNITS[w]; open = false; }
+          else { groups.push(UNITS[w]); open = false; }
+        } else if (isDigits(w)) { groups.push(parseInt(w, 10)); open = false; }
+      });
+      if (groups.length === 2 && groups[0] >= 10 && groups[0] <= 99 && groups[1] >= 10 && groups[1] <= 99) {
+        return [{ t: String(groups[0] * 100 + groups[1]), src: src }];
+      }
+      return groups.map(function (g) { return { t: String(g), src: src }; });
+    }
+    var total = 0, cur = 0;
+    words.forEach(function (w) {
+      if (UNITS[w] !== undefined) cur += UNITS[w];
+      else if (w in TENS) cur += TENS[w];
+      else if (isDigits(w)) cur += parseInt(w, 10);
+      else if (w === 'hundred') cur = (cur || 1) * 100;
+      else { total += (cur || 1) * SCALES[w]; cur = 0; }
+    });
+    total += cur;
+    if (total >= 1e9 && total % 1e9 === 0) return [{ t: String(total / 1e9), src: src }, { t: 'billion', src: src }];
+    if (total >= 1e6 && total % 1e6 === 0) return [{ t: String(total / 1e6), src: src }, { t: 'million', src: src }];
+    return [{ t: String(total), src: src }];
+  }
+
+  // Spoken text -> normalized tokens (fillers dropped, numbers merged).
+  function prepareSpoken(text) {
+    var toks = basicTokens(text).filter(function (w) { return !FILLERS[w]; }).map(function (t) { return { t: t, src: [] }; });
+    return mergeNumbers(toks).map(function (x) { return x.t; });
+  }
+
+  function lev(a, b) {
+    var m = a.length, n = b.length, prev = [], cur = [], i, j;
+    for (j = 0; j <= n; j++) prev[j] = j;
+    for (i = 1; i <= m; i++) {
+      cur[0] = i;
+      for (j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = cur.slice();
+    }
+    return prev[n];
+  }
+
+  // Light stemmer so "students"/"student", "created"/"creating" compare equal. Applied to both sides.
+  function stem(w) {
+    if (isDigits(w) || w.length < 4) return w;
+    var x = w;
+    if (x.length > 4 && /ies$/.test(x)) x = x.slice(0, -3) + 'y';
+    else if (x.length > 5 && /ing$/.test(x)) x = undouble(x.slice(0, -3));
+    else if (x.length > 4 && /ed$/.test(x)) x = undouble(x.slice(0, -2));
+    else if (x.length > 5 && /ly$/.test(x)) x = x.slice(0, -2);
+    else if (x.length > 3 && /s$/.test(x) && !/(ss|us|is)$/.test(x)) x = x.slice(0, -1);
+    if (x.length > 4 && /e$/.test(x)) x = x.slice(0, -1);
+    return x;
+  }
+  function undouble(x) { return /([^aeiou])\1$/.test(x) && !/(ll|ss|ff|zz)$/.test(x) ? x.slice(0, -1) : x; }
+
+  // Exact stem match, or a one-letter slip between two stems of 6+ letters sharing a first letter
+  // (five-letter words stay exact: think/thank, worse/words, house/horse are different words).
+  function stemsMatch(a, b) {
+    if (a === b) return true;
+    if (a.length < 6 || b.length < 6 || isDigits(a) || isDigits(b) || a[0] !== b[0]) return false;
+    return lev(a, b) <= 1;
+  }
+  function spokenBag(text) {
+    var toks = prepareSpoken(text).map(stem);
+    var set = {}; toks.forEach(function (t) { set[t] = 1; });
+    return { list: toks, set: set };
+  }
+  function bagHas(bag, st) {
+    if (bag.set[st]) return true;
+    for (var i = 0; i < bag.list.length; i++) if (stemsMatch(st, bag.list[i])) return true;
+    return false;
+  }
+  // A key phrase matches when its stems appear in order, contiguously, in the spoken bag.
+  function phraseIn(bag, phrase) {
+    var ph = prepareSpoken(phrase).map(stem);
+    if (!ph.length) return false;
+    outer: for (var i = 0; i + ph.length <= bag.list.length; i++) {
+      for (var k = 0; k < ph.length; k++) if (!stemsMatch(ph[k], bag.list[i + k])) continue outer;
+      return true;
+    }
+    return false;
+  }
+
+  return { UNITS: UNITS, TENS: TENS, SCALES: SCALES, STOP: STOP, FILLERS: FILLERS, isDigits: isDigits, basicTokens: basicTokens,
+    mergeNumbers: mergeNumbers, prepareSpoken: prepareSpoken, lev: lev, stem: stem, stemsMatch: stemsMatch, spokenBag: spokenBag,
+    bagHas: bagHas, phraseIn: phraseIn };
+});
+</script>
+<script>
+(function () {
+  'use strict';
+  var DATA = {"sections":[{"title":"Intro","cards":1,"words":81,"short":"Intro","color":"#d97706"}],"cards":[{"section":0,"paragraphs":["I'm Denise Gosnell. Former Chief Data Officer and longtime data architect.","I spent 15+ years building distributed data systems.","Now, I work directly with executive teams to help you lead through AI, and make grounded calls when it comes to integrating artificial intelligence in your business.","Here, I'm sharing how I actually think through those calls: the good, the messy, and everything in between, so you can feel confident making them yourself.","Follow along, this is where I think out loud!"],"id":1,"words":81,"beats":[{"label":"Who I am","keys":[["denise gosnell"],["chief data officer","data architect"]]},{"label":"Fifteen years of systems","keys":[["distributed data systems"]]},{"label":"Executive teams, lead through AI","keys":[["executive teams"],["lead through ai"]]},{"label":"Grounded calls","keys":[["grounded calls"],["artificial intelligence"]]},{"label":"The good and the messy","keys":[["the good"],["the messy","everything in between"]]},{"label":"Think out loud","keys":[["think out loud"],["follow along"]]}],"title":"Intro"}],"variant":"intro","variantLabel":"Intro"};
+  var STORE = 'door-prompter' + (DATA.variant ? '-' + DATA.variant : '');
+  if (DATA.variantLabel) {
+    document.title += ' · ' + DATA.variantLabel;
+    var tag = document.getElementById('variant'); tag.textContent = DATA.variantLabel; tag.hidden = false;
+  }
+  var T = window.KeynoteText;
+  var $ = function (id) { return document.getElementById(id); };
+  var textEl = $('text'), scroller = $('scroller');
+  var recBtn = $('rec'), recLabel = $('reclabel'), micEl = $('mic'), heardEl = $('heard'), pctEl = $('pct'), clockEl = $('clock');
+
+  /* ---------- Build the script from the keynote data ---------- */
+  var tokens = [];   // { norm, raw, el, end, para }
+  var paraCount = 0; // paragraph index, so re-sync can be capped at "one paragraph ahead"
+  function normalize(w) {
+    return w.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]/g, '');
+  }
+  function addWords(container, chunk) {
+    var span = document.createElement('span');
+    span.className = 'w';
+    span.textContent = chunk;
+    var parts = chunk.split(/[—–\-…]+|\.\.\./);
+    var first = tokens.length;
+    parts.forEach(function (p) {
+      var n = normalize(p);
+      if (n) tokens.push({ norm: n, raw: p, el: span, end: false, para: paraCount });
+    });
+    if (tokens.length > first) {
+      if (/[.?!…]["”’)]*$/.test(chunk)) tokens[tokens.length - 1].end = true;
+      span.dataset.i = first;
+    } else {
+      span.className = 'w past';
+    }
+    container.appendChild(span);
+    container.appendChild(document.createTextNode(' '));
+  }
+  function addParagraph(container, line) {
+    var t = line.trim();
+    if (!t) return;
+    if (/^\[.*\]$/.test(t)) {
+      var c = document.createElement('div');
+      c.className = 'cue';
+      c.textContent = t;
+      if (/slide/i.test(t)) {              // [NEXT SLIDE], [SLIDE: ...] -> full-width slide-change bar
+        c.className = 'cue slide';
+        c.textContent = '\u25B6 NEW SLIDE \u25B6';
+        var d = document.createElement('span'); d.className = 'lbl'; d.textContent = t; c.appendChild(d);
+      }
+      container.appendChild(c);
+      return;
+    }
+    var p = document.createElement('p');
+    p.className = 'p';
+    paraCount++;
+    var segs = t.split(/(\[[^\]]*\])/);
+    segs.forEach(function (seg, si) {
+      if (!seg) return;
+      if (/^\[[^\]]*\]$/.test(seg)) {
+        var c = document.createElement('span');
+        c.className = 'cue inline';
+        c.textContent = seg;
+        p.appendChild(c);
+        // punctuation right after a cue stays attached to it: "[SLIDE]." not "[SLIDE] ."
+        var next = (segs[si + 1] || '').replace(/^\s+/, '');
+        if (!/^[.,;:?!]/.test(next)) p.appendChild(document.createTextNode(' '));
+      } else {
+        seg.trim().split(/\s+/).forEach(function (chunk) { if (chunk) addWords(p, chunk); });
+      }
+    });
+    container.appendChild(p);
+  }
+  DATA.sections.forEach(function (sec, si) {
+    var h = document.createElement('div');
+    h.className = 'cue part';
+    h.textContent = sec.title;
+    textEl.appendChild(h);
+    DATA.cards.filter(function (c) { return c.section === si; }).forEach(function (card) {
+      var wrap = document.createElement('div');
+      wrap.className = 'card';
+      var label = document.createElement('div');
+      if (/^Slide \d/.test(card.title || '')) {   // one card per slide: the card label IS the slide change
+        label.className = 'cue slide';
+        label.textContent = '\u25B6 NEW SLIDE \u25B6';
+        var sl = document.createElement('span'); sl.className = 'lbl'; sl.textContent = card.title; label.appendChild(sl);
+      } else {
+        label.className = 'cue card';
+        label.textContent = card.id + ' · ' + (card.title || 'Card ' + card.id);
+      }
+      wrap.appendChild(label);
+      card.start = tokens.length;
+      card.paragraphs.forEach(function (p) { addParagraph(wrap, p); });
+      card.end = tokens.length;
+      textEl.appendChild(wrap);
+    });
+  });
+  var N = tokens.length;
+  // Token range of each section (Part), for timing a practice run against the Part it was in.
+  DATA.sections.forEach(function (sec, si) {
+    var cs = DATA.cards.filter(function (c) { return c.section === si; });
+    sec.first = cs.length ? cs[0].start : 0; sec.last = cs.length ? cs[cs.length - 1].end : 0;
+  });
+  function sectionOf(i) {
+    for (var k = 0; k < DATA.sections.length; k++) if (i < DATA.sections[k].last) return k;
+    return DATA.sections.length - 1;
+  }
+  // The last token of a paragraph always closes a sentence, even without punctuation.
+  DATA.cards.forEach(function (c) { if (c.end > c.start) tokens[c.end - 1].end = true; });
+
+  /* ---------- Where each idea beat sits in the text ---------- */
+  // Every token gets the same stem the scorer uses, so a beat's first key phrase can be located.
+  var stems = tokens.map(function (t) { var b = T.basicTokens(t.raw); return T.stem(b.length ? b[0] : t.norm); });
+  function findPhrase(phrase, from, to) {
+    var ph = T.prepareSpoken(phrase).map(T.stem);
+    if (!ph.length) return -1;
+    outer: for (var i = from; i + ph.length <= to; i++) {
+      for (var k = 0; k < ph.length; k++) if (!T.stemsMatch(ph[k], stems[i + k])) continue outer;
+      return i;
+    }
+    return -1;
+  }
+  var beats = []; // { card, label, keys, pos }
+  DATA.cards.forEach(function (card) {
+    var list = (card.beats && card.beats.length) ? card.beats : fallbackBeats(card);
+    var len = card.end - card.start, floor = card.start;
+    list.forEach(function (b, i) {
+      // Beats run in reading order, so each one is looked for only after the previous beat's position.
+      var pos = -1;
+      b.keys.forEach(function (alts) {
+        alts.forEach(function (alt) { var p = findPhrase(alt, floor, card.end); if (p >= 0 && (pos < 0 || p < pos)) pos = p; });
+      });
+      if (pos < 0) pos = Math.max(floor, card.start + Math.floor(len * i / list.length)); // not locatable: spread evenly
+      floor = pos;
+      beats.push({ card: card, label: b.label, keys: b.keys, pos: pos });
+    });
+  });
+  beats.sort(function (a, b) { return a.pos - b.pos; });
+  function fallbackBeats(card) {
+    // For a card without hand-written beats: one beat per sentence, keyed on its content words.
+    var text = card.paragraphs.join(' ').replace(/\[[^\]]*\]/g, ' ');
+    var words = text.split(/\s+/).filter(Boolean), sents = [], buf = [];
+    words.forEach(function (w) { buf.push(w); if (/[.?!]["”’)]*$/.test(w) && !/^(Dr|Mr|Mrs|Ms|St|vs)\.$/.test(w)) { sents.push(buf.join(' ')); buf = []; } });
+    if (buf.length) sents.push(buf.join(' '));
+    return sents.map(function (s) {
+      var keys = [], seen = {};
+      T.basicTokens(s).forEach(function (t) { if (T.STOP[t] || t.length < 3 || seen[t]) return; seen[t] = 1; keys.push([t]); });
+      return { label: s, keys: keys };
+    }).filter(function (b) { return b.keys.length; });
+  }
+
+  /* ---------- Following: forward-only word matching ---------- */
+  var STOP = {};
+  'the a an and or but of to in on at for with is it was that this i you we they he she my our your his her its be are were as so not no do did have has had can will would if then than there here what who how me him them us by from'.split(' ').forEach(function (w) { STOP[w] = 1; });
+  function lev1(a, b) {
+    if (a.length === b.length) { var d = 0; for (var i = 0; i < a.length; i++) if (a[i] !== b[i] && ++d > 1) return false; return true; }
+    var s = a.length < b.length ? a : b, l = a.length < b.length ? b : a, x = 0, y = 0, k = 0;
+    while (x < s.length && y < l.length) { if (s[x] === l[y]) { x++; y++; } else { y++; if (++k > 1) return false; } }
+    return true;
+  }
+  function similar(a, b) {
+    if (a === b) return true;
+    if (a.length < 4 || b.length < 4) return false;
+    if (a.indexOf(b) === 0 || b.indexOf(a) === 0) return Math.abs(a.length - b.length) <= 2;
+    if (a.length >= 5 && b.length >= 5 && Math.abs(a.length - b.length) <= 1) return lev1(a, b);
+    return false;
+  }
+  // Walk heard words forward from `start`. Returns { cur, seq, jumped }; never moves backward.
+  // `recent` carries the last few heard words from earlier results so a re-sync phrase can span events.
+  //
+  // Re-sync: when a heard word finds nothing near the cursor, take the last PHRASE heard words and look for
+  // them spoken in a row further ahead, no farther than the end of the next paragraph. A hit needs every word
+  // of the phrase to match consecutively and at least MIN_CONTENT of them to be content words, so a stray
+  // "and the" or a single shared word never pulls the prompter forward. Missing a few words never triggers it
+  // either: the normal window catches up on its own as soon as the next scripted word arrives.
+  var PHRASE = 4, MIN_CONTENT = 2;
+  function resyncLimit(cur) {
+    if (cur >= N) return N;
+    var maxPara = tokens[cur].para + 1, i = cur;
+    while (i < N && tokens[i].para <= maxPara) i++;
+    return i;
+  }
+  function findPhraseAhead(seq, cur) {
+    if (seq.length < PHRASE) return -1;
+    var ph = seq.slice(-PHRASE), content = 0;
+    for (var c = 0; c < ph.length; c++) if (!STOP[ph[c]]) content++;
+    if (content < MIN_CONTENT) return -1;
+    var limit = resyncLimit(cur);
+    outer: for (var i = cur; i + PHRASE <= limit; i++) {
+      for (var k = 0; k < PHRASE; k++) if (!similar(ph[k], tokens[i + k].norm)) continue outer;
+      return i + PHRASE;
+    }
+    return -1;
+  }
+  function advance(start, heard, recent) {
+    var cur = start, seq = (recent || []).slice(), jumped = 0;
+    for (var h = 0; h < heard.length; h++) {
+      var n = normalize(heard[h]);
+      if (!n) continue;
+      seq.push(n);
+      var win = STOP[n] ? 3 : 14;
+      var end = Math.min(N, cur + win), hit = false;
+      for (var i = cur; i < end; i++) {
+        if (similar(n, tokens[i].norm)) { cur = i + 1; hit = true; break; }
+      }
+      if (!hit) {
+        var j = findPhraseAhead(seq, cur);
+        if (j > cur + 1) { jumped += j - cur; cur = j; }
+      }
+    }
+    return { cur: cur, seq: seq.slice(-8), jumped: jumped };
+  }
+
+  /* ---------- Rendering ---------- */
+  var cursor = 0, shownUp = [], practice = false;
+  var UP = 8, HOT = 4; // words ahead that light up; the first HOT of them go white
+  function setCursor(c, opts) {
+    c = Math.max(0, Math.min(N, c));
+    var old = cursor;
+    if (track && c !== old) trackTick();   // close out the time spent up to this move at the old position
+    cursor = c;
+    if (c > old) { for (var i = old; i < c; i++) tokens[i].el.classList.add('past'); }
+    else if (c < old) { for (var j = c; j < old; j++) tokens[j].el.classList.remove('past'); }
+    if (c < N) tokens[c].el.classList.remove('past');
+    shownUp.forEach(function (el) { el.classList.remove('up', 'hot'); });
+    shownUp = [];
+    for (var k = 0; k < UP && c + k < N; k++) {
+      var el = tokens[c + k].el;
+      if (shownUp.indexOf(el) === -1) { el.classList.add('up'); if (k < HOT) el.classList.add('hot'); shownUp.push(el); }
+    }
+    pctEl.textContent = Math.round(100 * c / N) + '%';
+    scrollToCursor(opts && opts.jump);
+    try { localStorage.setItem(practice ? STORE + '-practice-cursor' : STORE + '-cursor', String(c)); } catch (e) {}
+  }
+  function sentenceStart(i) {
+    i = Math.max(0, Math.min(N - 1, i));
+    while (i > 0 && !tokens[i - 1].end) i--;
+    return i;
+  }
+
+  // Smooth follow-scroll: keep the cursor word ~30% from the top of the reading area
+  var scrollTarget = null, scrolling = false;
+  function scrollToCursor(jump) {
+    var idx = Math.min(cursor, N - 1);
+    var el = tokens[idx].el;
+    scrollTarget = el.offsetTop - scroller.clientHeight * 0.3;
+    if (jump) { scroller.scrollTop = scrollTarget; return; }
+    if (!scrolling) { scrolling = true; requestAnimationFrame(step); }
+  }
+  function step() {
+    var d = scrollTarget - scroller.scrollTop;
+    if (Math.abs(d) < 1) { scroller.scrollTop = scrollTarget; scrolling = false; return; }
+    scroller.scrollTop += d * 0.18;
+    requestAnimationFrame(step);
+  }
+
+  // Tap any word to jump to the start of its sentence. Live: the recovery move. Practice: where the run begins.
+  textEl.addEventListener('click', function (e) {
+    var w = e.target.closest('.w');
+    if (!w || w.dataset.i === undefined) return;
+    committed = sentenceStart(+w.dataset.i);
+    recentFinal = [];
+    setCursor(committed);
+    if (practice && !listening) setMark(committed);
+  });
+
+  /* ---------- Modes ---------- */
+  var markEl = null, practiceStart = 0;
+  function setMark(i) {
+    practiceStart = i;
+    if (markEl) markEl.classList.remove('mark');
+    markEl = i < N ? tokens[i].el : null;
+    if (markEl) markEl.classList.add('mark');
+    setMic('start set here: tap Record when ready');
+  }
+  function setMode(toPractice) {
+    if (listening) { listening = false; stopRec(); trackStop(); }
+    practice = toPractice;
+    $('modeLive').classList.toggle('active', !practice);
+    $('modePractice').classList.toggle('active', practice);
+    $('hide').hidden = !practice;
+    textEl.classList.toggle('practice', practice);
+    if (!practice) {
+      textEl.classList.remove('blur');
+      $('hide').classList.remove('active');
+      $('hide').textContent = 'Hide words';
+      if (markEl) { markEl.classList.remove('mark'); markEl = null; }
+    }
+    var saved = 0;
+    try { saved = Math.min(N - 1, +localStorage.getItem(practice ? STORE + '-practice-cursor' : STORE + '-cursor') || 0); } catch (e) {}
+    for (var j = 0; j < N; j++) tokens[j].el.classList.toggle('past', j < saved);
+    committed = saved;
+    cursor = saved;
+    setCursor(saved, { jump: true });
+    if (practice) setMark(sentenceStart(saved));
+    try { localStorage.setItem(STORE + '-mode', practice ? 'practice' : 'live'); } catch (e) {}
+    requestAnimationFrame(function () { scrollToCursor(true); });
+  }
+  $('modeLive').addEventListener('click', function () { setMode(false); });
+  $('modePractice').addEventListener('click', function () { setMode(true); });
+  $('hide').addEventListener('click', function () {
+    var on = textEl.classList.toggle('blur');
+    $('hide').classList.toggle('active', on);
+    $('hide').setAttribute('aria-pressed', on ? 'true' : 'false');
+    $('hide').textContent = on ? 'Show words' : 'Hide words';
+  });
+
+  /* ---------- Idea scoring (same rules as the note card page) ---------- */
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function tier(score) { return score >= 90 ? 'good' : score >= 75 ? 'mid' : 'low'; }
+  // Score the beats whose text begins inside [start, end) against what was heard.
+  function scoreSpan(start, end, spoken) {
+    var bag = T.spokenBag(spoken), total = 0, n = 0, covered = 0, partial = 0, groups = [], cur = null;
+    beats.forEach(function (b) {
+      if (b.pos < start - 2 || b.pos >= end) return;
+      var hit = [], missed = [];
+      b.keys.forEach(function (alts) { (alts.some(function (p) { return T.phraseIn(bag, p); }) ? hit : missed).push(alts[0]); });
+      var ratio = b.keys.length ? hit.length / b.keys.length : 1;
+      var status = ratio >= 0.5 ? 'hit' : (hit.length && ratio >= 0.25) ? 'part' : 'miss';
+      total += status === 'hit' ? 1 : status === 'part' ? 0.5 : 0;
+      n++;
+      if (status === 'hit') covered++; else if (status === 'part') partial++;
+      if (!cur || cur.card !== b.card) { cur = { card: b.card, rows: [] }; groups.push(cur); }
+      cur.rows.push({ label: b.label, status: status, hit: hit, missed: missed });
+    });
+    return { groups: groups, score: n ? Math.round(100 * total / n) : 0, n: n, covered: covered, partial: partial, start: start, end: end };
+  }
+  function excerpt(from, to) {
+    var words = [];
+    for (var i = Math.max(0, from); i < Math.min(N, to); i++) words.push(tokens[i].raw);
+    return words.join(' ').replace(/\s+/g, ' ');
+  }
+  /* ---------- Timing each practice run, by Part ---------- */
+  var MIN_SAVE = 20; // seconds; anything shorter is shown but not kept as a run
+  function loadRuns() { try { return JSON.parse(localStorage.getItem(STORE + '-runs') || '{}') || {}; } catch (e) { return {}; } }
+  function saveRuns(r) { try { localStorage.setItem(STORE + '-runs', JSON.stringify(r)); } catch (e) {} }
+  function mmss(sec) { sec = Math.round(sec); var m = Math.floor(sec / 60), s2 = sec % 60; return m + ':' + (s2 < 10 ? '0' : '') + s2; }
+  function signed(sec) { var a = Math.abs(Math.round(sec)); return (sec < 0 ? '\u2212' : '+') + (a >= 60 ? mmss(a) : a + 's'); }
+  function coverage(si, start, end) {
+    var sec = DATA.sections[si], span = sec.last - sec.first;
+    var lo = Math.max(start, sec.first), hi = Math.min(end, sec.last);
+    return span ? Math.max(0, hi - lo) / span : 0;
+  }
+  // Record a run against the Part it started in. Returns the run and that Part's history (oldest first, this run last).
+  function recordRun(start, end, seconds, spokenWords, score) {
+    var si = sectionOf(start);
+    var run = { at: new Date().toISOString(), s: Math.round(seconds), words: spokenWords, cov: Math.round(100 * coverage(si, start, end)), score: score, saved: seconds >= MIN_SAVE };
+    var runs = loadRuns(); var list = runs[si] || (runs[si] = []);
+    var prev = list.slice();
+    if (run.saved) { list.push(run); saveRuns(runs); }
+    return { si: si, run: run, prev: prev };
+  }
+  function renderTiming(info) {
+    var sec = DATA.sections[info.si], run = info.run, prev = info.prev;
+    var target = sec.words / 150 * 60; // a comfortable keynote pace
+    var html = '<div class="clock' + (run.saved ? '' : ' short') + '">' + mmss(run.s) + '</div><div>';
+    html += '<div class="t">' + esc(sec.short) + (run.cov < 85 ? ' · ' + run.cov + '% of the part' : '') + '</div><div class="s">';
+    if (!run.saved) html += 'Under ' + MIN_SAVE + ' seconds, so this run was not saved to your times. ';
+    else if (!prev.length) html += 'First saved run for this part. ';
+    else {
+      var last = prev[prev.length - 1], best = Math.min.apply(null, prev.map(function (r) { return r.s; }));
+      var avg = prev.reduce(function (a, r) { return a + r.s; }, 0) / prev.length;
+      var d = run.s - last.s;
+      html += '<span class="' + (d <= 0 ? 'up' : 'down') + '">' + signed(d) + '</span> vs your last run (' + mmss(last.s) + '). ';
+      html += 'Best before this: <b>' + mmss(best) + '</b>. Average of ' + prev.length + ': <b>' + mmss(avg) + '</b>. ';
+      if (run.s < best) html += 'New best. ';
+    }
+    html += 'At 150 words a minute this part reads in about <b>' + mmss(target) + '</b>.</div>';
+    var all = prev.concat(run.saved ? [run] : []);
+    if (all.length > 1) {
+      var bestAll = Math.min.apply(null, all.map(function (r) { return r.s; }));
+      html += '<div class="hist">' + all.slice(-8).map(function (r, i, arr) {
+        var cls = (i === arr.length - 1 && run.saved) ? 'now' : (r.s === bestAll ? 'best' : '');
+        return '<span class="' + cls + '">' + mmss(r.s) + '</span>';
+      }).join('') + '</div>';
+    }
+    html += '</div>';
+    $('timing').innerHTML = html; $('timing').hidden = false;
+  }
+  function renderTimes() {
+    var runs = loadRuns(), html = '', any = false;
+    var sessions = loadSessions();
+    if (sessions.length) {
+      any = true;
+      html += '<div class="part"><h3><span>Runs \u00b7 time by part</span><b>' + sessions.length + (sessions.length === 1 ? ' run' : ' runs') + '</b></h3>';
+      html += '<ul class="runs">' + sessions.slice().reverse().map(function (t, k) {
+        var idx = sessions.length - 1 - k, dt = new Date(t.at), first = -1, last = -1;
+        DATA.sections.forEach(function (sec, si) { if ((t.secs[si] || 0) >= 1) { if (first < 0) first = si; last = si; } });
+        var range = first < 0 ? '' : first === last ? DATA.sections[first].short : DATA.sections[first].short.replace(/ \u00b7.*$/, '') + ' \u2192 ' + DATA.sections[last].short.replace(/ \u00b7.*$/, '');
+        var when = dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' + dt.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        return '<li class="sess" data-sess="' + idx + '"><span>' + esc(when) + '<br><small>' + esc(range) + '</small></span><span class="mode ' + t.mode + '">' + t.mode + '</span><span class="d">' + mmss(t.total) + '</span><button data-del="' + idx + '" aria-label="Delete this run">\u00d7</button></li>';
+      }).join('') + '</ul></div>';
+    }
+    DATA.sections.forEach(function (sec, si) {
+      var list = runs[si] || [];
+      if (!list.length) return; any = true;
+      var best = Math.min.apply(null, list.map(function (r) { return r.s; }));
+      var avg = list.reduce(function (a, r) { return a + r.s; }, 0) / list.length;
+      var last = list[list.length - 1];
+      html += '<div class="part"><h3><span>' + esc(sec.short) + '</span><b>' + list.length + (list.length === 1 ? ' run' : ' runs') + '</b></h3>';
+      html += '<div class="stat"><div><div class="v">' + mmss(last.s) + '</div><div class="l">last</div></div>' +
+              '<div><div class="v">' + mmss(best) + '</div><div class="l">best</div></div>' +
+              '<div><div class="v">' + mmss(avg) + '</div><div class="l">average</div></div>' +
+              '<div><div class="v">' + mmss(sec.words / 150 * 60) + '</div><div class="l">at 150 wpm</div></div></div>';
+      html += '<ul class="runs">' + list.slice().reverse().map(function (r) {
+        var idx = list.indexOf(r), dt = new Date(r.at);
+        var when = dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' + dt.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        return '<li><span>' + esc(when) + '</span><span class="cov">' + r.cov + '%</span><span class="d">' + mmss(r.s) + '</span><button data-si="' + si + '" data-i="' + idx + '" aria-label="Delete this run">×</button></li>';
+      }).join('') + '</ul></div>';
+    });
+    $('timesBody').innerHTML = any ? html : '<div class="empty">No saved runs yet. Hit Record, give the talk (or a part of it), then Stop: you get a report of how long each part took, and runs of ' + MIN_SAVE + ' seconds or more are kept here.</div>';
+  }
+  $('times').addEventListener('click', function () { renderTimes(); $('timesSheet').hidden = false; });
+  $('timesClose').addEventListener('click', function () { $('timesSheet').hidden = true; });
+  $('timesBody').addEventListener('click', function (e) {
+    var del = e.target.closest('button[data-del]');
+    if (del) {
+      var ss = loadSessions(), t0 = ss[+del.dataset.del]; if (!t0) return;
+      if (!confirm('Delete the ' + mmss(t0.total) + ' ' + t0.mode + ' run?')) return;
+      ss.splice(+del.dataset.del, 1);
+      try { localStorage.setItem(STORE + '-sessions', JSON.stringify(ss)); } catch (err) {}
+      renderTimes(); return;
+    }
+    var row = e.target.closest('li[data-sess]');
+    if (row) { var t1 = loadSessions()[+row.dataset.sess]; if (t1) { t1.total = t1.total; showReport(t1, t1.mode === 'live'); } return; }
+    var b = e.target.closest('button[data-si]'); if (!b) return;
+    var runs = loadRuns(), list = runs[b.dataset.si] || [];
+    var r = list[+b.dataset.i]; if (!r) return;
+    if (!confirm('Delete the ' + mmss(r.s) + ' run for ' + DATA.sections[+b.dataset.si].short + '?')) return;
+    list.splice(+b.dataset.i, 1); if (!list.length) delete runs[b.dataset.si];
+    saveRuns(runs); renderTimes();
+  });
+
+  /* ---------- Section stopwatch: how long each Part (and each slide) took, Live and Practice ---------- */
+  var track = null, trackTimer = null;
+  function cardOf(i) { for (var k = 0; k < DATA.cards.length; k++) if (i < DATA.cards[k].end) return k; return DATA.cards.length - 1; }
+  function trackStart() {
+    var here = Math.min(cursor, N - 1);
+    track = { at: new Date().toISOString(), mode: practice ? 'practice' : 'live', t0: Date.now(), last: Date.now(),
+              si: sectionOf(here), ci: cardOf(here), secs: {}, cards: {}, from: cursor, to: cursor };
+    clearInterval(trackTimer); trackTimer = setInterval(trackTick, 1000);
+    trackTick();
+  }
+  // Every second (and on stop) the time since the last tick goes to the Part and slide the cursor was in.
+  function trackTick() {
+    if (!track) return;
+    var now = Date.now(), dt = (now - track.last) / 1000;
+    track.secs[track.si] = (track.secs[track.si] || 0) + dt;
+    track.cards[track.ci] = (track.cards[track.ci] || 0) + dt;
+    track.last = now;
+    var here = Math.min(cursor, N - 1);
+    track.si = sectionOf(here); track.ci = cardOf(here);
+    track.to = Math.max(track.to, cursor);
+    clockEl.textContent = mmss((now - track.t0) / 1000) + ' \u00b7 ' + DATA.sections[track.si].short.replace(/^(Part \d|Tension \d).*$/, '$1') + ' ' + mmss(track.secs[track.si] || 0);
+  }
+  function trackStop() {
+    clearInterval(trackTimer);
+    if (!track) { clockEl.textContent = ''; return null; }
+    trackTick(); var t = track; track = null; clockEl.textContent = '';
+    t.total = (Date.now() - t.t0) / 1000;
+    return t;
+  }
+  function loadSessions() { try { return JSON.parse(localStorage.getItem(STORE + '-sessions') || '[]') || []; } catch (e) { return []; } }
+  function saveSession(t) {
+    if (!t || t.total < MIN_SAVE) return false;
+    var list = loadSessions();
+    list.push({ at: t.at, mode: t.mode, total: Math.round(t.total), heard: t.heard || 0, from: t.from, to: t.to, secs: t.secs, cards: t.cards });
+    while (list.length > 40) list.shift();
+    try { localStorage.setItem(STORE + '-sessions', JSON.stringify(list)); } catch (e) {}
+    return true;
+  }
+  function paceClass(s, target) { return !target ? '' : s > target * 1.1 ? 'slow' : s < target * 0.9 ? 'fast' : 'on'; }
+  function sectionTable(t) {
+    var html = '<table class="secs"><thead><tr><th>Part</th><th>time</th><th>split</th><th>vs 150 wpm</th></tr></thead><tbody>';
+    var cum = 0, tgtTotal = 0, any = false;
+    DATA.sections.forEach(function (sec, si) {
+      var s = t.secs[si] || 0; if (s < 1) return; any = true;
+      var cov = coverage(si, t.from, t.to), words = Math.round(sec.words * cov), target = words / 150 * 60;
+      cum += s; tgtTotal += target;
+      html += '<tr><td>' + esc(sec.short) + (cov < 0.9 ? ' <small>' + Math.round(cov * 100) + '% of it</small>' : '') + '</td>' +
+              '<td class="d">' + mmss(s) + '</td><td class="d dim">' + mmss(cum) + '</td>' +
+              '<td class="d ' + paceClass(s, target) + '">' + signed(s - target) + '</td></tr>';
+      var slides = [];
+      DATA.cards.forEach(function (c, ci) { if (c.section === si && (t.cards[ci] || 0) >= 1) slides.push({ c: c, s: t.cards[ci] }); });
+      if (slides.length > 1) {
+        html += '<tr class="detail"><td colspan="4"><details><summary>' + slides.length + ' slides in this part</summary><ul>' +
+          slides.map(function (x) { return '<li><span>' + esc(x.c.title || 'Card ' + x.c.id) + '</span><span class="d">' + mmss(x.s) + '</span></li>'; }).join('') +
+          '</ul></details></td></tr>';
+      }
+    });
+    if (!any) return '';
+    html += '</tbody><tfoot><tr><td>Total</td><td class="d">' + mmss(t.total) + '</td><td></td><td class="d ' + paceClass(t.total, tgtTotal) + '">' + signed(t.total - tgtTotal) + '</td></tr></tfoot></table>';
+    return html;
+  }
+  function reportHTML(t) {
+    var firstSi = -1, lastSi = -1, tgt = 0;
+    DATA.sections.forEach(function (sec, si) {
+      if ((t.secs[si] || 0) < 1) return;
+      if (firstSi < 0) firstSi = si; lastSi = si;
+      tgt += Math.round(sec.words * coverage(si, t.from, t.to)) / 150 * 60;
+    });
+    var range = firstSi < 0 ? '' : firstSi === lastSi ? DATA.sections[firstSi].short : DATA.sections[firstSi].short + ' \u2192 ' + DATA.sections[lastSi].short;
+    var html = '<div class="timing"><div class="clock">' + mmss(t.total) + '</div><div><div class="t">' + esc(range || 'Run') + '</div><div class="s">';
+    if (t.heard) html += '<b>' + t.heard + '</b> words heard, about <b>' + Math.round(60 * t.heard / t.total) + '</b> a minute. ';
+    html += 'At 150 words a minute this stretch reads in about <b>' + mmss(tgt) + '</b>' +
+            (tgt ? ' (<span class="' + (t.total > tgt ? 'down' : 'up') + '">' + signed(t.total - tgt) + '</span>)' : '') + '. ';
+    html += '\u201cvs 150 wpm\u201d is how far each part ran over (+) or under (\u2212) that pace.</div></div></div>';
+    html += sectionTable(t);
+    return html;
+  }
+  function showReport(t, live) {
+    $('repTitle').textContent = (live ? 'Live run' : 'Run') + ' \u00b7 ' + new Date(t.at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' + new Date(t.at).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    $('repBody').innerHTML = reportHTML(t) + (t.total < MIN_SAVE ? '<div class="empty">Under ' + MIN_SAVE + ' seconds, so this run was not saved.</div>' : '');
+    $('report').hidden = false; $('repBody').scrollTop = 0;
+  }
+  $('repClose').addEventListener('click', function () { $('report').hidden = true; });
+  $('repDone').addEventListener('click', function () { $('report').hidden = true; });
+
+  function showResults(res, spokenWords, seconds, timingInfo, trk) {
+    if (timingInfo) renderTiming(timingInfo); else $('timing').hidden = true;
+    $('sections').innerHTML = trk ? sectionTable(trk) : '';
+    $('scoreNum').textContent = res.score;
+    $('scoreBox').className = 'score ' + tier(res.score);
+    var wpm = seconds > 5 ? Math.round(60 * spokenWords / seconds) : 0;
+    if (!res.n) {
+      $('scoreT').textContent = 'No ideas to score in that stretch';
+      $('scoreS').textContent = 'The run ended before the first idea past your starting point. Talk a little further next time.';
+    } else {
+      $('scoreT').textContent = res.covered + ' of ' + res.n + ' ideas covered' + (res.partial ? ', ' + res.partial + ' partly' : '');
+      $('scoreS').textContent = (res.score >= 90 ? 'You have the flow. ' : res.score >= 75 ? 'Close. Look at the ideas marked below. ' : 'Run it again with the missed ideas in mind. ') +
+        (wpm ? 'Pace: ' + wpm + ' words a minute.' : '');
+    }
+    $('spanNote').innerHTML = 'Scored from <b>“' + esc(excerpt(res.start, res.start + 6)) + '…”</b> through <b>“…' + esc(excerpt(res.end - 6, res.end)) + '”</b>';
+    var html = '';
+    res.groups.forEach(function (g) {
+      html += '<div class="group"><h3>' + g.card.id + ' · ' + esc(g.card.title || 'Card ' + g.card.id) + '</h3><ul class="beats">';
+      g.rows.forEach(function (r) {
+        var mark = r.status === 'hit' ? '✓' : r.status === 'part' ? '◐' : '✗';
+        html += '<li class="' + r.status + '"><span class="mark">' + mark + '</span><span class="label">' + esc(r.label) + '</span>';
+        if (r.status !== 'hit') {
+          html += '<span class="keys">' + r.hit.map(function (k) { return '<span class="k hit">' + esc(k) + '</span>'; }).join('') +
+                  r.missed.map(function (k) { return '<span class="k miss">' + esc(k) + '</span>'; }).join('') + '</span>';
+        }
+        html += '</li>';
+      });
+      html += '</ul></div>';
+    });
+    $('groups').innerHTML = html;
+    $('results').hidden = false;
+    $('results').querySelector('.body').scrollTop = 0;
+  }
+  $('resClose').addEventListener('click', function () { $('results').hidden = true; });
+  $('resDone').addEventListener('click', function () { $('results').hidden = true; });
+  $('again').addEventListener('click', function () {
+    $('results').hidden = true;
+    committed = practiceStart;
+    setCursor(practiceStart, { jump: true });
+    setMark(practiceStart);
+    startListening();
+  });
+
+  /* ---------- Speech recognition ---------- */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var rec = null, listening = false, committed = 0, finalCount = 0, wakeLock = null;
+  var finals = [], interimText = '', startedAt = 0, recentFinal = [], resyncTimer = null;
+  function noteResync(words) {
+    setMic('re-synced ' + words + ' words ahead', 'warn');
+    clearTimeout(resyncTimer);
+    resyncTimer = setTimeout(function () { if (listening) setMic('listening', 'live'); }, 1800);
+  }
+
+  function setMic(text, cls) { micEl.textContent = text; micEl.className = cls || ''; }
+
+  function startRec() {
+    rec = new SR();
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.lang = 'en-US';
+    rec.maxAlternatives = 1;
+    finalCount = 0;
+    rec.onstart = function () { setMic('listening', 'live'); };
+    rec.onresult = function (e) {
+      var interim = [], jumped = 0;
+      for (var i = finalCount; i < e.results.length; i++) {
+        var r = e.results[i];
+        var txt = r[0].transcript.trim();
+        var words = txt.split(/\s+/);
+        if (r.isFinal) {
+          var res = advance(committed, words, recentFinal);
+          committed = res.cur; recentFinal = res.seq; jumped += res.jumped;
+          finalCount = i + 1; if (txt) finals.push(txt);
+        }
+        else { interim = interim.concat(words); }
+      }
+      interimText = interim.join(' ');
+      var live = advance(committed, interim, recentFinal);
+      var shown = live.cur; jumped += live.jumped;
+      if (jumped) noteResync(jumped);
+      var lastRes = e.results[e.results.length - 1];
+      var heard = lastRes ? lastRes[0].transcript.trim().split(/\s+/).slice(-6).join(' ') : '';
+      heardEl.textContent = heard;
+      if (shown !== cursor) setCursor(shown);
+    };
+    rec.onerror = function (e) {
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        listening = false;
+        stopRec(); trackStop();
+        setMic('mic blocked: allow microphone access for this page', 'warn');
+      } else if (e.error !== 'no-speech' && e.error !== 'aborted') {
+        setMic('mic hiccup (' + e.error + '), retrying', 'warn');
+      }
+    };
+    rec.onend = function () {
+      if (interimText) { finals.push(interimText); interimText = ''; }
+      if (listening) { setTimeout(function () { if (listening) { try { startRec(); } catch (err) {} } }, 200); }
+      else setMic('mic off');
+    };
+    rec.start();
+  }
+  function stopRec() {
+    if (rec) { try { rec.onend = null; rec.stop(); } catch (e) {} rec = null; }
+    if (interimText) { finals.push(interimText); interimText = ''; }
+    recBtn.classList.remove('on');
+    recBtn.setAttribute('aria-pressed', 'false');
+    recLabel.textContent = 'Record';
+    setMic('mic off');
+    if (wakeLock) { try { wakeLock.release(); } catch (e) {} wakeLock = null; }
+  }
+  function requestWake() {
+    if (!('wakeLock' in navigator)) return;
+    navigator.wakeLock.request('screen').then(function (l) { wakeLock = l; }).catch(function () {});
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && listening) requestWake();
+  });
+  function startListening() {
+    if (!SR) { $('nosupport').hidden = false; return; }
+    listening = true;
+    committed = cursor;
+    if (practice) setMark(cursor);
+    finals = []; interimText = ''; startedAt = Date.now(); recentFinal = [];
+    trackStart();
+    recBtn.classList.add('on');
+    recBtn.setAttribute('aria-pressed', 'true');
+    recLabel.textContent = practice ? 'Stop & score' : 'Listening';
+    setMic('starting mic…');
+    requestWake();
+    try { startRec(); } catch (e) { setMic('could not start mic', 'warn'); }
+  }
+  recBtn.addEventListener('click', function () {
+    if (listening) {
+      listening = false;
+      stopRec();
+      var trk = trackStop();
+      var spoken = finals.join(' ');
+      var words = spoken.split(/\s+/).filter(Boolean).length;
+      if (trk) trk.heard = words;
+      if (!practice) {                         // Live: report how long every part took
+        if (trk) { saveSession(trk); showReport(trk, true); }
+        return;
+      }
+      if (!words) { setMic('nothing heard, so nothing to score', 'warn'); return; }
+      // The run reaches wherever the follower got to, or as far as the word count says if it lost you.
+      var end = Math.min(N, Math.max(cursor, practiceStart + Math.round(words * 0.9)));
+      var seconds = (Date.now() - startedAt) / 1000;
+      var res = scoreSpan(practiceStart, end, spoken);
+      if (trk) { trk.to = Math.max(trk.to, end); saveSession(trk); }
+      showResults(res, words, seconds, recordRun(practiceStart, end, seconds, words, res.score), trk);
+      return;
+    }
+    startListening();
+  });
+
+  $('back').addEventListener('click', function () {
+    var i = sentenceStart(cursor - 1);
+    if (cursor - i < 2) i = sentenceStart(i - 1);
+    committed = Math.max(0, i);
+    setCursor(committed);
+    if (practice && !listening) setMark(committed);
+  });
+  $('restart').addEventListener('click', function () {
+    if (practice) { committed = practiceStart; setCursor(practiceStart, { jump: true }); return; }
+    if (cursor > 0 && !confirm('Go back to the top of the keynote?')) return;
+    committed = 0;
+    setCursor(0, { jump: true });
+  });
+
+  /* ---------- Text size ---------- */
+  var size = 30;
+  try { size = +localStorage.getItem(STORE + '-size') || 30; } catch (e) {}
+  function applySize() {
+    document.documentElement.style.setProperty('--size', size + 'px');
+    try { localStorage.setItem(STORE + '-size', String(size)); } catch (e) {}
+    requestAnimationFrame(function () { scrollToCursor(true); });
+  }
+  $('bigger').addEventListener('click', function () { size = Math.min(56, size + 3); applySize(); });
+  $('smaller').addEventListener('click', function () { size = Math.max(18, size - 3); applySize(); });
+  $('dismiss').addEventListener('click', function () { $('nosupport').hidden = true; });
+
+  /* ---------- Boot ---------- */
+  applySize();
+  var mode = 'live';
+  try { mode = localStorage.getItem(STORE + '-mode') || 'live'; } catch (e) {}
+  setMode(mode === 'practice');
+  if (!SR) setMic('this browser cannot listen; tap sentences to advance', 'warn');
+  window.addEventListener('resize', function () { scrollToCursor(true); });
+  window.DoorPrompter = { trackStart: trackStart, trackStop: trackStop, showReport: showReport, reportHTML: reportHTML, loadSessions: loadSessions, scoreSpan: scoreSpan, showResults: showResults, beats: beats, tokens: tokens, sentenceStart: sentenceStart, advance: advance, resyncLimit: resyncLimit, recordRun: recordRun, sectionOf: sectionOf, loadRuns: loadRuns, mmss: mmss, sections: DATA.sections };
+})();
+</script>
+</body>
+</html>
