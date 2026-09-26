@@ -16,7 +16,19 @@ const tpTplPath = path.join(__dirname, 'teleprompter.html');
 // pages with the folder name as a suffix, e.g. _keynote/charleston -> keynote-practice-charleston.html.
 const VARIANT_LABEL = { charleston: 'Charleston', intro: 'Intro' };
 // Variants whose script is not the 8-part keynote name their own sections here.
-const SECTION_META_BY_VARIANT = { intro: [{ short: 'Intro', color: '#d97706' }] };
+const SECTION_META_BY_VARIANT = {
+  intro: [{ short: 'Intro', color: '#d97706' }],
+  charleston: [
+    { short: 'Part 1 · Micah',          color: '#d97706' },
+    { short: 'Part 2 · Who I Am',       color: '#0d9488' },
+    { short: 'Part 3 · Tensions',       color: '#64748b' },
+    { short: 'Tension 1 · Jobs',        color: '#2563eb' },
+    { short: 'Tension 2 · Prosperity',  color: '#16a34a' },
+    { short: 'Tension 3 · Control',     color: '#e11d48' },
+    { short: 'Part 4 · Writing',        color: '#c2410c' },
+    { short: 'Part 5 · Door-Opener',    color: '#7c3aed' },
+  ],
+};
 const variants = [''].concat(fs.readdirSync(__dirname).filter(d => fs.existsSync(path.join(__dirname, d, 'keynote.txt'))).sort());
 for (const variant of variants) build(variant);
 
@@ -92,7 +104,6 @@ sections.forEach((s, i) => {
 const SECTION_META = SECTION_META_BY_VARIANT[variant] || [
   { short: 'Part 1 · Micah',          color: '#d97706' },
   { short: 'Part 2 · Who I Am',       color: '#0d9488' },
-  { short: 'Part 3 · Tensions',       color: '#64748b' },
   { short: 'Tension 1 · Jobs',        color: '#2563eb' },
   { short: 'Tension 2 · Prosperity',  color: '#16a34a' },
   { short: 'Tension 3 · Control',     color: '#e11d48' },
