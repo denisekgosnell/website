@@ -513,7 +513,7 @@
       var c = document.createElement('div');
       c.className = 'cue';
       c.textContent = t;
-      if (/slide/i.test(t)) {              // [NEXT SLIDE], [SLIDE: ...] -> full-width slide-change bar
+      if (/^\[(NEXT SLIDE|NEW SLIDE|SLIDE)\b/i.test(t)) {   // [NEXT SLIDE], [SLIDE: ...] -> full-width slide-change bar
         c.className = 'cue slide';
         c.textContent = '\u25B6 NEW SLIDE \u25B6';
         var d = document.createElement('span'); d.className = 'lbl'; d.textContent = t; c.appendChild(d);
