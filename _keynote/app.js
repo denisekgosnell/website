@@ -255,7 +255,8 @@
     var el = $('cbStatus');
     if (recording) {
       var said = (committed + sessionFinal + ' ' + interim).trim().split(/\s+/).filter(Boolean);
-      el.innerHTML = '<span class="live-dot"></span>' + esc(fmtTime(Date.now() - startedAt)) + (said.length ? ' · …' + esc(said.slice(-9).join(' ')) : ' · listening');
+      var n = run ? run.segs.length : 1;
+      el.innerHTML = '<span class="live-dot"></span>' + esc(fmtTime(Date.now() - startedAt)) + (n > 1 ? ' · ' + n + ' cards' : '') + (said.length ? ' · …' + esc(said.slice(-7).join(' ')) : ' · listening');
     } else {
       el.textContent = 'Card ' + card.id + ' of ' + cards.length + ' · ' + sec.short + (card.title ? ' · ' + card.title : '');
     }
@@ -275,9 +276,10 @@
     var title = $('cardTitle');
     if (posInSec === 1) { title.textContent = sec.title; title.hidden = false; } else { title.hidden = true; }
     $('cardBody').innerHTML = renderCardBody(card, null);
-    $('cardBody').classList.remove('blur'); $('hiddenNote').hidden = true;
-    $('resultPanel').hidden = true; $('livePanel').hidden = true;
-    $('prevBtn').disabled = neighbor(-1) === null;
+    var blur = recording && state.settings.hide && !peeking;
+    $('cardBody').classList.toggle('blur', blur); $('hiddenNote').hidden = !blur;
+    $('resultPanel').hidden = true; $('runPanel').hidden = true; $('livePanel').hidden = !recording;
+    $('prevBtn').disabled = recording || neighbor(-1) === null;
     $('nextBtn').disabled = neighbor(1) === null;
     state.pos = idx; saveState();
     renderLegend(); renderMap();
@@ -299,7 +301,10 @@
     return null;
   }
   function go(i) {
-    if (recording) cancelRecording();
+    if (recording) {
+      if (i !== null && i === neighbor(1)) { chainNext(i); return; }   // keep recording across the card break
+      cancelRecording();
+    }
     if (i === null || i < 0 || i >= cards.length) return;
     idx = i; showView('cards'); renderCard();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -309,6 +314,18 @@
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   var recognition = null, recording = false, finalizing = false, committed = '', sessionFinal = '', interim = '';
   var startedAt = 0, timerId = null, finalizeTimer = null, peeking = false;
+  // A run is one recording that may span several cards: press Next while recording (as you would click
+  // the slide remote) and the whole series is graded together on Stop. segs[k] = {idx, startAt, atWords}.
+  var run = null;
+  function fullText() { return (committed + sessionFinal + ' ' + interim).trim(); }
+  function wordCount(t) { return t ? t.split(/\s+/).filter(Boolean).length : 0; }
+  function chainNext(i) {
+    var now = Date.now();
+    run.segs.push({ idx: i, startAt: now, atWords: Math.max(wordCount(fullText()), run.segs[run.segs.length - 1].atWords) });
+    idx = i; renderCard(); setRecUI(true);
+    $('liveHead').textContent = 'Listening… ' + run.segs.length + ' cards in this run. Press Next at each slide break, Stop at the end';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   function renderLive() {
     var el = $('liveText');
@@ -344,14 +361,19 @@
     return r;
   }
   function setRecUI(on) {
-    var b = $('recBtn'); b.classList.toggle('on', on); $('recLabel').textContent = on ? 'Stop & grade' : 'Record';
+    var b = $('recBtn'); b.classList.toggle('on', on);
+    var n = on && run ? run.segs.length : 0;
+    $('recLabel').textContent = on ? (n > 1 ? 'Stop & grade ' + n + ' cards' : 'Stop & grade') : 'Record';
+    $('prevBtn').disabled = on || neighbor(-1) === null;
   }
   function startTimer() { startedAt = Date.now(); $('liveTime').textContent = '0:00'; timerId = setInterval(function () { $('liveTime').textContent = fmtTime(Date.now() - startedAt); updateStatus(); }, 500); }
   function stopTimer() { clearInterval(timerId); timerId = null; updateStatus(); }
   function startRecording() {
     if (!SR) { $('fallbackPanel').hidden = false; $('fallbackText').focus(); return; }
     committed = ''; sessionFinal = ''; interim = ''; finalizing = false; peeking = false;
-    $('liveMsg').hidden = true; $('liveText').innerHTML = ''; $('resultPanel').hidden = true; $('livePanel').hidden = false;
+    run = { segs: [{ idx: idx, startAt: Date.now(), atWords: 0 }] };
+    $('liveHead').textContent = 'Listening… speak the card. Press Next to keep going into the next card, Stop to grade';
+    $('liveMsg').hidden = true; $('liveText').innerHTML = ''; $('resultPanel').hidden = true; $('runPanel').hidden = true; $('livePanel').hidden = false;
     if (state.settings.hide) { $('cardBody').classList.add('blur'); $('hiddenNote').hidden = false; }
     try { recognition = newRecognizer(); recognition.start(); }
     catch (e) { $('liveMsg').textContent = 'Could not start the microphone: ' + e.message; $('liveMsg').hidden = false; return; }
@@ -373,7 +395,8 @@
     if (!finalizing) return;
     finalizing = false; clearTimeout(finalizeTimer);
     var elapsed = Date.now() - startedAt;
-    grade((committed + sessionFinal + ' ' + interim).trim(), elapsed);
+    if (run && run.segs.length > 1) gradeRun(fullText(), elapsed);
+    else grade(fullText(), elapsed);
   }
 
   // ---------- grading ----------
@@ -430,10 +453,10 @@
     renderCard_afterGrade(card, res);
     $('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  function renderBeats(ideas) {
-    var ul = $('beats'); ul.innerHTML = '';
+  function renderBeats(ideas) { $('beats').innerHTML = beatsHTML(ideas); }
+  function beatsHTML(ideas) {
+    var out = '';
     ideas.rows.forEach(function (r) {
-      var li = document.createElement('li'); li.className = r.status;
       var label;
       if (r.custom) label = esc(r.label);
       else {
@@ -451,8 +474,80 @@
           r.hit.map(function (k) { return '<span class="k hit">' + esc(k) + '</span>'; }).concat(
           r.missed.map(function (k) { return '<span class="k miss">' + esc(k) + '</span>'; })).join(' ') + '</span>';
       } else if (r.status !== 'hit' && r.missed.length) html += '<span class="gap">Not heard: <b>' + r.missed.map(esc).join('</b>, <b>') + '</b></span>';
-      li.innerHTML = html; ul.appendChild(li);
+      out += '<li class="' + r.status + '">' + html + '</li>';
     });
+    return out;
+  }
+
+  // ---------- grading a chained run (several cards, one recording) ----------
+  // The transcript is split at the word count seen when Next was pressed. Recognition lags speech by a
+  // second or two, so each card is scored against its own stretch plus a small window on either side.
+  var EDGE = 25;
+  function gradeRun(spokenText, elapsedMs) {
+    var words = spokenText.split(/\s+/).filter(Boolean);
+    var segs = run.segs, results = [], totalBeats = 0, totalHit = 0, totalWords = 0;
+    segs.forEach(function (sg, k) {
+      var a = Math.min(sg.atWords, words.length);
+      var b = k + 1 < segs.length ? Math.min(Math.max(segs[k + 1].atWords, a), words.length) : words.length;
+      var own = words.slice(a, b).join(' ');
+      var around = words.slice(Math.max(0, a - EDGE), a).concat(words.slice(a, b), words.slice(b, b + EDGE)).join(' ');
+      var card = cards[sg.idx], prep = prepareCard(card);
+      var res = align(prep.tokens.map(function (t) { return t.t; }), prepareSpoken(own));
+      var ideas = scoreIdeas(card, around);
+      var ms = (k + 1 < segs.length ? segs[k + 1].startAt : Date.now()) - sg.startAt;
+      var at = state.attempts[card.id] || { best: 0, last: 0, count: 0 };
+      at.count++; at.last = res.score; at.best = Math.max(at.best, res.score); at.at = Date.now();
+      at.lastIdeas = ideas.score; at.bestIdeas = Math.max(at.bestIdeas === undefined ? 0 : at.bestIdeas, ideas.score);
+      state.attempts[card.id] = at;
+      ideas.rows.forEach(function (r) { totalHit += r.status === 'hit' ? 1 : r.status === 'part' ? 0.5 : 0; });
+      totalBeats += ideas.n; totalWords += b - a;
+      results.push({ card: card, ideas: ideas, res: res, ms: ms, words: b - a });
+    });
+    saveState();
+    var T = state.settings.target;
+    var runScore = totalBeats ? Math.round(100 * totalHit / totalBeats) : 100;
+    var wordsScore = Math.round(results.reduce(function (s2, r) { return s2 + r.res.score; }, 0) / results.length);
+    var primary = modeIdeas() ? runScore : wordsScore;
+    var first = results[0].card, last = results[results.length - 1].card;
+    var covered = results.reduce(function (s2, r) { return s2 + r.ideas.covered; }, 0);
+    var partial = results.reduce(function (s2, r) { return s2 + r.ideas.partial; }, 0);
+    var wpm = elapsedMs > 3000 ? Math.round(words.length / (elapsedMs / 60000)) : 0;
+    var atTarget = results.filter(function (r) { return (modeIdeas() ? r.ideas.score : r.res.score) >= T; }).length;
+
+    $('livePanel').hidden = true; $('cardBody').classList.remove('blur'); $('hiddenNote').hidden = true;
+    var ring = $('runRing'); ring.style.setProperty('--p', primary);
+    ring.style.setProperty('--rc', primary >= T ? 'var(--ok)' : primary >= T - 15 ? 'var(--close)' : 'var(--bad)');
+    $('runNum').textContent = primary;
+    $('runTitle').textContent = results.length + ' cards in one run: #' + first.id + ' to #' + last.id + (primary >= T ? ' ✓' : '');
+    $('runSub').textContent = (modeIdeas()
+      ? covered + ' of ' + totalBeats + ' ideas covered' + (partial ? ', ' + partial + ' partly' : '') + '. '
+      : 'Average exact-words score ' + wordsScore + '%. ') +
+      atTarget + ' of ' + results.length + ' cards at your ' + T + '% target. ' + fmtTime(elapsedMs) + ' total' + (wpm ? ', ' + wpm + ' words/min.' : '.') +
+      ' Tap a card to see its ideas.';
+    $('runAlt').innerHTML = modeIdeas() ? 'Exact words: <b>' + wordsScore + '%</b> average' : 'Ideas: <b>' + runScore + '%</b> · ' + covered + ' of ' + totalBeats + ' covered';
+    var ol = $('runCards'); ol.innerHTML = '';
+    results.forEach(function (r) {
+      var sc = modeIdeas() ? r.ideas.score : r.res.score;
+      var li = document.createElement('li'); li.className = tier(sc);
+      var cwpm = r.ms > 3000 ? Math.round(r.words / (r.ms / 60000)) : 0;
+      li.innerHTML = '<div class="rc-head"><span class="rc-score">' + sc + '%</span>' +
+        '<span class="rc-title">#' + r.card.id + (r.card.title ? ' · ' + esc(r.card.title) : '') + '<small>' + esc(sections[r.card.section].short) + '</small></span>' +
+        '<span class="rc-meta">' + r.ideas.covered + ' of ' + r.ideas.n + ' ideas' + (r.ideas.partial ? ' (+' + r.ideas.partial + ' partly)' : '') + ' · ' + fmtTime(r.ms) + (cwpm ? ' · ' + cwpm + ' wpm' : '') + '</span></div>' +
+        '<div class="rc-body" hidden><ul class="beats">' + beatsHTML(r.ideas) + '</ul></div>';
+      li.querySelector('.rc-head').onclick = function () { var b = li.querySelector('.rc-body'); b.hidden = !b.hidden; };
+      ol.appendChild(li);
+    });
+    $('runTranscript').textContent = spokenText || '(nothing heard)';
+    var firstIdx = cards.indexOf(first), lastIdx = cards.indexOf(last);
+    $('runAgainBtn').textContent = '↻ Run it again from #' + first.id;
+    $('runAgainBtn').onclick = function () { idx = firstIdx; renderCard(); startRecording(); };
+    var nxt = lastIdx + 1 < cards.length ? lastIdx + 1 : null;
+    $('runNextBtn').disabled = nxt === null;
+    $('runNextBtn').textContent = nxt === null ? 'End of deck' : 'Continue from #' + cards[nxt].id + ' →';
+    $('runNextBtn').onclick = function () { if (nxt !== null) { idx = nxt; renderCard(); window.scrollTo({ top: 0, behavior: 'smooth' }); } };
+    $('runPanel').hidden = false;
+    renderBest(cards[idx]); renderLegend(); renderMap();
+    $('runPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function showDetail(which) {
     $('ideasDetail').hidden = which !== 'ideas'; $('wordsDetail').hidden = which !== 'words';
@@ -542,11 +637,12 @@
     if (v === 'progress') { if (recording) cancelRecording(); renderProgress(); }
   }
   document.querySelectorAll('.tabs button').forEach(function (b) { b.onclick = function () { showView(b.dataset.view); }; });
-  $('prevBtn').onclick = function () { go(neighbor(-1)); };
+  $('prevBtn').onclick = function () { if (recording) return; go(neighbor(-1)); };
   $('nextBtn').onclick = function () { go(neighbor(1)); };
   $('nextAfterBtn').onclick = function () { go(neighbor(1)); };
   $('againBtn').onclick = function () { renderCard(); startRecording(); };
   $('toProgressBtn').onclick = function () { showView('progress'); window.scrollTo(0, 0); };
+  $('runProgressBtn').onclick = function () { showView('progress'); window.scrollTo(0, 0); };
   $('recBtn').onclick = function () { recording ? stopRecording() : startRecording(); };
   $('hideToggle').checked = state.settings.hide;
   $('hideToggle').onchange = function () { state.settings.hide = this.checked; saveState(); if (recording) { $('cardBody').classList.toggle('blur', this.checked); $('hiddenNote').hidden = !this.checked; } };
@@ -584,8 +680,8 @@
   $('card').onclick = function () { togglePeek(); };
   document.addEventListener('keydown', function (e) {
     if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
-    if (e.key === 'ArrowRight') { e.preventDefault(); go(neighbor(1)); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(neighbor(-1)); }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown') { e.preventDefault(); go(neighbor(1)); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'ArrowUp') { e.preventDefault(); if (recording) { toast('Stop the recording before going back'); return; } go(neighbor(-1)); }
     else if (e.key === ' ') { e.preventDefault(); if ($('viewCards').hidden) return; recording ? stopRecording() : startRecording(); }
     else if (e.key === 'h' || e.key === 'H') {
       if (recording) togglePeek();
@@ -601,5 +697,5 @@
   renderCard();
 
   // exposed for testing
-  window.KeynotePractice = { prepareCard: prepareCard, prepareSpoken: prepareSpoken, align: align, basicTokens: basicTokens, scoreIdeas: scoreIdeas, autoBeats: autoBeats, stem: stem, splitSentences: splitSentences };
+  window.KeynotePractice = { gradeRun: gradeRun, setRun: function (r) { run = r; }, prepareCard: prepareCard, prepareSpoken: prepareSpoken, align: align, basicTokens: basicTokens, scoreIdeas: scoreIdeas, autoBeats: autoBeats, stem: stem, splitSentences: splitSentences };
 })();

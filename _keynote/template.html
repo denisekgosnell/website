@@ -173,6 +173,22 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
 .mode button.active{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12);font-weight:600}
 .alt{display:inline-block;font-size:13px;color:var(--ink2);background:var(--bg2);border-radius:999px;padding:3px 10px;margin-top:8px}
 .alt b{color:var(--ink)}
+/* Chained run: several cards in one recording, graded together on Stop */
+.runcards{list-style:none;margin:14px 0 0;padding:0}
+.runcards li{border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--bg);overflow:hidden}
+.runcards .rc-head{display:grid;grid-template-columns:auto 1fr auto;gap:10px 12px;align-items:center;padding:10px 12px;cursor:pointer}
+.runcards .rc-head:hover{background:var(--bg2)}
+.runcards .rc-score{font-weight:700;font-variant-numeric:tabular-nums;font-size:17px;min-width:52px;text-align:center;border-radius:999px;padding:3px 8px;background:var(--bg2)}
+.runcards li.good .rc-score{background:var(--okbg);color:var(--ok)} .runcards li.mid .rc-score{background:var(--closebg);color:var(--close)} .runcards li.low .rc-score{background:var(--badbg);color:var(--bad)}
+.runcards .rc-title{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.runcards .rc-title small{display:block;font-weight:400;color:var(--ink3);font-size:12px}
+.runcards .rc-meta{font-size:12.5px;color:var(--ink2);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.runcards .rc-body{padding:0 12px 12px}
+.runcards .rc-body .beats{margin-top:4px}
+.runcards .rc-body .beats li{border:0;background:inherit;margin-bottom:6px}
+.runcards .rc-body .beats li.hit{background:var(--okbg)} .runcards .rc-body .beats li.part{background:var(--closebg)} .runcards .rc-body .beats li.miss{background:var(--badbg)}
+.chainhint{font-size:12.5px;color:var(--ink2);margin-top:6px}
+@media (max-width:640px){ .runcards .rc-head{grid-template-columns:auto 1fr} .runcards .rc-meta{grid-column:2;text-align:left} }
 .rtabs{display:flex;gap:6px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
 .rtabs button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink2)}
 .rtabs button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
@@ -240,7 +256,7 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
     </div>
 
     <section class="panel" id="livePanel" hidden>
-      <div class="panel-head"><span class="pulse"></span> Listening… speak the card, then press Stop <span class="time" id="liveTime">0:00</span></div>
+      <div class="panel-head"><span class="pulse"></span> <span id="liveHead">Listening… speak the card, then press Stop</span> <span class="time" id="liveTime">0:00</span></div>
       <div class="live" id="liveText"></div>
       <div class="msg" id="liveMsg" hidden></div>
     </section>
@@ -269,6 +285,24 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
         <button class="btn small" id="againBtn">↻ Try again</button>
         <button class="btn small" id="nextAfterBtn">Next card →</button>
         <button class="btn small ghost" id="toProgressBtn">See progress</button>
+      </div>
+    </section>
+
+    <section class="panel" id="runPanel" hidden>
+      <div class="score">
+        <div class="ring" id="runRing"><div><span id="runNum">0</span><small>%</small></div></div>
+        <div>
+          <h3 id="runTitle"></h3>
+          <div class="sub" id="runSub"></div>
+          <div class="alt" id="runAlt"></div>
+        </div>
+      </div>
+      <ol class="runcards" id="runCards"></ol>
+      <details class="transcript"><summary>What the microphone heard</summary><div id="runTranscript"></div></details>
+      <div class="actions">
+        <button class="btn small" id="runAgainBtn">↻ Run it again</button>
+        <button class="btn small" id="runNextBtn">Continue →</button>
+        <button class="btn small ghost" id="runProgressBtn">See progress</button>
       </div>
     </section>
 
