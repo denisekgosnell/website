@@ -250,6 +250,15 @@
       return '<p' + attrs + '>' + p.join(' ') + '</p>';
     }).join('');
   }
+  // Slide card: picture + the confidence-monitor notes, with the script behind a toggle (opened after grading).
+  function renderSlideBody(card, graded) {
+    var t = '<img class="slideimg" src="' + card.image + '" alt="Slide ' + card.slide + '">';
+    t += '<div class="topics">' + card.notes.topics.map(esc).join('<span class="sep">•</span>') + '</div>';
+    t += '<ul class="phr">' + card.notes.lines.map(function (l) { return '<li class="l' + l.level + '">' + esc(l.text) + '</li>'; }).join('') + '</ul>';
+    t += '<details class="script"' + (graded ? ' open' : '') + '><summary>' + (graded ? 'The script, word by word' : 'Show the script for this slide') + '</summary><div>' + renderCardBody(card, graded) + '</div></details>';
+    return t;
+  }
+  function cardHTML(card, graded) { return card.notes ? renderSlideBody(card, graded) : renderCardBody(card, graded); }
   function updateStatus() {
     var card = cards[idx], sec = sections[card.section];
     var el = $('cbStatus');
@@ -275,7 +284,7 @@
     renderBest(card);
     var title = $('cardTitle');
     if (posInSec === 1) { title.textContent = sec.title; title.hidden = false; } else { title.hidden = true; }
-    $('cardBody').innerHTML = renderCardBody(card, null);
+    $('cardBody').innerHTML = cardHTML(card, null);
     var blur = recording && state.settings.hide && !peeking;
     $('cardBody').classList.toggle('blur', blur); $('hiddenNote').hidden = !blur;
     $('resultPanel').hidden = true; $('runPanel').hidden = true; $('livePanel').hidden = !recording;
@@ -415,7 +424,7 @@
     var primary = modeIdeas() ? ideas.score : res.score, T = state.settings.target;
 
     $('livePanel').hidden = true; $('cardBody').classList.remove('blur'); $('hiddenNote').hidden = true;
-    $('cardBody').innerHTML = renderCardBody(card, res);
+    $('cardBody').innerHTML = cardHTML(card, res);
     var ring = $('ring'); ring.style.setProperty('--p', primary);
     ring.style.setProperty('--rc', primary >= T ? 'var(--ok)' : primary >= T - 15 ? 'var(--close)' : 'var(--bad)');
     $('scoreNum').textContent = primary;
@@ -677,7 +686,7 @@
     if (!recording || !state.settings.hide) return;
     peeking = !peeking; $('cardBody').classList.toggle('blur', !peeking); $('hiddenNote').hidden = peeking;
   }
-  $('card').onclick = function () { togglePeek(); };
+  $('card').onclick = function (e) { if (e.target && e.target.closest && e.target.closest('details.script')) return; togglePeek(); };
   document.addEventListener('keydown', function (e) {
     if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown') { e.preventDefault(); go(neighbor(1)); }

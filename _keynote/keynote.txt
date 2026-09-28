@@ -34,10 +34,10 @@ It’s more that my biggest moments of synthesis often don’t arrive in the mom
 Some of my best thoughts arrive while I’m swimming laps, for example. That is how my mind works. I understand by moving. Talking. Testing. Making.
 ===
 If you go down the research rabbit hole on this, professionals in this space sort people’s creating and learning styles into four buckets.
-1. Visual.
-2. Auditory.
-3. Reading and writing.
-4. Kinesthetic.
+Visual.
+Auditory.
+Reading and writing.
+Kinesthetic.
 I’m the kinesthetic type. Things click for me when I’m moving.
 Traditional software development is really tailored for the reading and writing learners who can express ideas in languages like Python, Java, C++. If that’s hard for you, you were standing outside the door.
 ===
@@ -55,7 +55,9 @@ J built a Lovable app to manage the donations coming in and send status updates 
 I'll never forget how excited she was to tell me her app got over a thousand views on the day of the event.
 ===
 Or take an executive I work with, Karen. She owns tech for a multi-billion-dollar company. Before we ever met, Karen spent millions out of her own P&L on a project with Salesforce to modernize and secure her data infrastructure. A year and a half later, it still didn't work.
-Karen walked into our first meeting like someone on a losing streak, bracing for one more. She'd been buried under a run of projects that didn't land. Together, using open source and AI, we built. Ninety days later she had the thing Salesforce couldn't deliver in eighteen months, and it cost her about 40% less.
+Karen walked into our first meeting like someone on a losing streak, bracing for one more. She'd been buried under a run of projects that didn't land.
+===
+Together, using open source and AI, we built. Ninety days later she had the thing Salesforce couldn't deliver in eighteen months, and it cost her about 40% less.
 For J and Karen - I didn’t perform a miracle. All I did was open the door for them.
 ===
 But even as I talk about the positives, we need to acknowledge that AI is not immune from the duality of technology. The disruption, the displacement, the fear.
@@ -85,6 +87,7 @@ Who here wants to close doors instead? [Lower hand]
 Great. You’re in the right room.
 But the “door closed” future doesn’t actually require any of us to hold ill will or purposefully close doors. It can emerge from thousands of smaller choices made in the name of speed, efficiency, convenience, growth. None of those things are bad. But they don’t have to lead to closed doors either.
 That is the Duality of AI.
+===
 But let me say it again, the technology doesn't pick. People do. We Do.
 So let me walk you through this Duality in the form of the Three Great Tensions of AI as I see them, and let’s see how we can all be door openers.
 Let me show you a quote I read recently that rings true to me:
@@ -104,6 +107,7 @@ It feels like loss.
 And sometimes, this affects us in bigger ways, like our careers, paths we were counting on or built over years, decades, or even a whole lifetime.
 That’s not just a loss of convenience or routine.
 That’s a loss of identity.
+===
 We lose who we are.
 What do we do then?
 And that is important, because it is tempting for those of us who are excited about AI to dismiss resistance as ignorance.
@@ -122,6 +126,7 @@ But “technically possible” is doing a lot of work there.
 The evidence from previous waves of automation does not give us great confidence that everyone who loses a job will simply move into one of the new jobs being created. In 1950, almost 1.5 million people worked as telephone switchboard operators, either for the Bell system or in offices, hotels, and factories. By 1984 that number fell to 40,000. Today, it’s under 2,000.
 These jobs disappeared as new ones were created—first people to design and build the automation systems, engineering jobs; then people to maintain that automation, like linemen and other electrical and mechanical repair jobs; then eventually it’s computerized, which is a whole new category of jobs, and so on. Those new jobs may require different skills. They may be located somewhere else. They may arrive years after the old job disappears. And they may go to entirely different people.
 That is the part we risk losing when we talk only in aggregate.
+===
 We risk losing the part that makes us human.
 ## The Second Great Tension: AI Can Create Shared Prosperity—or Become Extractive
 [CONTENT CUT REMINDER]
@@ -166,6 +171,7 @@ A community can gain investment and still feel strained by it. That is the tensi
 Will AI help more communities build durable prosperity? Or will its greatest benefits pass through them—or pass them by?
 Those questions are not anti-business or anti-technology. They are human business questions.
 That is what we miss when we measure the opportunity of innovation and not the cost of what stays behind.
+===
 We risk hollowing out the communities we are supposed to be building up.
 ## The Third Great Tension: AI Can Democratize Control—or Concentrate It
 And that brings us to the third great tension: control.
@@ -220,6 +226,7 @@ Are we gaining greater control over our lives or becoming more dependent on syst
 Open source is one response to that tension. It is not the only response, but it is oneI happen to love and one we touch every day. Because open source and openness in general is not just about access to code or innovation or collaboration. It is about control and freedom of choice. It is about whether we or anyone else outside the center retains the power to understand the system, to question its choices, to build upon it and if we so choose, it’s about the power to create an alternative.
 Closed systems can also serve us well. But when a handful of companies control the systems through which we increasingly learn, decide, create, and act, something more fundamental is at stake.
 That is what we miss when we measure everything AI can do for us without quantifying how much control we surrender in return.
+===
 We risk surrendering our agency to systems we cannot question, change, or leave.
 ## PART 4. STRATEGY AND EXECUTION: WRITING IS THINKING
 Now, you all are leaders. In your community, at your company, in your industry. And like it or not, the hand we have been dealt is a life during a period of great change.
@@ -263,6 +270,7 @@ We can help people move from one opportunity to the next. We can make the benefi
 [RESOLUTION 1]
 Some jobs will disappear. Some career paths will narrow. Some hard-earned skills will become less valuable. At the same time that AI is closing off some forms of work, it is dramatically lowering the threshold for creating others.
 That is the leadership responsibility inside this tension.
+===
 Who in your organization could do more meaningful work if someone made these new capabilities accessible to them? Who has insight but not the title? Who understands the problem but lacks the technical vocabulary? Who has never been invited to see themselves as a builder?
 So here is the first question I want you to carry out of this room.
 ===
@@ -293,9 +301,9 @@ Call it the Open Door Test.
 ===
 Before your next AI decision, whether it is a vendor contract, a reorg, or the first Amazon Style Working Backwards document you write on Monday morning, ask yourself: does this open a door for people, or does it just happen to them?
 And then apply those 3 simple checks from our 3 tensions as part of the Open Door Test:
-1. Opportunity. Who gets the tools and a new path, and whose paths close?
-2. Prosperity. Who benefits, and who pays?
-3. Control. Who can understand and question this, and who is forced out?
+Opportunity. Who gets the tools and a new path, and whose paths close?
+Prosperity. Who benefits, and who pays?
+Control. Who can understand and question this, and who is forced out?
 If you can answer all three, you are opening doors. If you cannot answer one of them, you have found the door that is quietly closing on someone.
 ## PART 5. CONCLUSION: BE A DOOR-OPENER
 So let me tell you what is really lighting me up. Because it isn’t the chips. I’d still drop those anyway. It isn’t the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created. It isn’t even the inventions and new possibilities AI will unlock.
@@ -307,7 +315,6 @@ And all she needed was for someone to open the door and show her where it was.
 That’s it. That’s the whole thing. I do what I do for the Micahs of the world. I would go so far as to say I exist to light somebody else’s fire—and to help keep it burning.
 That is my philosophical North Star. It is what gives me energy. It is what gives me purpose. And every one of the dualities we just walked through comes back to that same purpose.
 These dualities are different in scale—individuals, communities, society--but each presents us with the same choice:
-===
 Will AI happen TO people, Or will we help people have agency in what happens next?
 The headlines want you to be afraid.
 And that fear is not unfounded.
@@ -315,9 +322,9 @@ Change is hard.
 Fast change is unsettling.
 Fast change that affects individuals, communities, and society simultaneously, a mile wide and a mile deep, that is in a word, terrifying.
 But fear has a way of narrowing our field of vision. It makes us look for safety in certainty. It pushes us to pick a side:
-* acceleration or obstruction,
-* optimism or pessimism,
-* opportunity or danger.
+acceleration or obstruction,
+optimism or pessimism,
+opportunity or danger.
 The Duality of AI demands something harder from us.
 It asks us to see both sides at once. To acknowledge the danger without surrendering the possibility. To pursue the possibility without pretending the danger is not real.
 We do not have to choose between a future in which AI succeeds and one in which people do. It does not have to be zero-sum. But the better future does not happen automatically. It will take the people in this room—the leaders of businesses, institutions, and communities—to make it happen.

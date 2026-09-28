@@ -30,7 +30,10 @@ const SECTION_META_BY_VARIANT = {
   ],
 };
 const variants = [''].concat(fs.readdirSync(__dirname).filter(d => fs.existsSync(path.join(__dirname, d, 'keynote.txt'))).sort());
-for (const variant of variants) build(variant);
+const built = {};
+for (const variant of variants) built[variant] = build(variant);
+// Slide cards: the Knoxville deck's slides as cards (picture + confidence-monitor notes), graded on the full script.
+if (fs.existsSync(path.join(__dirname, 'tn-slides', 'notes.txt'))) buildSlides(built['']);
 
 function build(variant) {
 const dir = variant ? path.join(__dirname, variant) : __dirname;
@@ -184,4 +187,39 @@ console.log(`card words: min ${Math.min(...sizes)}, max ${Math.max(...sizes)}, a
 if (process.argv.includes('--dump')) {
   cards.forEach(c => console.log(`\n--- card ${c.id} (sec ${c.section+1}, ${c.words}w)\n${c.paragraphs.join('\n')}`));
 }
+return data;
+}
+
+function buildSlides(base) {
+  const dir = path.join(__dirname, 'tn-slides');
+  console.log('\n=== slide cards (Knoxville deck) ===');
+  // notes.txt: "## N | LABEL", "T: a • b", "• phrase", "----> sub-phrase"
+  const notes = {}; let cur = null;
+  fs.readFileSync(path.join(dir, 'notes.txt'), 'utf8').split('\n').forEach(raw => {
+    const l = raw.replace(/\s+$/, '');
+    if (!l || (l.startsWith('#') && !l.startsWith('## '))) return;
+    const m = /^## (\d+) \| (.+)$/.exec(l);
+    if (m) { cur = notes[+m[1]] = { label: m[2].trim(), topics: [], lines: [] }; return; }
+    if (l.startsWith('T: ')) { cur.topics = l.slice(3).split('•').map(t => t.trim()).filter(Boolean); return; }
+    if (l.startsWith('• ')) { cur.lines.push({ level: 0, text: l.slice(2).trim() }); return; }
+    if (l.startsWith('----> ')) { cur.lines.push({ level: 1, text: l.slice(6).trim() }); return; }
+    console.error('notes.txt: unexpected line: ' + l); process.exit(1);
+  });
+  const cards = base.cards.map(c => {
+    const m = /^Slide (\d+)/.exec(c.title || '');
+    if (!m) { console.error(`slide cards: card ${c.id} has no "Slide N" title`); process.exit(1); }
+    const n = +m[1];
+    if (!notes[n]) { console.error(`slide cards: no notes for slide ${n}`); process.exit(1); }
+    const img = path.join(dir, 'img', `slide-${String(n).padStart(2, '0')}.jpg`);
+    if (!fs.existsSync(img)) { console.error(`slide cards: no image for slide ${n}`); process.exit(1); }
+    return Object.assign({}, c, { slide: n, notes: notes[n], image: 'data:image/jpeg;base64,' + fs.readFileSync(img).toString('base64') });
+  });
+  const data = { sections: base.sections, cards, variant: 'slides', variantLabel: 'Knoxville slides', slides: true };
+  const json = JSON.stringify(data).replace(/<\//g, '<\\/');
+  const tpl = fs.readFileSync(tplPath, 'utf8');
+  const appJs = fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
+  const tmJs = fs.readFileSync(path.join(__dirname, 'textmatch.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
+  const out = path.join(root, 'keynote-slides.html');
+  fs.writeFileSync(out, tpl.replace('__KEYNOTE_DATA__', () => json).replace('__TEXTMATCH_JS__', () => tmJs).replace('__APP_JS__', () => appJs));
+  console.log(`wrote ${path.relative(root, out)}: ${cards.length} slide cards, ${Object.keys(notes).length} slides with notes, ${Math.round(fs.statSync(out).size / 1024)} KB`);
 }
