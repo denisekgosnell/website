@@ -189,6 +189,18 @@ h2.h{font-family:var(--serif);font-size:20px;margin:22px 0 10px}
 .runcards .rc-body .beats li.hit{background:var(--okbg)} .runcards .rc-body .beats li.part{background:var(--closebg)} .runcards .rc-body .beats li.miss{background:var(--badbg)}
 .chainhint{font-size:12.5px;color:var(--ink2);margin-top:6px}
 @media (max-width:640px){ .runcards .rc-head{grid-template-columns:auto 1fr} .runcards .rc-meta{grid-column:2;text-align:left} }
+/* Slide cards: picture of the slide + confidence-monitor notes; the script sits behind a toggle */
+.slideimg{display:block;width:100%;max-width:560px;margin:0 auto 14px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.18);border:1px solid var(--line)}
+.topics{font-family:var(--sans);font-weight:700;font-size:16px;line-height:1.5;padding:9px 13px;border-radius:10px;background:var(--bg2);margin:0 0 12px;color:var(--ink)}
+.topics .sep{color:var(--ink3);font-weight:400;padding:0 5px}
+.phr{list-style:none;margin:0;padding:0}
+.phr li{font-family:var(--serif);font-size:19px;line-height:1.45;padding:4px 0 4px 24px;position:relative}
+.phr li.l0::before{content:'•';position:absolute;left:6px;color:var(--ink3)}
+.phr li.l1{padding-left:48px;font-size:17px;color:var(--ink2)}
+.phr li.l1::before{content:'⟶';position:absolute;left:22px;color:var(--ink3);font-size:14px;top:7px}
+details.script{margin-top:14px;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;color:var(--ink3)}
+details.script summary{cursor:pointer}
+details.script > div{margin-top:8px}
 .rtabs{display:flex;gap:6px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
 .rtabs button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink2)}
 .rtabs button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
@@ -768,6 +780,15 @@ if (window.KEYNOTE.variantLabel) { var _b = document.querySelector(".brand small
       return '<p' + attrs + '>' + p.join(' ') + '</p>';
     }).join('');
   }
+  // Slide card: picture + the confidence-monitor notes, with the script behind a toggle (opened after grading).
+  function renderSlideBody(card, graded) {
+    var t = '<img class="slideimg" src="' + card.image + '" alt="Slide ' + card.slide + '">';
+    t += '<div class="topics">' + card.notes.topics.map(esc).join('<span class="sep">•</span>') + '</div>';
+    t += '<ul class="phr">' + card.notes.lines.map(function (l) { return '<li class="l' + l.level + '">' + esc(l.text) + '</li>'; }).join('') + '</ul>';
+    t += '<details class="script"' + (graded ? ' open' : '') + '><summary>' + (graded ? 'The script, word by word' : 'Show the script for this slide') + '</summary><div>' + renderCardBody(card, graded) + '</div></details>';
+    return t;
+  }
+  function cardHTML(card, graded) { return card.notes ? renderSlideBody(card, graded) : renderCardBody(card, graded); }
   function updateStatus() {
     var card = cards[idx], sec = sections[card.section];
     var el = $('cbStatus');
@@ -793,7 +814,7 @@ if (window.KEYNOTE.variantLabel) { var _b = document.querySelector(".brand small
     renderBest(card);
     var title = $('cardTitle');
     if (posInSec === 1) { title.textContent = sec.title; title.hidden = false; } else { title.hidden = true; }
-    $('cardBody').innerHTML = renderCardBody(card, null);
+    $('cardBody').innerHTML = cardHTML(card, null);
     var blur = recording && state.settings.hide && !peeking;
     $('cardBody').classList.toggle('blur', blur); $('hiddenNote').hidden = !blur;
     $('resultPanel').hidden = true; $('runPanel').hidden = true; $('livePanel').hidden = !recording;
@@ -933,7 +954,7 @@ if (window.KEYNOTE.variantLabel) { var _b = document.querySelector(".brand small
     var primary = modeIdeas() ? ideas.score : res.score, T = state.settings.target;
 
     $('livePanel').hidden = true; $('cardBody').classList.remove('blur'); $('hiddenNote').hidden = true;
-    $('cardBody').innerHTML = renderCardBody(card, res);
+    $('cardBody').innerHTML = cardHTML(card, res);
     var ring = $('ring'); ring.style.setProperty('--p', primary);
     ring.style.setProperty('--rc', primary >= T ? 'var(--ok)' : primary >= T - 15 ? 'var(--close)' : 'var(--bad)');
     $('scoreNum').textContent = primary;
@@ -1195,7 +1216,7 @@ if (window.KEYNOTE.variantLabel) { var _b = document.querySelector(".brand small
     if (!recording || !state.settings.hide) return;
     peeking = !peeking; $('cardBody').classList.toggle('blur', !peeking); $('hiddenNote').hidden = peeking;
   }
-  $('card').onclick = function () { togglePeek(); };
+  $('card').onclick = function (e) { if (e.target && e.target.closest && e.target.closest('details.script')) return; togglePeek(); };
   document.addEventListener('keydown', function (e) {
     if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown') { e.preventDefault(); go(neighbor(1)); }
