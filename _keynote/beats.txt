@@ -161,7 +161,11 @@ Previous waves of automation don't give us confidence that everyone who loses a 
 In 1950, almost 1.5 million telephone switchboard operators, for the Bell system or in offices, hotels, and factories :: 1950 ; 1.5 million / half million ; telephone ; switchboard ; operators ; bell ; hotels
 By 1984 that fell to 40,000; today it's under 2,000 :: 1984 ; 40,000 ; today ; 2,000
 New jobs came: first engineers to design and build the automation; then maintenance, linemen, electrical and mechanical repair; then it's computerized, a whole new category :: design and build ; automation ; engineering ; maintain ; linemen ; electrical ; mechanical ; computerized ; category
-New jobs may require different skills, be located somewhere else, arrive years after the old job disappears, and go to entirely different people :: different skills ; somewhere else ; years after ; different people
+New jobs required different skills: someone had to learn them, and someone had to pay :: required different skills ; learn them ; pay for that
+They were in different places: someone had to move, or be left behind :: different places ; move ; left behind
+They came years later: someone had to live through the gap :: years later ; live through ; gap
+Many of them went to entirely different people :: entirely different people
+On a chart it looks like a recovery; to the operator who lost her job, it was not :: chart ; recovery ; operator ; lost her job
 That's the part we lose when we talk only in aggregate :: lose ; aggregate
 That is the part we risk losing when we… :: part ; risk ; losing
 
