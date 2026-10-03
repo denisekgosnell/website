@@ -254,7 +254,7 @@
   function renderSlideBody(card, graded) {
     var t = '<img class="slideimg" src="' + card.image + '" alt="Slide ' + card.slide + '">';
     t += '<div class="topics">' + card.notes.topics.map(esc).join('<span class="sep">•</span>') + '</div>';
-    t += '<ul class="phr">' + card.notes.lines.map(function (l) { return '<li class="l' + l.level + '">' + esc(l.text) + '</li>'; }).join('') + '</ul>';
+    t += '<ul class="phr">' + card.notes.lines.map(function (l) { return '<li class="l' + l.level + '">' + esc(l.text).replace(/ ----&gt; | ----> /g, ' <span class="arr">⟶</span> ') + '</li>'; }).join('') + '</ul>';
     t += '<details class="script"' + (graded ? ' open' : '') + '><summary>' + (graded ? 'The script, word by word' : 'Show the script for this slide') + '</summary><div>' + renderCardBody(card, graded) + '</div></details>';
     return t;
   }

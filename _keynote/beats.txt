@@ -31,7 +31,7 @@ Micah walked out; Dr. Berry turned to me: "I've never seen anything like that" :
 Micah later told Dr. Berry he was switching his major to computer science and wanted to thank me for showing him his path :: switching his major / switched his major / changed his major ; major ; thank me / thanked me ; showing him his path / his path
 And that is why I'm standing here today :: standing here today
 
-card 3 | Slide 4 · FADE DOOR
+card 3 | Slide 4 · DOOR
 Good morning, welcome to the inaugural AI-NO-vation Summit; my name is Denise Gosnell :: good morning ; inaugural ; summit ; denise gosnell
 I thought I had taught computer science; what I had really done was open a door; Micah walked through it, but first somebody had to make the door visible :: teaching computer science ; open a door ; walked through ; visible
 
@@ -54,7 +54,7 @@ It made drug prices transparent and exposed the PBMs' games, so a PBM sued us ou
 You stop seeing innovation as one thing: a door for one person is a wall coming down for someone else :: innovation ; one thing ; door ; wall coming down
 Like that time - Right after my PhD at… :: time ; right ; after
 
-card 7 | Slide 8 · DOOR HEADLINE
+card 7 | Slide 8 · DOOR: HEADLINE
 The technology doesn't pick. People do. :: technology doesn't pick ; people do
 My biggest moments of synthesis don't arrive at my desk or in a lecture; they arrive later, when I'm moving :: synthesis ; desk ; lecture ; moving
 That's how my mind works: I understand by moving, talking, testing, making :: mind works ; moving ; talking ; testing ; making
@@ -85,7 +85,7 @@ card 11 | Slide 12 · J APP VIEW
 J built a Lovable app for donations and status updates in a few hours; then live scoring, then donor messages to players; all in a weekend :: lovable / loveable ; status updates ; few hours ; live scoring ; messages ; weekend
 She was so excited it got over a thousand views on the day of the event :: excited ; thousand views ; day of the event
 
-card 12 | Slide 13 · KAREN
+card 12 | Slide 13 · KAREN EXEC
 Karen owns tech for a multi-billion-dollar company :: karen ; owns tech ; multi-billion ; company
 She'd spent millions from her own P&L with Salesforce to modernize and secure her data infrastructure; a year and a half later it still didn't work :: millions ; p&l ; salesforce ; modernize ; secure ; data infrastructure ; year and a half ; didn't work
 Karen walked into our first meeting like someone on… :: karen ; walked ; first
@@ -98,7 +98,7 @@ card 14 | Slide 15 · SAD MAN
 But even as I talk about the positives, we… :: even ; talk ; positives
 It is not irrational for people to worry about… :: irrational ; people ; worry
 
-card 15 | Slide 16 · FIRST TREE
+card 15 | Slide 16 · TREE
 AI can give voice to the talked-over, and make it easier to counterfeit a voice and steal an identity :: voice ; talked over ; counterfeit ; steal ; identity
 AI can help a first-time builder create value, and let a small group of companies control the tools every builder depends on :: first-time builder ; valuable ; small group of companies ; control the tools ; depends
 AI can give us time back for family and friends, and tempt us to automate away the relationships that make the time worth having :: time back ; families ; friends ; automate away ; relationships ; worth having
@@ -110,13 +110,17 @@ card 16 | Slide 17 · BASEBALL DIAMOND
 AI is not Field of Dreams: build it and the positive side won't magically come, much as I love James Earl Jones :: field of dreams ; build it ; magically ; james earl jones
 The positive side has to be built on purpose: leaders in technology, business, and society becoming door openers :: on purpose ; leadership ; technology ; business ; society ; door openers
 So that’s what I am really here to talk… :: thats ; talk ; today
+Doors. :: doors
 I want to talk about three places where the… :: want ; talk ; places
-individuals and their jobs. :: individuals ; their ; jobs
-For communities and their prosperity. :: communities ; their ; prosperity
-For our own agency. :: agency
+…For individuals and their jobs. :: individuals ; their ; jobs
+…For communities and their prosperity. :: communities ; their ; prosperity
+…For our own agency. :: agency
 
 card 17 | Slide 18 · THREE TENSIONS
 I call these the Three Great Tensions of AI. :: call ; these ; great
+Tension 1: AI will create new jobs…and eliminate others… :: tension ; create ; jobs
+Tension 2: AI will create shared prosperity…or extract it… :: tension ; create ; shared
+Tension 3: Ai will democratize control… or concentrate it… :: tension ; democratize ; control
 Let me ask you: Who here wants to open… :: wants ; open ; doors
 Who here wants to close doors instead? :: wants ; close ; doors
 Great. You’re in the right room. :: great ; youre ; right
@@ -126,58 +130,57 @@ That is the Duality of AI. :: duality
 card 18 | Slide 19 · PEOPLE DO. WE DO.
 But let me say it again, the technology doesn't… :: again ; technology ; doesnt
 So let me walk you through this Duality in… :: walk ; through ; duality
+
+card 19 | Slide 20 · FIRST TENSION DIVIDER
 Let me show you a quote I read recently… :: show ; quote ; read
 
-card 19 | Slide 21 · JFK QUOTE
+card 20 | Slide 21 · JFK QUOTE
 "Threshold of a new industrial revolution, the revolution of automation; bright with the hope of new prosperity for labor and new abundance for America" :: threshold ; industrial revolution ; automation ; prosperity ; labor ; abundance ; america
 "But also a revolution which carries the dark menace of industrial dislocation, increasing unemployment, and deepening poverty" :: dark menace ; dislocation ; unemployment ; poverty
 Anyone know who that was? Any guesses? That's John F. Kennedy; try to tell me it wasn't written for this moment :: guesses ; kennedy ; written for this moment
 What does it tell us that a quote from the early 60s applies today? Look hard enough, or ask AI, and you'd find one from the 1890s or 1920s :: early 60s ; 1890s ; 1920s ; ask ai
 
-card 20 | Slide 22 · THOG & GROG
+card 21 | Slide 22 · THOG & GROG
 We invent new things; they bring change; change is disruptive, with positive and negative effects; that's the inherent tension in change :: invent ; change ; disruptive ; positive ; negative ; inherent tension
 Prehistoric times: Thog lamented the downfall of his sledge business when Grog invented the wheel :: prehistoric ; thog ; sledge ; grog ; wheel
 
-card 21 | Slide 23 · TENSION IN CHANGE
+card 22 | Slide 23 · TECHNOLOGY DISRUPTION MONTAGE
 Humans don't like change: macro, we're adaptable as a species; micro, we like our things the way we like them :: humans ; macro ; adaptable ; species ; micro ; the way we like them
 We may understand intellectually that change is inevitable. But… :: understand ; intellectually ; change
 It feels like loss. :: feels ; loss
 And sometimes, this affects us in bigger ways, like… :: sometimes ; affects ; bigger
 That’s not just a loss of convenience or routine. :: thats ; loss ; convenience
 That’s a loss of identity. :: thats ; loss ; identity
+We lose who we are. :: lose
 
-card 22 | Slide 24 · LOST & CONFUSED
+card 23 | Slide 24 · HELP
 That's true, but tell that to the person who lost their job :: tell that ; lost their job
 Sometimes the skills transfer: a sledge maker can make a cart, maybe learn to make a wheel; but sometimes they don't transfer easily :: skills transfer ; sledge ; cart ; wheel ; transfer easily
 A robot automates an assembly-line job; it's "technically possible" the displaced worker retrains in robotics or software engineering :: robot ; assembly-line ; technically possible ; retrain ; robotics ; software engineering
 "Technically possible" is doing a lot of work there :: technically possible ; lot of work
 It's tempting for those excited about AI to dismiss resistance as ignorance: understand the tech better, disruption happened before, the long run creates prosperity :: tempting ; dismiss ; resistance ; ignorance ; understand the technology ; happened before ; long run ; prosperity
-We lose who we are. :: lose
 As with every major technological disruption, AI will eliminate… :: major ; technological ; disruption
 But equally inevitable is the creation of new work. :: equally ; inevitable ; creation
 
-card 23 | Slide 25 · BAR CHART
+card 24 | Slide 25 · OPERATORS CHART
 Previous waves of automation don't give us confidence that everyone who loses a job moves into a new one :: previous waves ; confidence ; loses a job ; new jobs
 In 1950, almost 1.5 million telephone switchboard operators, for the Bell system or in offices, hotels, and factories :: 1950 ; 1.5 million / half million ; telephone ; switchboard ; operators ; bell ; hotels
 By 1984 that fell to 40,000; today it's under 2,000 :: 1984 ; 40,000 ; today ; 2,000
 New jobs came: first engineers to design and build the automation; then maintenance, linemen, electrical and mechanical repair; then it's computerized, a whole new category :: design and build ; automation ; engineering ; maintain ; linemen ; electrical ; mechanical ; computerized ; category
-New jobs required different skills: someone had to learn them, and someone had to pay :: required different skills ; learn them ; pay for that
-They were in different places: someone had to move, or be left behind :: different places ; move ; left behind
-They came years later: someone had to live through the gap :: years later ; live through ; gap
-Many of them went to entirely different people :: entirely different people
-On a chart it looks like a recovery; to the operator who lost her job, it was not :: chart ; recovery ; operator ; lost her job
 That's the part we lose when we talk only in aggregate :: lose ; aggregate
+These jobs disappeared even as new ones were created—first,… :: these ; jobs ; disappeared
+But those new jobs may require different skills. They… :: those ; jobs ; require
 That is the part we risk losing when we… :: part ; risk ; losing
 
-card 24 | Slide 26 · WE RISK · HUMAN
+card 25 | Slide 26 · RISK LOSING HUMAN
 We risk losing the part that makes us human. :: risk ; losing ; part
 
-card 25 | Slide 27 · TENSION 2 DIVIDER
+card 26 | Slide 27 · SECOND TENSION DIVIDER
 But economic growth does not automagically equate to community prosperity :: economic growth ; automagically ; community prosperity
 The second great tension is about who benefits—and who… :: second ; great ; tension
 AI has the potential to create extraordinary value. It… :: potential ; create ; extraordinary
 
-card 26 | Slide 28 · DIVIDED COMMUNITY
+card 27 | Slide 28 · DIVIDED COMMUNITY
 A company can become more innovative and productive while… :: company ; become ; innovative
 Small businesses can gain powerful new capabilities and simultaneously… :: small ; businesses ; gain
 And the physical infrastructure that powers AI can bring… :: physical ; infrastructure ; powers
@@ -185,7 +188,7 @@ The innovation may be global. The benefits may flow… :: innovation ; global ; 
 But the burden is local. :: burden ; local
 It is the community that supplies the land, the… :: community ; supplies ; land
 
-card 27 | Slide 29 · PINATA
+card 28 | Slide 29 · PINATA
 A data center can expand the tax base, support construction, strengthen infrastructure, and connect a region to one of the most important transformations of our time :: tax base ; construction ; infrastructure ; region ; transformations
 It can also draw enormous electricity, occupy land, use water, create noise, and require significant public investment :: electricity ; occupy land ; water ; noise ; public investment
 For many people the data center is the first part of the AI economy they can actually see; the model is abstract, the algorithm invisible, the building at the edge of town is concrete :: data center ; first part ; ai economy ; abstract ; invisible ; edge of town ; concrete
@@ -193,23 +196,23 @@ Data centers are the pinata in the room people can hit :: pinata ; hit
 An AI model is abstract. The algorithm is invisible.… :: model ; abstract ; algorithm
 The answer is not to stop building. :: answer ; stop ; building
 
-card 28 | Slide 30 · COMMUNITY
+card 29 | Slide 30 · COMMUNITY
 And it means asking what else we can build :: what else ; build
 It is to build in a way that earns… :: build ; earns ; sustains
 
-card 29 | Slide 31 · SCHUMAN & PARKER
+card 30 | Slide 31 · SCHUMAN & PARKER
 Dr. Katie Schuman and I did our PhD research at UT at the same time; I left for Silicon Valley; she stayed and became a leading neuromorphic-computing researcher :: schuman / schumann / shuman ; phd ; silicon valley ; stayed ; neuromorphic / neuro morphic ; researchers
 Neuromorphic chips are designed more like a brain than a conventional processor :: chips ; brain ; conventional processor
 The essential point is power: certain learning tasks use a fraction of the energy of standard approaches :: power ; learning tasks ; fraction ; energy ; standard approaches
 
-card 30 | Slide 32 · CHIPS
+card 31 | Slide 32 · CHIPS
 In her lab, summer students showed chips learning pole-balancing using under 10% of the energy of today's GPUs; a different computing future on a sliver of the power, right here in Tennessee :: lab ; summer ; students ; pole-balancing ; 10 percent ; gpus / gpu ; sliver ; tennessee
 Then they handed me a tray of the early chips, and I dropped them :: tray ; early chips ; dropped
 My stomach fell through the floor; I thought I'd dropped millions of dollars of research :: stomach ; floor ; millions of dollars ; research
 The students: "Don't worry, those are from years ago, we're generations past those, we wouldn't hand you one of the new ones" :: don't worry ; years ago ; generations ; new ones
 Better and worse at exactly the same time; but those chips represented something important :: better ; worse ; same time ; represented ; important
 
-card 31 | Slide 33 · DECISIONS
+card 32 | Slide 33 · DECISIONS
 We talk about the demands of AI as the unavoidable price of progress; they are not :: demands ; unavoidable ; price of progress ; they are not
 They are shaped by decisions: what we fund, what we build, which technical approaches we pursue, whose needs we consider :: shaped by decisions ; fund ; build ; technical approaches ; whose needs
 Invest in efficient architectures, support local research, build smaller specialized models, prepare local workers and businesses to participate, ensure infrastructure strengthens the systems communities rely on after construction :: efficient architectures ; local research ; smaller ; specialized models ; local workers ; participate ; strengthens ; construction
@@ -219,27 +222,27 @@ Will AI help more communities build durable prosperity? Or… :: help ; communit
 Those questions are not anti-business or anti-technology. They are… :: those ; questions ; anti
 That is what we miss when we measure the… :: miss ; measure ; opportunity
 
-card 32 | Slide 34 · WE RISK · HOLLOWING
+card 33 | Slide 34 · WE RISK · HOLLOWING
 We risk hollowing out the communities we are supposed… :: risk ; hollowing ; communities
 
-card 33 | Slide 35 · TENSION 3 DIVIDER
+card 34 | Slide 35 · THIRD TENSION DIVIDER
 The third great tension: control :: third great tension ; control
 Who gets to build with AI, inspect it, question it, adapt it, decide how it's used, and who retains agency over their lives? :: build ; inspect ; question ; adapt ; agency
 This tension can be narrow. :: tension ; narrow
 
-card 34 | Slide 36 · ZUCK QUOTE
+card 35 | Slide 36 · ZUCK QUOTE
 Or a handful of companies controlling it, everyone else renting access on terms they didn't set, forfeiting their data, privacy, and personal thoughts? :: handful of companies ; renting access ; terms ; forfeit ; privacy ; personal thoughts
 The narrow version: will AI democratize software development so far more people can build tools and solve problems? :: democratize ; software development ; more people ; solve problems
 But the tension can also be much wider. :: tension ; much ; wider
 
-card 35 | Slide 37 · ALTMAN QUOTE
+card 36 | Slide 37 · ALTMAN QUOTE
 Or give institutions more power to monitor people, predict them, influence them, and make decisions about them? :: institutions ; monitor ; predict ; influence ; decisions
 The part where I get to talk about what really excites me: open source :: excited ; open source
 The wider version: will AI give individuals more control over their time, knowledge, work, choices, their own lives? :: individuals ; control ; time ; knowledge ; choices ; own lives
 Believe me, I’m not an alarmist, but these kinds… :: believe ; alarmist ; these
 Is this future opening doors or closing them? :: future ; opening ; doors
 
-card 36 | Slide 38 · ARCHITECTURE
+card 37 | Slide 38 · ARCHITECTURE
 The architecture of a technology helps determine the distribution of power around it; a big part of my career has been open source :: architecture ; distribution of power ; career ; open source
 On the flip side, closed is not a synonym for bad :: flip side ; closed ; synonym ; bad
 Closed systems offer integration, consistency, technical support, simplicity, clearer lines of accountability :: integration ; consistency ; technical support ; simplicity ; accountability
@@ -252,7 +255,7 @@ The risk calculus changes, however, when the closed system… :: risk ; calculus
 Closed systems become problematic when they control too much… :: closed ; systems ; become
 AI is that, but on steroids. :: steroids
 
-card 37 | Slide 39 · WE ASK AI
+card 38 | Slide 39 · WE ASK AI
 And increasingly we ask AI to act on our behalf :: act on our behalf
 That can be extraordinarily empowering; remember J's charity golf app built on Loveable? :: empowering ; charity golf / jay ; loveable / lovable
 But the same technology can weaken the very capabilities it appears to expand :: weaken ; capabilities ; expand
@@ -260,7 +263,7 @@ If we ask AI what to think before we've tried to think, we outsource more than a
 We ask AI what is true and what matters; to summarize, evaluate, recommend, organize, draft; how much of this keynote did I write versus OpenAI's data centers? :: what is true ; matters ; summarize ; evaluate ; recommend ; draft
 Used well, AI can increase our capacity to think… :: used ; well ; increase
 
-card 38 | Slide 40 · BRAIN
+card 39 | Slide 40 · BRAIN
 I’m talking about analytical cognition, about critical thinking. :: talking ; analytical ; cognition
 Analytical cognition is not simply the production of an… :: analytical ; cognition ; simply
 It is the process of examining evidence, tolerating uncertainty,… :: process ; examining ; evidence
@@ -268,7 +271,7 @@ AI is a tool that can enhance that process. :: tool ; enhance ; process
 Or it can short-circuit the process if we just… :: short ; circuit ; process
 Don’t get me wrong. It’s convenient. So is Google.… :: dont ; wrong ; convenient
 
-card 39 | Slide 41 · TRANSFER OF CONTROL
+card 40 | Slide 41 · TRANSFER OF CONTROL
 But the convenience of AI can conceal a transfer… :: convenience ; conceal ; transfer
 If a system chooses which sources to summarize, which… :: system ; chooses ; sources
 That does not mean we should reject AI assistance,… :: does ; mean ; should
@@ -279,16 +282,16 @@ Open source is one response to that tension. It… :: open ; source ; response
 Closed systems can also serve us well. But when… :: closed ; systems ; serve
 That is what we miss when we measure everything… :: miss ; measure ; everything
 
-card 40 | Slide 42 · WE RISK · AGENCY
+card 41 | Slide 42 · WE RISK · AGENCY
 We risk surrendering our agency to systems we cannot… :: risk ; surrendering ; agency
 
-card 41 | Slide 43 · STRATEGY & EXECUTION
+card 42 | Slide 43 · STRATEGY & EXECUTION
 Now, you all are leaders. In your community, at… :: leaders ; community ; company
 Change is hard. Successfully navigating that change requires good… :: change ; hard ; successfully
 Good leadership requires clarity—of strategy and of execution. :: good ; leadership ; requires
 For my money, there is no better company at… :: money ; better ; company
 
-card 42 | Slide 44 · WRITING IS THINKING
+card 43 | Slide 44 · WRITING IS THINKING
 Good strategic thinking starts at the end: what outcome are we trying to achieve? :: strategic thinking ; starts at the end ; outcome ; achieve
 At Amazon we took that to the extreme and called it Working Backwards :: extreme ; working backwards
 We wrote the press release for the finished thing first, then wrote back to the first requirements; the plan existed on paper before anything existed in code :: press release ; finished thing ; requirements ; on paper ; in code
@@ -296,11 +299,11 @@ One set of pages, many readers, everyone thinking together and clear on what we 
 Writing is thinking. :: writing ; thinking
 But here is the real trick. It was never… :: real ; trick ; never
 
-card 43 | Slide 45 · FOOTBALL PLAY
+card 44 | Slide 45 · FOOTBALL PLAY
 Much like a football play. You may not be… :: much ; football ; play
 Same at Amazon. When it came time to execute,… :: same ; amazon ; came
 
-card 44 | Slide 46 · CLARITY
+card 45 | Slide 46 · CLARITY
 Back to the present. Here we are. In the… :: back ; present ; world
 It is incumbent on us, the leaders in this… :: incumbent ; leaders ; room
 To get there, though, we need a strategy. :: though ; need ; strategy
@@ -309,32 +312,32 @@ But how do we do that? We lack clarity… :: lack ; clarity ; because
 Some of the most fundamental questions remain unanswered—what is… :: fundamental ; questions ; remain
 Well, I want to help you with that by… :: well ; want ; help
 
-card 45 | Slide 47 · AI AGENTS ARE JUST FILES
+card 46 | Slide 47 · AI AGENTS ARE JUST FILES
 Write your strategy and think it through and you already have the inputs to use AI to the fullest; the thinking is the work, the agents just read :: inputs ; fullest ; thinking is the work ; agents just read
 AI agents are just files. :: agents ; files
 Strip away the hype, and it’s just a set… :: strip ; away ; hype
 When you realize that, the Amazon playbook still works.… :: realize ; amazon ; playbook
 Every leader in this room is deciding how their… :: leader ; room ; deciding
 
-card 46 | Slide 48 · THREE TENSIONS AGAIN
+card 47 | Slide 48 · THREE TENSIONS AGAIN
 Leaders can't make every consequence positive; we can't promise no job disappears, no community faces new costs, no powerful institution misuses AI :: every consequence ; promise ; disappear ; new costs ; powerful institution
 But we can influence how the change is experienced :: influence ; experienced
 As you are thinking, and writing to think, I… :: thinking ; writing ; think
 We cannot resolve all of these tensions. :: cannot ; resolve ; these
 We can help people move from one opportunity to… :: help ; people ; move
 
-card 47 | Slide 49 · TREE · RESOLUTION 1
+card 48 | Slide 49 · TREE · RESOLUTION 1
 Some jobs will disappear. Some career paths will narrow.… :: jobs ; disappear ; career
 That is the leadership responsibility inside this tension. :: leadership ; responsibility ; inside
 
-card 48 | Slide 50 · WHO IN YOUR ORG
+card 49 | Slide 50 · WHO IN YOUR ORG
 Who in your organization could do more meaningful work… :: organization ; could ; meaningful
 So here is the first question I want you… :: first ; question ; want
 
-card 49 | Slide 51 · DOOR #1
+card 50 | Slide 51 · DOOR #1
 Who gets the tools, and who gets a path… :: gets ; tools ; path
 
-card 50 | Slide 52 · HOUSES · RESOLUTION 2
+card 51 | Slide 52 · HOUSES · RESOLUTION 2
 AI investment can create enormous value. But the place… :: investment ; create ; enormous
 That is the leadership responsibility inside this tension. :: leadership ; responsibility ; inside
 When you invest in a community, what capacity will… :: invest ; community ; capacity
@@ -342,25 +345,25 @@ The goal is not simply to locate innovation in… :: goal ; simply ; locate
 That is not charity. It is stewardship. It is… :: charity ; stewardship ; good
 So here is the second question I want you… :: second ; question ; want
 
-card 51 | Slide 53 · DOOR #2
+card 52 | Slide 53 · DOOR #2
 Who benefits, and who pays? :: benefits ; pays
 
-card 52 | Slide 54 · SCALE · RESOLUTION 3
+card 53 | Slide 54 · SCALE · RESOLUTION 3
 AI systems will increasingly help us understand information, make… :: systems ; increasingly ; help
 That is the leadership responsibility inside this tension. :: leadership ; responsibility ; inside
 When you adopt an AI system, can your employees… :: adopt ; system ; employees
 Openness does not mean open source. It means preserving… :: openness ; does ; mean
 So here is the third question I want you… :: third ; question ; want
 
-card 53 | Slide 55 · DOOR #3
+card 54 | Slide 55 · DOOR #3
 Who can understand and question this, and who can… :: understand ; question ; leave
 
-card 54 | Slide 56 · TREE · OPEN DOOR TEST
+card 55 | Slide 56 · TREE · OPEN DOOR TEST
 Call it the Open Door Test :: open door test
 Now, as you go forth and talk about AI… :: forth ; talk ; colleagues
 And I want you to run that review on… :: want ; review ; single
 
-card 55 | Slide 57 · DOOR OPEN TEST
+card 56 | Slide 57 · DOOR OPEN TEST
 Opportunity: who gets the tools and a new path, and whose paths close? :: opportunity ; tools ; new path ; whose paths close
 Prosperity: who benefits, and who pays? :: prosperity ; who benefits ; who pays
 Control: who can understand and question this, and who is forced out? :: control ; understand and question ; forced out
@@ -368,7 +371,7 @@ Answer all three and you are opening doors; miss one and you have found the door
 Before your next AI decision, whether it is a… :: before ; next ; decision
 And then apply those 3 simple checks from our… :: apply ; those ; simple
 
-card 56 | Slide 58 · 4 PHOTOS
+card 57 | Slide 58 · 4 PHOTOS
 What is really lighting me up isn't the chips (I'd still drop those), the layoff numbers, the record new businesses, the jobs to be created, or the inventions AI will unlock :: lighting me up ; chips ; drop ; layoff ; new businesses ; jobs ; inventions ; unlock
 No. I do what I do for that kid who sees an open door, a door I helped open, and walks through :: kid ; open door ; helped open ; walks through
 The kid who hugs me, lifts me off the ground, and tells me she found a new way to see the world; who discovers possibilities on the other side of a door he didn't know existed :: hugs ; off the ground ; new way ; see the world ; discovers ; possibilities ; other side ; existed
@@ -391,7 +394,7 @@ But fear has a way of narrowing our field… :: fear ; narrowing ; field
 It asks us to see both sides at once.… :: asks ; both ; sides
 So that is my challenge to you. :: challenge
 
-card 57 | Slide 59 · FINAL DOOR
+card 58 | Slide 59 · FINAL DOOR
 The person with the problem but not the title; the idea but not the technical vocabulary; whose old path is disappearing; who doesn't look, think, learn, or arrive by the path you did :: problem ; title ; idea ; technical vocabulary ; old path ; disappearing ; look like you ; arrive
 You don't have to determine their future or carry them through the door; just open it and make it visible; give them the tools, help them reach the threshold, then let them surprise you :: determine ; carry ; open the door ; visible ; tools ; threshold ; surprise
 AI will open extraordinary doors, and close some too; the technology alone won't decide which side of the duality defines this era; we will :: extraordinary doors ; close some ; technology alone ; duality ; era ; we will

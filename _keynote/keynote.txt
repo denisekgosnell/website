@@ -29,15 +29,15 @@ After enough times, you stop seeing innovation as one thing. What you build as a
 ===
 Here’s the important thing about that:
 The technology doesn't pick. People do.
-So here's something else about me. I've always felt like I lived in a duality between what makes sense to me and what everybody else says is true. This isn’t like colorblindness where I think green looks orange. Or my firm belief that Peyton Manning the actual mayor of Knoxville, period.
+So here's something else about me. I've always felt like I lived in a duality between what makes sense to me and what everybody else says is true. This isn’t like colorblindness where I think green looks orange. Or my firm belief that Peyton Manning is the actual mayor of Knoxville, period.
 It’s more that my biggest moments of synthesis often don’t arrive in the moment, while reading at my desk, or listening to a lecture back here in my grad days. Rather, they arrive later, when I’m moving.
 Some of my best thoughts arrive while I’m swimming laps, for example. That is how my mind works. I understand by moving. Talking. Testing. Making.
 ===
 If you go down the research rabbit hole on this, professionals in this space sort people’s creating and learning styles into four buckets.
-Visual.
-Auditory.
-Reading and writing.
-Kinesthetic.
+1. Visual.
+2. Auditory.
+3. Reading and writing.
+4. Kinesthetic.
 I’m the kinesthetic type. Things click for me when I’m moving.
 Traditional software development is really tailored for the reading and writing learners who can express ideas in languages like Python, Java, C++. If that’s hard for you, you were standing outside the door.
 ===
@@ -74,15 +74,18 @@ Both sides are real. Neither is guaranteed.
 ===
 AI is not Field of Dreams. If we build it, the positive side will not magically come. As much as I love James Earl Jones and want this to be true.
 No. The positive side of the duality has to be built on purpose. It requires people in positions of leadership—in technology, in business, in society—to become door openers.
-So that’s what I am really here to talk about today. Doors.
-I want to talk about three places where the Duality of AI is present in all of our lives. Where we already have the choice to open or close doors for For
-individuals and their jobs.
-For communities and their prosperity.
-For our own agency.
+So that’s what I am really here to talk about today.
+Doors.
+I want to talk about three places where the Duality of AI is present in all of our lives. Where we already have the choice to open or close doors for…
+…For individuals and their jobs.
+…For communities and their prosperity.
+…For our own agency.
 ===
 I call these the Three Great Tensions of AI.
-[Tension 1: AI will eliminate jobs and create new ones / Tension 2: AI will create shared prosperity or extract it / Tension 3: Ai will democratize control or concentrate it]
-Let me ask you: Who here wants to open doors for individuals, for their communities, and for society? [Raise hand]
+Tension 1: AI will create new jobs…and eliminate others without offering a path forward for individuals
+Tension 2: AI will create shared prosperity…or extract it from communities
+Tension 3: Ai will democratize control… or concentrate it in the hands of a few individuals and companies
+Let me ask you: Who here wants to open doors for individuals, for their communities, and for society? [Raise hand — ask people to raise their hands if it isn’t obviously getting hands to raise]
 Who here wants to close doors instead? [Lower hand]
 Great. You’re in the right room.
 But the “door closed” future doesn’t actually require any of us to hold ill will or purposefully close doors. It can emerge from thousands of smaller choices made in the name of speed, efficiency, convenience, growth. None of those things are bad. But they don’t have to lead to closed doors either.
@@ -90,9 +93,10 @@ That is the Duality of AI.
 ===
 But let me say it again, the technology doesn't pick. People do. We Do.
 So let me walk you through this Duality in the form of the Three Great Tensions of AI as I see them, and let’s see how we can all be door openers.
+## The First Great Tension: AI Will Create new Jobs—and Eliminate others
 Let me show you a quote I read recently that rings true to me:
-## The First Great Tension: AI Will Eliminate Jobs—and Create New Ones
-"Today we stand on the threshold of a new industrial revolution, the revolution of automation. This is a revolution bright with the hope of a new prosperity for labor and a new abundance for America. But it is also a revolution which carries the dark menace of industrial dislocation, increasing unemployment, and deepening poverty."
+===
+[Read Quote] "Today we stand on the threshold of a new industrial revolution, the revolution of automation. This is a revolution bright with the hope of a new prosperity for labor and a new abundance for America. But it is also a revolution which carries the dark menace of industrial dislocation, increasing unemployment, and deepening poverty."
 Anyone know who that was? Any guesses?
 That's John F. Kennedy. Read it again and try to tell me it wasn't written for this moment. What does that tell us? What does it tell us that a quote from the early 60s is equally applicable today? I suspect if we looked hard enough—or asked AI to look for us—we could find something similar from the 1890s or 1920s.
 ===
@@ -107,8 +111,8 @@ It feels like loss.
 And sometimes, this affects us in bigger ways, like our careers, paths we were counting on or built over years, decades, or even a whole lifetime.
 That’s not just a loss of convenience or routine.
 That’s a loss of identity.
-===
 We lose who we are.
+===
 What do we do then?
 And that is important, because it is tempting for those of us who are excited about AI to dismiss resistance as ignorance.
 We tell people they need to understand the technology better.
@@ -124,17 +128,12 @@ When a robot automates an assembly-line job, it is technically possible that the
 But “technically possible” is doing a lot of work there.
 ===
 The evidence from previous waves of automation does not give us great confidence that everyone who loses a job will simply move into one of the new jobs being created. In 1950, almost 1.5 million people worked as telephone switchboard operators, either for the Bell system or in offices, hotels, and factories. By 1984 that number fell to 40,000. Today, it’s under 2,000.
-These jobs disappeared as new ones were created—first people to design and build the automation systems, engineering jobs; then people to maintain that automation, like linemen and other electrical and mechanical repair jobs; then eventually it’s computerized, which is a whole new category of jobs, and so on.
-Those new jobs required different skills. Someone had to learn them, and someone had to pay for that.
-They were in different places. Someone had to move, or be left behind.
-They came years later. Someone had to live through the gap.
-And many of them went to entirely different people.
-On a chart, that looks like a recovery. To the operator who lost her job, it was not.
+These jobs disappeared even as new ones were created—first, people to design and build the automation systems, engineering jobs; then, people to maintain that automation, like linemen and other electrical and mechanical repair jobs; then, eventually, it’s computerized, which is a whole new category of jobs, and so on.
+But those new jobs may require different skills. They may be located somewhere else. They may arrive years after the old job disappears. And they may go to entirely different people.
 That is the part we risk losing when we talk only in aggregate.
 ===
 We risk losing the part that makes us human.
 ## The Second Great Tension: AI Can Create Shared Prosperity—or Become Extractive
-[CONTENT CUT REMINDER]
 The second great tension is about who benefits—and who pays. It is the tension between innovation and community—whether innovation adds to community or extracts from it.
 AI has the potential to create extraordinary value. It can help businesses grow, enable entrepreneurs to compete, and accelerate research. It can also be used to improve public services and bring entirely new investment or products to places and communities that stand to benefit.
 But economic growth does not automagically equate to community prosperity.
@@ -306,9 +305,9 @@ Call it the Open Door Test.
 ===
 Before your next AI decision, whether it is a vendor contract, a reorg, or the first Amazon Style Working Backwards document you write on Monday morning, ask yourself: does this open a door for people, or does it just happen to them?
 And then apply those 3 simple checks from our 3 tensions as part of the Open Door Test:
-Opportunity. Who gets the tools and a new path, and whose paths close?
-Prosperity. Who benefits, and who pays?
-Control. Who can understand and question this, and who is forced out?
+1. Opportunity. Who gets the tools and a new path, and whose paths close?
+2. Prosperity. Who benefits, and who pays?
+3. Control. Who can understand and question this, and who is forced out?
 If you can answer all three, you are opening doors. If you cannot answer one of them, you have found the door that is quietly closing on someone.
 ## PART 5. CONCLUSION: BE A DOOR-OPENER
 So let me tell you what is really lighting me up. Because it isn’t the chips. I’d still drop those anyway. It isn’t the layoff numbers, or the record number of new businesses opening, or the potential jobs waiting to be created. It isn’t even the inventions and new possibilities AI will unlock.
@@ -327,9 +326,9 @@ Change is hard.
 Fast change is unsettling.
 Fast change that affects individuals, communities, and society simultaneously, a mile wide and a mile deep, that is in a word, terrifying.
 But fear has a way of narrowing our field of vision. It makes us look for safety in certainty. It pushes us to pick a side:
-acceleration or obstruction,
-optimism or pessimism,
-opportunity or danger.
+* acceleration or obstruction,
+* optimism or pessimism,
+* opportunity or danger.
 The Duality of AI demands something harder from us.
 It asks us to see both sides at once. To acknowledge the danger without surrendering the possibility. To pursue the possibility without pretending the danger is not real.
 We do not have to choose between a future in which AI succeeds and one in which people do. It does not have to be zero-sum. But the better future does not happen automatically. It will take the people in this room—the leaders of businesses, institutions, and communities—to make it happen.

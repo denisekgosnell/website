@@ -33,7 +33,7 @@ const variants = [''].concat(fs.readdirSync(__dirname).filter(d => fs.existsSync
 const built = {};
 for (const variant of variants) built[variant] = build(variant);
 // Slide cards: the Knoxville deck's slides as cards (picture + confidence-monitor notes), graded on the full script.
-if (fs.existsSync(path.join(__dirname, 'tn-slides', 'notes.txt'))) buildSlides(built['']);
+if (fs.existsSync(path.join(__dirname, 'tn-slides', 'deck-notes.json'))) buildSlides(built['']);
 
 function build(variant) {
 const dir = variant ? path.join(__dirname, variant) : __dirname;
@@ -193,17 +193,14 @@ return data;
 function buildSlides(base) {
   const dir = path.join(__dirname, 'tn-slides');
   console.log('\n=== slide cards (Knoxville deck) ===');
-  // notes.txt: "## N | LABEL", "T: a • b", "• phrase", "----> sub-phrase"
-  const notes = {}; let cur = null;
-  fs.readFileSync(path.join(dir, 'notes.txt'), 'utf8').split('\n').forEach(raw => {
-    const l = raw.replace(/\s+$/, '');
-    if (!l || (l.startsWith('#') && !l.startsWith('## '))) return;
-    const m = /^## (\d+) \| (.+)$/.exec(l);
-    if (m) { cur = notes[+m[1]] = { label: m[2].trim(), topics: [], lines: [] }; return; }
-    if (l.startsWith('T: ')) { cur.topics = l.slice(3).split('•').map(t => t.trim()).filter(Boolean); return; }
-    if (l.startsWith('• ')) { cur.lines.push({ level: 0, text: l.slice(2).trim() }); return; }
-    if (l.startsWith('----> ')) { cur.lines.push({ level: 1, text: l.slice(6).trim() }); return; }
-    console.error('notes.txt: unexpected line: ' + l); process.exit(1);
+  // deck-notes.json: { "<slide number>": [lines of that slide's notes, verbatim from the deck] }
+  const raw = JSON.parse(fs.readFileSync(path.join(dir, 'deck-notes.json'), 'utf8'));
+  const notes = {};
+  Object.keys(raw).forEach(k => {
+    const lines = raw[k];
+    const body = lines.slice(1).filter(l => l.trim());
+    notes[+k] = { topics: (lines[0] || '').split('•').map(t => t.trim()).filter(Boolean),
+                  lines: body.map(l => l.startsWith('----> ') ? { level: 1, text: l.slice(6).trim() } : l.startsWith('• ') ? { level: 0, text: l.slice(2).trim() } : { level: 2, text: l.trim() }) };
   });
   const cards = base.cards.map(c => {
     const m = /^Slide (\d+)/.exec(c.title || '');
