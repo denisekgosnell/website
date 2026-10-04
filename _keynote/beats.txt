@@ -169,7 +169,11 @@ By 1984 that fell to 40,000; today it's under 2,000 :: 1984 ; 40,000 ; today ; 2
 New jobs came: first engineers to design and build the automation; then maintenance, linemen, electrical and mechanical repair; then it's computerized, a whole new category :: design and build ; automation ; engineering ; maintain ; linemen ; electrical ; mechanical ; computerized ; category
 That's the part we lose when we talk only in aggregate :: lose ; aggregate
 These jobs disappeared even as new ones were created—first,… :: these ; jobs ; disappeared
-But those new jobs may require different skills. They… :: those ; jobs ; require
+New jobs required different skills: someone had to learn them, and someone had to pay :: required different skills ; learn them ; pay for that
+They were in different places: someone had to move, or be left behind :: different places ; move ; left behind
+They came years later: someone had to live through the gap :: years later ; live through ; gap
+Many of them went to entirely different people :: entirely different people
+On a chart it looks like a recovery; to the operator who lost her job, it was not :: chart ; recovery ; operator ; lost her job
 That is the part we risk losing when we… :: part ; risk ; losing
 
 card 25 | Slide 26 · RISK LOSING HUMAN

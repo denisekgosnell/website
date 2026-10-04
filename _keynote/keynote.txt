@@ -129,7 +129,11 @@ But “technically possible” is doing a lot of work there.
 ===
 The evidence from previous waves of automation does not give us great confidence that everyone who loses a job will simply move into one of the new jobs being created. In 1950, almost 1.5 million people worked as telephone switchboard operators, either for the Bell system or in offices, hotels, and factories. By 1984 that number fell to 40,000. Today, it’s under 2,000.
 These jobs disappeared even as new ones were created—first, people to design and build the automation systems, engineering jobs; then, people to maintain that automation, like linemen and other electrical and mechanical repair jobs; then, eventually, it’s computerized, which is a whole new category of jobs, and so on.
-But those new jobs may require different skills. They may be located somewhere else. They may arrive years after the old job disappears. And they may go to entirely different people.
+Those new jobs required different skills. Someone had to learn them, and someone had to pay for that.
+They were in different places. Someone had to move, or be left behind.
+They came years later. Someone had to live through the gap.
+And many of them went to entirely different people.
+On a chart, that looks like a recovery. To the operator who lost her job, it was not.
 That is the part we risk losing when we talk only in aggregate.
 ===
 We risk losing the part that makes us human.
