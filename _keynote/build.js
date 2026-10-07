@@ -14,10 +14,17 @@ const tpTplPath = path.join(__dirname, 'teleprompter.html');
 
 // Variants: a subfolder of _keynote holding its own keynote.txt (and beats.txt) builds a second pair of
 // pages with the folder name as a suffix, e.g. _keynote/charleston -> keynote-practice-charleston.html.
-const VARIANT_LABEL = { charleston: 'Charleston', intro: 'Intro' };
+const VARIANT_LABEL = { charleston: 'Charleston', intro: 'Intro', video: 'Video' };
 // Variants whose script is not the 8-part keynote name their own sections here.
 const SECTION_META_BY_VARIANT = {
   intro: [{ short: 'Intro', color: '#d97706' }],
+  video: [
+    { short: '0:00 · Open',          color: '#d97706' },
+    { short: '0:15 · What I build',  color: '#0d9488' },
+    { short: '1:08 · Three rooms',   color: '#2563eb' },
+    { short: '1:22 · No vendor',     color: '#16a34a' },
+    { short: 'Taglines',             color: '#7c3aed' },
+  ],
   charleston: [
     { short: 'Part 1 · Micah',          color: '#d97706' },
     { short: 'Part 2 · Who I Am',       color: '#0d9488' },
