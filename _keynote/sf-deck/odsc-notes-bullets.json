@@ -1,0 +1,173 @@
+{
+ "1": [
+  "STORY: Walk-on title card",
+  "Wait for the intro, walk on",
+  "No script on this slide"
+ ],
+ "2": [
+  "STORY: Title: Rethinking the Operational Flow of Data Engineering",
+  "The promise: simplifying the longest feedback loop in enterprise data",
+  "No script on this slide. Move to SELECT."
+ ],
+ "3": [
+  "STORY: SELECT: who I am, and why this idea exists (keep it brief)",
+  "PhD: 350M-person graph identity system • 8-figure graph practice at DataStax • graph engine at AWS re:Invent",
+  "2x patents • 2x bestselling author",
+  "Land the line: \"I live in the space where data meets real business decisions.\""
+ ],
+ "4": [
+  "STORY: WITH: the origin story of this idea",
+  "Mount Washington, Seattle, with Matthias: why is it so hard for cross-functional teams to share an understanding of their data?",
+  "Conversation → outline → a year of writing → our O'Reilly book, The Practitioner's Guide to Graph Data",
+  "The book's argument: connect data across silos into a shared domain model and you see what was invisible (healthcare fraud, retail behavior chains, financial risk)",
+  "The book did well; people resonated. But the catch: it took 400 pages just to describe the collaboration, and teams found graph hard to adopt because everything converged on SQL",
+  "Two truths: connected data is where the value is • tooling has to meet engineers where they are",
+  "The AI wave forces the question of this talk: why does it still take weeks or months for that logic to reach production?"
+ ],
+ "5": [
+  "STORY: DESCRIBE: name the tension and the real problem [ANIMATION]",
+  "The workflow hasn't changed: agree on logic by screen-sharing SQL → buried in thousands of files → wait days, weeks, months for the dashboard",
+  "WHAT WORKS: the agreement. SQL is the shared language of trust between business and engineering.",
+  "WHAT DOESN'T: weeks to get a metric into operations • native graph tooling (400 pages; the world converged on SQL)",
+  "THE NEW PRESSURE: if SQL is the ubiquitous language of data, why weeks or months to production?",
+  "From the business' perspective, the problem isn't the query language…",
+  "[click] …the problem is the infrastructure and latency that come after it",
+  "Preview the answer: align at SQL that defines pipelines, database views, and production-ready endpoints automatically",
+  "AI automates the most mechanical parts of the analytics lifecycle, not to replace engineers or generate insights → a much shorter path from business logic to usable analytics",
+  "Tee up the open questions: where humans stay, where automation helps, why the most impactful AI may be the least flashy"
+ ],
+ "6": [
+  "STORY: LAG: the old playbook, one system [ANIMATION]",
+  "Start with a data problem, work backwards from the user experience to define infrastructure, APIs, data model; pick tools; plan volume, throughput, SLAs",
+  "Walk the cycle: 1 copy & replicate data → 2 build the model (repeat until good enough) → 3 build pipelines (until green) → 4 build APIs (until green) → 5 feedback loops (until minimum acceptable)",
+  "[click] Punchline: \"all of that is per data system.\" (This is why engineers laugh or cry.)"
+ ],
+ "7": [
+  "STORY: LAG ×N: it multiplies, then it compounds",
+  "Multiply the whole cycle by every system: SQL, SparkSQL, Gremlin/Cypher, GraphQL",
+  "That alone isn't the kicker. You could parallelize it.",
+  "The real kicker is dependencies: move one computation from Postgres to Neptune = a coordinated rewrite across four (upstream feed, Postgres, Neptune, API layer)",
+  "Different owners, teams, backlogs: \"You're not debugging code. You're negotiating calendars.\"",
+  "Land it: the old way doesn't just scale badly. It compounds badly.",
+  "Every cross-system optimization becomes a multi-team coordination project. That's the old way."
+ ],
+ "8": [
+  "STORY: WHERE: the bottleneck isn't where you think",
+  "Sit with this: the agreement part works. Business and engineering screen-share SQL and agree.",
+  "The problem is everything after \"yes, that's the right metric\": infrastructure, latency, weeks or months to a dashboard, report, or email",
+  "This is the longest feedback loop in enterprise data work, and the one AI can actually shorten",
+  "Every leader's question: how do you use AI so DevOps and data engineers stay in the loop where their knowledge matters most?",
+  "POINT: we're stuck between three things: 1 connect data across silos • 2 with tools engineers can adopt • 3 figure out where AI fits (speed, trust, security, observability)"
+ ],
+ "9": [
+  "HIDDEN SLIDE • STORY: PARTITION BY: the silo problem (its three points are now said on slide 8)",
+  "Scale means throughput AND working with human minds across siloed architectures",
+  "Connecting silos = better insight and visibility into gaps, but graph isn't approachable; talent, compliance, auditors all speak SQL",
+  "Mixing data across silos is a major security implementation that touches every team",
+  "\"If you're sitting in this room, you're probably living some version of it right now.\""
+ ],
+ "10": [
+  "STORY: CREATE VIEW: the answer. Humans above the line, AI below, and the line is SQL.",
+  "Ask it: where are the humans in the loop, and where is AI?",
+  "After a decade on this: SQL is the natural collaboration point for both the \"what\" and the \"how\"",
+  "In the era of AI you still start with a data problem, build the domain model, design the UX with data, work backwards. That's the human understanding of the business.",
+  "Line to land: \"if you are not adding AI into your stack to help initiatives that bring higher ROI to the company, then you are building side projects for fun.\"",
+  "THESIS: \"We're proposing that the line is in SQL.\" Here's why:",
+  "Data engineers still analyze, build models, measure accuracy, repeat. That loop is human work: judgment, edge cases, domain fluency from sitting with compliance, product, ops.",
+  "The output of that loop is SQL, yesterday, today, tomorrow; reviewable for security, HIPAA, EU AI Act, GDPR",
+  "Yes, AI writes the SQL, but there's a moment of review: only pass if people say go. \"That's how you make room for ethics in your builds.\"",
+  "Once a human approves the SQL, AI automates everything below the line: pipelines, APIs, feedback loops, infrastructure, deployment, monitoring",
+  "TRANSITION: \"Think about what that does for your team.\""
+ ],
+ "11": [
+  "STORY: GROUP BY: what your teams get back",
+  "Data engineers: plumbers → engineers. They translate business problems into data problems. \"AI can't sit in a room and get five executives to agree on what 'churn' means.\"",
+  "DevOps: hand-holding → standardization. Compaction, logs, audits, back pressure, and finally time for R&D.",
+  "The relationship: friction → trust. DevOps and data engineers get time to grab a beer and understand each other.",
+  "From almost twenty years in: technical problems almost never kill a data initiative. Teams not understanding each other does.",
+  "SQL fixes something technical AND something human",
+  "It looks like data mesh's promise (ownership, faster analytics, tighter collaboration), reached through workflow automation instead of org redesign",
+  "TRANSITION: two reasons SQL is a good bet for years, or decades"
+ ],
+ "12": [
+  "STORY: FULL OUTER JOIN: Reason 1. SQL balances the business.",
+  "Three groups must agree: domain experts and PMs • data engineers and scientists • DevOps (all of ops, MLOps included)",
+  "SQL is the one language all three read: experts check meaning, engineers check correctness, DevOps check stability (no 2 AM runaway query)",
+  "Nobody sets AI loose end to end. You need an observable, loggable point to measure budget, accuracy, security, compliance and governance.",
+  "You can audit, diff, test, and log SQL",
+  "POINT: SQL is human-readable, machine-parseable, and auditable at every level of the stack. Pipeline configs and IaC aren't where humans should collaborate."
+ ],
+ "13": [
+  "STORY: COMMIT: Reason 2. Every hype wave pulls back to SQL.",
+  "Will this still matter in three years?",
+  "Walk the six waves: relational, object-oriented, MapReduce, NoSQL, graph (I was deep in it), AI/vector. Every one pulled back to SQL.",
+  "Land it: \"The hypes come and go. SQL stays.\" When you build for enterprises, \"you bet on patterns, not hypes.\"",
+  "TRANSITION: after the book, Matthias built tooling that makes this real, and we've used it together on real enterprise builds. Not a theory. Tested in production."
+ ],
+ "14": [
+  "HIDDEN SLIDE • STORY: COMMIT: the durable pain is integration, not the AI",
+  "25 new LLMs next year, an order of magnitude more frameworks: that keeps moving",
+  "The durable pain: the right data, from the right sources, with the right access controls, in the right shape",
+  "That's what SQL as the collaboration point is designed to address"
+ ],
+ "15": [
+  "STORY: EXECUTE: proof. Same pattern, three industries.",
+  "BANKING (brownfield): 50+ service domain teams (payments, fraud, onboarding, lending). A data engineer per team, or a central queue? Neither works.",
+  "\"That's the bottleneck we've been talking about for the last thirty minutes, multiplied by fifty.\"",
+  "The goal: empower fifty teams to build their own pipelines without a data engineer each, and without fifty slightly different versions of the same pipeline",
+  "Banking answer: every team already writes SQL → one standard platform, automation below the line. \"Fifty teams, one platform, one shared language.\"",
+  "HEALTHCARE (running at scale): HIPAA, clinical data; not exotic data science, a \"get the right data into the right shape and ship it\" problem stuck in the bottleneck",
+  "TRAVEL (greenfield): where Matthias and I teamed up. A 70-year-old international network building a net-new product.",
+  "Travel question: building an analytics cloud from scratch in the age of AI, where do you put the humans and where do you let AI take over?",
+  "Travel answer: humans review and agree at the SQL layer; AI built 50–70 analytics APIs plus operational ones, no hand-building",
+  "Plug: follow the Substack for updates on the build"
+ ],
+ "16": [
+  "STORY: NULL: honesty about what we don't have figured out",
+  "Is this going to be safe enough?",
+  "The recent story: an agent took down a production volume, then wrote a post-mortem admitting it skipped multiple safeguards",
+  "That leads us to honest open questions"
+ ],
+ "17": [
+  "STORY: NULL: four open questions, and an invitation to the room",
+  "review_process: code review, automated compliance scan, or both? How do we know the SQL is what the business wants?",
+  "handoff: once SQL is approved, what does observability look like? What pulls a human back in?",
+  "feedback_flow: when infrastructure surfaces issues, how does it reach the person who wrote the SQL?",
+  "the_line: as AI improves, does the line move? (the one that keeps me up at night) SQL is durable as the lingua franca of datawork, \"but honestly, I want to hear from you on that.\""
+ ],
+ "18": [
+  "STORY: COALESCE: bring it together",
+  "My arc: ~2 decades in graph. We were right about the insight: connected data produces better outcomes.",
+  "Learned the hard way (400 pages, years of builds): tooling has to meet engineers where they are, and that's SQL",
+  "AI is already changing data architecture. The question is how to best use human intelligence.",
+  "Humans: domain models, UX with data, the SQL that operationalizes insight • AI: everything below the SQL line",
+  "People payoff: data engineers go from pipeline plumbers to real engineers (the civil engineer designing the bridge, not the person handed a shovel)",
+  "Not turning them into data scientists: most enterprises need collaborative filtering, a random forest, and real engineers who ship",
+  "\"I think it's at least a very promising path forward. And I'd love your help figuring out what we're missing.\""
+ ],
+ "19": [
+  "STORY: COALESCE: the call to action and the closing thesis",
+  "If this resonated, or you're building something similar, I want to hear from you. This is an active area of research and implementation for us.",
+  "CTAs: 3PM today, graph book signing • 11am tomorrow, DataSQRL",
+  "Two invites: \"that's exactly what my team needs\" → tell me your architecture, silos, compliance • \"Hell no\" → I absolutely want to hear why",
+  "Setup: everyone is talking about AI generating insights, replacing analysts, producing code. And sure, that's happening.",
+  "Thesis: the most impactful application of AI in enterprise data may be the least flashy: automating the infrastructure between a business decision and a usable metric",
+  "Shorten that feedback loop. Get out of the way so people can do the work that actually requires human judgment.",
+  "CONCLUSION: the tech keeps evolving. Rethinking the operational flow (where people stay involved, where automation helps) decides whether any of this lands. Thank you."
+ ],
+ "20": [
+  "STORY: COMMIT; thank you, and where to find me next [ANIMATE]",
+  "[click]",
+  "QR on the slide to access the slides • a few places to find me next"
+ ],
+ "21": [
+  "STORY: NEXT: Workshop @ 3:30",
+  "Point the room to the 3:30 workshop",
+  "No script on this slide"
+ ],
+ "22": [
+  "STORY: COMMIT; thank you and contact",
+  "Wanna build? Email, LinkedIn, Instagram, QR",
+  "No script on this slide"
+ ]
+}
